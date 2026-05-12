@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environnements virtuels
+.venv/
+venv/
+env/
+ENV/
+
+# Données brutes et générées (ne pas versionner)
+data/raw/*.csv
+data/processed/
+
+# Sorties du pipeline
+output/rapports/
+output/charts/
+output/logs/
+
+# Outils de développement
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

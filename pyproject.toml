@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "sales-report-automation"
+version = "1.0.0"
+description = "Automated monthly sales report generation from ERP CSV exports"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pandas>=3.0",
+    "matplotlib>=3.10",
+    "seaborn>=0.13",
+    "fpdf2>=2.8",
+    "openpyxl>=3.1",
+    "schedule>=1.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "faker>=40",
+    "pytest>=9",
+    "pytest-cov>=5",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts   = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["src"]
+omit   = ["tests/*", "generate_data.py", "src/scheduler.py"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false

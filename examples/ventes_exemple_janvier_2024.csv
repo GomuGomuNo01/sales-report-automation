@@ -1,0 +1,26 @@
+date,vendeur,region,produit,categorie,quantite,prix_unitaire,remise,statut
+2024-01-03,Claire Bernard,Île-de-France,Adobe Creative Cloud,Logiciels,12,612.00,0.0,Livré
+2024-01-04,Alice Martin,PACA,Laptop Pro 15,Informatique,2,1243.50,0.10,Livré
+2024-01-05,Bob Dupont,Hauts-de-France,Routeur WiFi 6,Réseau,3,178.00,0.0,En cours
+2024-01-06,Emma Petit,Nouvelle-Aquitaine,Licence Office 365,Logiciels,25,121.00,0.05,Livré
+2024-01-07,David Leroy,Occitanie,Écran 4K 27",Périphériques,4,447.90,0.0,Livré
+2024-01-08,Claire Bernard,Auvergne-Rhône-Alpes,Adobe Creative Cloud,Logiciels,8,588.00,0.05,Annulé
+2024-01-09,Alice Martin,Île-de-France,Souris sans fil,Périphériques,20,44.90,0.0,Livré
+2024-01-10,Bob Dupont,PACA,Mac Mini,Informatique,1,1089.00,0.0,Retourné
+2024-01-11,Emma Petit,Hauts-de-France,Clavier mécanique,Périphériques,10,118.00,0.10,Livré
+2024-01-12,David Leroy,Île-de-France,Antivirus Pro,Logiciels,50,61.50,0.15,Livré
+2024-01-14,Claire Bernard,PACA,Switch 24 ports,Réseau,2,315.00,0.0,En cours
+2024-01-15,Alice Martin,Nouvelle-Aquitaine,Laptop Ultrabook,Informatique,3,962.00,0.05,Livré
+2024-01-16,Bob Dupont,Occitanie,Adobe Creative Cloud,Logiciels,15,599.00,0.10,Livré
+2024-01-17,Emma Petit,Auvergne-Rhône-Alpes,Webcam HD,Périphériques,7,84.90,0.0,Livré
+2024-01-18,David Leroy,Hauts-de-France,PC Fixe Bureau,Informatique,2,763.00,0.0,Annulé
+2024-01-19,Claire Bernard,Île-de-France,Licence Office 365,Logiciels,30,118.00,0.05,Livré
+2024-01-21,Alice Martin,PACA,Casque audio,Périphériques,6,152.00,0.0,Livré
+2024-01-22,Bob Dupont,Nouvelle-Aquitaine,Câble RJ45 (lot),Réseau,15,34.50,0.0,En cours
+2024-01-23,Emma Petit,Île-de-France,Laptop Pro 15,Informatique,1,1198.00,0.15,Livré
+2024-01-24,David Leroy,Occitanie,Antivirus Pro,Logiciels,20,59.90,0.0,Livré
+2024-01-25,Claire Bernard,PACA,Écran 4K 27",Périphériques,3,461.00,0.05,Retourné
+2024-01-26,Alice Martin,Auvergne-Rhône-Alpes,Switch 24 ports,Réseau,1,308.00,0.0,Livré
+2024-01-27,Bob Dupont,Île-de-France,Adobe Creative Cloud,Logiciels,10,605.00,0.10,Livré
+2024-01-28,Emma Petit,Hauts-de-France,Mac Mini,Informatique,2,1075.00,0.0,Livré
+2024-01-29,David Leroy,PACA,Souris sans fil,Périphériques,15,46.20,0.05,Livré

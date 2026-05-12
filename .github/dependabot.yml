@@ -1,0 +1,33 @@
+version: 2
+updates:
+  # Mise à jour automatique des dépendances Python
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      # Ne pas upgrader les majeurs automatiquement (risque de breaking changes)
+      - dependency-name: "pandas"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "matplotlib"
+        update-types: ["version-update:semver-major"]
+
+  # Mise à jour automatique des GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(ci)"
