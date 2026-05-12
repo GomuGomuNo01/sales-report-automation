@@ -11,7 +11,7 @@
 
 ---
 
-## À l'attention des recruteurs et RH
+## À l'attention des recruteurs
 
 **Vous êtes recruteur(se) et vous n'êtes pas développeur(se) ? Cette section est faite pour vous.**
 
@@ -166,17 +166,17 @@ Le pipeline suit 5 étapes enchaînées automatiquement :
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        PIPELINE ETL + RAPPORT                       │
 │                                                                     │
-│  ① EXTRACTION      ② NETTOYAGE     ③ TRANSFORMATION                │
-│  ┌──────────┐      ┌──────────┐    ┌──────────────┐                │
-│  │ CSV bruts│ ───► │ Qualité  │───►│ Calculs KPIs │                │
-│  │ (ERP)    │      │ des data │    │ + Agrégations│                │
-│  └──────────┘      └──────────┘    └──────┬───────┘                │
+│  ① EXTRACTION      ② NETTOYAGE     ③ TRANSFORMATION                 │
+│  ┌──────────┐      ┌──────────┐    ┌──────────────┐                 │
+│  │ CSV bruts│ ───► │ Qualité  │───►│ Calculs KPIs │                 │
+│  │ (ERP)    │      │ des data │    │ + Agrégations│                 │
+│  └──────────┘      └──────────┘    └──────┬───────┘                 │
 │                                           │                         │
-│                    ⑤ RAPPORT PDF          ▼  ④ VISUALISATION       │
-│                    ┌──────────┐    ┌──────────────┐                │
-│                    │ 6 pages  │◄───│ 5 graphiques │                │
-│                    │  + KPIs  │    │     PNG      │                │
-│                    └──────────┘    └──────────────┘                │
+│                    ⑤ RAPPORT PDF          ▼  ④ VISUALISATION        │
+│                    ┌──────────┐    ┌──────────────┐                 │
+│                    │ 6 pages  │◄───│ 5 graphiques │                 │
+│                    │  + KPIs  │    │     PNG      │                 │
+│                    └──────────┘    └──────────────┘                 │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
