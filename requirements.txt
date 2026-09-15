@@ -1,7 +1,7 @@
 pandas==3.0.2
 matplotlib==3.10.9
 seaborn==0.13.2
-fpdf2==2.8.7
+fpdf2==2.8.8
 openpyxl==3.1.5
 faker==40.38.0
 schedule==1.2.2
