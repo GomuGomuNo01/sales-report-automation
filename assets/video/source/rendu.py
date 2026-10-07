@@ -7,17 +7,18 @@ rendu.py — Fabrique la vidéo de présentation et sa musique
    animations à l'instant voulu : aucune image sautée, rendu reproductible ;
 3. assemble l'image et le son avec ffmpeg.
 
-Produit, dans docs/video/ :
-    presentation.mp4   vidéo 1920 × 1080, H.264 + AAC
-    musique.mp3        bande-son seule
-    apercu.jpg         image d'aperçu (pour le README)
+Produit, dans assets/video/ :
+    SalesReport_presentation.mp4   vidéo 1920 × 1080, H.264 + AAC
+    musique.mp3                    bande-son seule
+    presentation-poster.jpg        image d'aperçu 1280 × 720 avec un bouton lecture
+                                   (README et lecteur de la page GitHub Pages)
 
 Prérequis (en plus de requirements.txt) :
     pip install playwright imageio-ffmpeg
     playwright install chromium
 
-    python docs/video/source/rendu.py               # vidéo complète
-    python docs/video/source/rendu.py --images 4 12 25 37.5   # quelques images fixes, pour vérifier
+    python assets/video/source/rendu.py               # vidéo complète
+    python assets/video/source/rendu.py --images 4 12 25 37.5   # quelques images fixes, pour vérifier
 """
 
 import argparse
@@ -37,7 +38,9 @@ PAGE      = (ICI / "presentation.html").as_uri() + "?rendu"
 LARGEUR, HAUTEUR = 1920, 1080
 IPS       = 30
 DUREE     = musique.DUREE
-INSTANT_APERCU = 37.6
+VIDEO     = "SalesReport_presentation.mp4"
+AFFICHE   = "presentation-poster.jpg"
+INSTANT_AFFICHE = 3.4  # écran-titre complet
 
 
 def trouver_ffmpeg() -> str:
@@ -71,6 +74,17 @@ def images_fixes(instants: list) -> None:
         navigateur.close()
 
 
+def affiche(page, dossier: Path) -> None:
+    """Image d'aperçu : l'écran-titre avec un bouton lecture, en 1280 × 720."""
+    page.evaluate(f"window.allerA({INSTANT_AFFICHE})")
+    page.evaluate("document.body.classList.add('affiche')")
+    capture = dossier / "affiche.png"
+    page.screenshot(path=str(capture))
+    page.evaluate("document.body.classList.remove('affiche')")
+    subprocess.run([trouver_ffmpeg(), "-y", "-loglevel", "error", "-i", str(capture),
+                    "-vf", "scale=1280:720:flags=lanczos", "-q:v", "3", str(SORTIE / AFFICHE)], check=True)
+
+
 def video() -> None:
     ffmpeg = trouver_ffmpeg()
     with tempfile.TemporaryDirectory() as dossier:
@@ -86,7 +100,7 @@ def video() -> None:
             "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-tune", "animation",
             "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
             "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart",
-            str(SORTIE / "presentation.mp4"),
+            str(SORTIE / VIDEO),
         ], stdin=subprocess.PIPE)
 
         total = int(DUREE * IPS)
@@ -97,8 +111,7 @@ def video() -> None:
                 encodeur.stdin.write(page.screenshot(type="png"))
                 if i % IPS == 0:
                     print(f"\rImages : {i}/{total}", end="", flush=True)
-            page.evaluate(f"window.allerA({INSTANT_APERCU})")
-            page.screenshot(path=str(SORTIE / "apercu.jpg"), type="jpeg", quality=88)
+            affiche(page, Path(dossier))
             navigateur.close()
         encodeur.stdin.close()
         if encodeur.wait() != 0:
@@ -107,7 +120,7 @@ def video() -> None:
 
         subprocess.run([ffmpeg, "-y", "-loglevel", "error", "-i", str(wav),
                         "-c:a", "libmp3lame", "-b:a", "192k", str(SORTIE / "musique.mp3")], check=True)
-    print(f"Terminé : {SORTIE / 'presentation.mp4'}, {SORTIE / 'musique.mp3'}, {SORTIE / 'apercu.jpg'}")
+    print(f"Terminé : {SORTIE / VIDEO}, {SORTIE / 'musique.mp3'}, {SORTIE / AFFICHE}")
 
 
 if __name__ == "__main__":

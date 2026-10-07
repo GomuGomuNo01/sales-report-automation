@@ -1,0 +1,59 @@
+name: Deploy présentation vidéo → GitHub Pages
+
+# Publie assets/video/ (page, vidéo et aperçu) sur
+# https://gomugomuno01.github.io/sales-report-automation/presentation/
+on:
+  push:
+    branches: [main]
+    paths:
+      - "assets/video/index.html"
+      - "assets/video/SalesReport_presentation.mp4"
+      - "assets/video/presentation-poster.jpg"
+      - ".github/workflows/deploy-pages.yml"
+  workflow_dispatch:   # déclenchement manuel possible
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Assemble site (page de présentation)
+        run: |
+          mkdir -p _site/presentation
+          cp assets/video/index.html assets/video/SalesReport_presentation.mp4 assets/video/presentation-poster.jpg _site/presentation/
+          # La racine du site renvoie vers la présentation
+          cat > _site/index.html <<'HTML'
+          <!doctype html>
+          <meta charset="utf-8">
+          <title>Sales Report Automation</title>
+          <meta http-equiv="refresh" content="0; url=presentation/">
+          <link rel="canonical" href="presentation/">
+          <a href="presentation/">Voir la présentation vidéo</a>
+          HTML
+
+      - name: Upload site as Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

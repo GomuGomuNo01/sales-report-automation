@@ -24,3 +24,4 @@ render.yaml
 .gcloudignore
 deploy/
 requirements-dev.txt
+assets/

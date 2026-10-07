@@ -13,7 +13,20 @@ Projet d'automatisation de bout en bout : à partir d'exports de ventes bruts is
 
 [![Tester la démo en ligne](https://img.shields.io/badge/Tester%20la%20d%C3%A9mo-en%20ligne%2C%20sans%20installation-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://sales-report-automation-cedric.streamlit.app)
 [![Télécharger un exemple de rapport](https://img.shields.io/badge/T%C3%A9l%C3%A9charger-un%20exemple%20de%20rapport%20PDF-2E86AB?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](examples/rapport_exemple_2024.pdf)
-[![Voir la vidéo de présentation](https://img.shields.io/badge/Voir-la%20vid%C3%A9o%20de%20pr%C3%A9sentation%20(40%20s)-6D5BD0?style=for-the-badge)](docs/video/presentation.mp4)
+[![Voir la présentation](https://img.shields.io/badge/Voir%20la%20pr%C3%A9sentation-vid%C3%A9o%20de%2040%20s-7C3AED?style=for-the-badge)](https://gomugomuno01.github.io/sales-report-automation/presentation/)
+
+*Présentation : l'application et son fonctionnement en 40 secondes de motion design, sur une
+musique originale. Démo : l'application complète, hébergée gratuitement sur Streamlit Community
+Cloud ; si elle était en veille, elle peut mettre quelques instants à démarrer. Rapport : un
+exemple du PDF de 6 pages produit par l'outil.*
+
+[![Présentation vidéo de Sales Report Automation, 40 secondes](assets/video/presentation-poster.jpg)](https://gomugomuno01.github.io/sales-report-automation/presentation/)
+
+*La présentation vidéo (40 s, 1080p, avec le son) : cliquer sur l'image pour la regarder dans la page « Présentation » publiée sur GitHub Pages. Elle
+montre le problème, puis les cinq étapes du pipeline (extraction, nettoyage, calcul, graphiques,
+rapport PDF), le résultat et les avantages. Elle a été animée image par image en HTML et CSS,
+capturée avec Playwright ; sa musique et ses bruitages ont été synthétisés pour elle, calés sur
+chaque changement de scène, sans aucun droit à céder.*
 
 ![L'application de démonstration en action](docs/images/demo-app.gif)
 
@@ -74,9 +87,10 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 
 ### Pour découvrir le travail en 2 minutes
 
-1. Ouvrir la [démo en ligne](https://sales-report-automation-cedric.streamlit.app) et cliquer sur **Générer un rapport de démo**.
-2. Parcourir [les pages du rapport généré](#9-le-rapport-généré).
-3. Lire [les résultats détaillés](#10-analyses-et-résultats-détaillés), en particulier la robustesse face aux données mal saisies.
+1. 🎬 [Voir la présentation vidéo](https://gomugomuno01.github.io/sales-report-automation/presentation/) (40 s).
+2. Ouvrir la [démo en ligne](https://sales-report-automation-cedric.streamlit.app) et cliquer sur **Générer un rapport de démo**.
+3. Parcourir [les pages du rapport généré](#9-le-rapport-généré).
+4. Lire [les résultats détaillés](#10-analyses-et-résultats-détaillés), en particulier la robustesse face aux données mal saisies.
 
 ## 2. Les résultats en bref
 
@@ -93,7 +107,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 | Livrable | Lien |
 |---|---|
 | Application web de démonstration | [Ouvrir la démo](https://sales-report-automation-cedric.streamlit.app) |
-| Vidéo de présentation (40 s, musique originale libre de droits) | [presentation.mp4](docs/video/presentation.mp4) · [détails](docs/video/) |
+| Présentation vidéo (40 s, musique originale libre de droits) | [Voir la présentation](https://gomugomuno01.github.io/sales-report-automation/presentation/) |
 | Exemple de rapport PDF généré (6 pages) | [rapport_exemple_2024.pdf](examples/rapport_exemple_2024.pdf) |
 | Exemple de fichier CSV source | [ventes_exemple_janvier_2024.csv](examples/ventes_exemple_janvier_2024.csv) |
 | Les 12 exports mensuels de 2024 (CSV), aussi téléchargeables depuis la démo | [examples/ventes_2024/](examples/ventes_2024/) |
@@ -489,7 +503,8 @@ sales-report-automation/
 │   └── scheduler.py             Exécution automatique mensuelle
 ├── tests/                       Tests automatisés (pytest)
 ├── examples/                    Exemple de rapport PDF, CSV modèle et 12 exports mensuels 2024 (ventes_2024/)
-├── docs/                        Guide de déploiement, captures, vidéo de présentation (video/)
+├── docs/                        Guide de déploiement, captures du rapport et de l'application
+├── assets/video/                Présentation vidéo (MP4), son aperçu et sa page web (GitHub Pages)
 ├── deploy/                      Règle de nettoyage des images (Cloud Run)
 ├── .streamlit/                  Réglages du serveur Streamlit
 ├── .github/                     Dependabot et maintien en éveil de la démo (visite automatique toutes les 6 h)

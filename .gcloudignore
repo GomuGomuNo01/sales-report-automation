@@ -21,3 +21,4 @@ tests/
 conftest.py
 demo_colab.ipynb
 protect_branches.sh
+assets/
