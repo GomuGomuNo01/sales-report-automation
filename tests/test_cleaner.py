@@ -116,12 +116,17 @@ class TestHandleMissingValues:
         assert result["date"].isna().sum() == 0
 
     def test_remplace_vendeur_nan_par_inconnu(self, df_avec_nan):
-        result = handle_missing_values(df_avec_nan.copy())
-        assert "Inconnu" in result["vendeur"].values
+        # Dans la fixture, le vendeur manquant est sur la ligne sans date,
+        # supprimée avant le remplacement : on place le NaN sur une ligne datée.
+        df = df_avec_nan.copy()
+        df.loc[0, "vendeur"] = None
+        result = handle_missing_values(df)
+        assert result["vendeur"].isna().sum() == 0
+        assert result.loc[0, "vendeur"] == "Inconnu"
 
     def test_remplace_region_nan_par_inconnu(self, df_avec_nan):
         result = handle_missing_values(df_avec_nan.copy())
-        assert "Inconnu" in result["region"].values
+        assert (result["region"] == "Inconnu").any()
 
     def test_remplace_quantite_nan_par_mediane(self, df_avec_nan):
         result = handle_missing_values(df_avec_nan.copy())
@@ -160,7 +165,7 @@ class TestFixDataTypes:
 
     def test_vendeur_en_str(self, df_valide):
         result = fix_data_types(df_valide.copy())
-        assert result["vendeur"].dtype == object
+        assert pd.api.types.is_string_dtype(result["vendeur"])
 
     def test_supprime_dates_invalides(self):
         df = pd.DataFrame({
