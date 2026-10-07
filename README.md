@@ -6,6 +6,7 @@
 ![fpdf2](https://img.shields.io/badge/fpdf2-PDF%206%20pages-B22222)
 ![Streamlit](https://img.shields.io/badge/Streamlit-d%C3%A9mo%20web-FF4B4B?logo=streamlit&logoColor=white)
 ![pytest](https://img.shields.io/badge/pytest-88%20tests-0A9EDC?logo=pytest&logoColor=white)
+![Licence](https://img.shields.io/badge/Licence-MIT-green)
 
 Projet d'automatisation de bout en bout : à partir d'exports de ventes bruts issus d'un ERP, production automatique d'un **rapport PDF de 6 pages** prêt pour la réunion de direction. Ce qui demandait **5 heures de travail manuel chaque mois** se fait désormais **en quelques secondes**, sans intervention.
 
@@ -406,6 +407,7 @@ EXCLUDED_STATUTS           = ["Annulé", "Retourné"]                # statuts e
 ```
 sales-report-automation/
 ├── README.md
+├── LICENSE
 ├── main.py                      Point d'entrée en ligne de commande
 ├── app.py                       Application web de démonstration (Streamlit)
 ├── config.py                    Chemins, règles métier, titre et couleurs du rapport
@@ -513,5 +515,6 @@ L'image Docker peut aussi être déployée sur Hugging Face Spaces, Render ou Ra
 
 - Polices : [DejaVu Fonts](https://dejavu-fonts.github.io/) (licence libre).
 - Bibliothèques : pandas, matplotlib, seaborn, fpdf2, Streamlit, pytest.
+- Licence du projet : [MIT](LICENSE).
 
 **Auteur :** Dibie Elisee Jules Cedric KOUADIO ([@GomuGomuNo01](https://github.com/GomuGomuNo01))

@@ -8,6 +8,7 @@ version = "1.0.0"
 description = "Automated monthly sales report generation from ERP CSV exports"
 readme = "README.md"
 requires-python = ">=3.9"
+license = { text = "MIT" }
 dependencies = [
     "pandas>=3.0",
     "matplotlib>=3.10",
