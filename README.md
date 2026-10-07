@@ -493,7 +493,7 @@ sales-report-automation/
 ├── deploy/                      Règle de nettoyage des images (Cloud Run)
 ├── .streamlit/                  Réglages du serveur Streamlit
 ├── .devcontainer/               Environnement GitHub Codespaces
-├── .github/                     Dependabot et maintien en éveil de la démo (facultatif)
+├── .github/                     Dependabot et maintien en éveil de la démo (visite automatique toutes les 6 h)
 ├── data/raw/                    Fichiers CSV d'entrée (non versionnés)
 └── output/                      Rapports, graphiques et journaux générés (non versionnés)
 ```
@@ -571,7 +571,7 @@ Sur Cloud Run et Render, l'hébergeur construit l'image à partir du [`Dockerfil
 - **Période par défaut** : sans `--periode`, le libellé du mois courant dépend de la langue du système.
 - **Format d'entrée strict** : CSV séparé par des virgules, noms de colonnes exacts. Les fichiers Excel ou séparés par des points-virgules ne sont pas acceptés.
 - **Planificateur simple** : il fonctionne tant que le processus reste lancé ; il ne remplace pas un ordonnanceur système.
-- **Hébergement gratuit** : après 12 heures sans visite, la démo en ligne se met en veille ; le visiteur suivant doit cliquer sur un bouton pour la réveiller, puis attendre environ une minute.
+- **Hébergement gratuit** : après 12 heures sans visite, la démo en ligne se met en veille ; le visiteur suivant doit cliquer sur un bouton pour la réveiller, puis attendre environ une minute. Une tâche GitHub Actions visite la démo toutes les 6 heures pour l'éviter.
 - **Une génération à la fois** : les demandes simultanées attendent leur tour. Les envois sont limités à 30 fichiers, 20 Mo, 200 vendeurs, 50 régions et 50 catégories.
 - **Rapports en mémoire** : un rapport généré en ligne reste téléchargeable jusqu'à une heure (dans la limite des 32 derniers), puis il est effacé.
 
