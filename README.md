@@ -6,7 +6,7 @@
 ![fpdf2](https://img.shields.io/badge/fpdf2-PDF%206%20pages-B22222)
 ![Frontend](https://img.shields.io/badge/Frontend-HTML%20%C2%B7%20CSS%20%C2%B7%20JS-1F63B8)
 ![Streamlit](https://img.shields.io/badge/Streamlit-st.App-FF4B4B?logo=streamlit&logoColor=white)
-![pytest](https://img.shields.io/badge/pytest-197%20tests-0A9EDC?logo=pytest&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-199%20tests-0A9EDC?logo=pytest&logoColor=white)
 ![Licence](https://img.shields.io/badge/Licence-MIT-green)
 
 Projet d'automatisation de bout en bout : à partir d'exports de ventes bruts issus d'un ERP, production automatique d'un **rapport PDF de 6 pages** prêt pour la réunion de direction. Ce qui demandait **5 heures de travail manuel chaque mois** se fait désormais **en quelques secondes**, sans intervention.
@@ -61,7 +61,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 | **Produire le livrable** | 5 graphiques et un rapport PDF A4 de 6 pages, mis en page et horodaté |
 | **Automatiser** | Une seule commande, et une planification qui génère le rapport seule le 1er de chaque mois |
 | **Rendre le projet testable par tous** | Une application web soignée (design system, animations, accessibilité, mobile) qui exécute le vrai pipeline dans le navigateur, sans installation |
-| **Vérifier chaque résultat** | 197 tests automatisés sur le nettoyage, les calculs, le service et l'API web |
+| **Vérifier chaque résultat** | 199 tests automatisés sur le nettoyage, les calculs, le service et l'API web |
 
 ### Ce que ce projet démontre
 
@@ -174,7 +174,7 @@ Les variantes d'accents, de majuscules et d'espaces sont harmonisées. Une valeu
 | **argparse** | Interface en ligne de commande |
 | **HTML, CSS, JavaScript** | Interface web sans framework : design system à base de tokens, système d'animation centralisé, graphiques SVG natifs |
 | **Streamlit (`st.App`) / Starlette** | Serveur web : sert l'interface et l'API de génération (progression en direct) ; hébergeable gratuitement sur Streamlit Community Cloud |
-| **pytest** | 197 tests automatisés (nettoyage, calculs, service et API web) |
+| **pytest** | 199 tests automatisés (nettoyage, calculs, service et API web) |
 | **Docker / Dev Containers** | Lancement de l'application sans installer Python (Docker, GitHub Codespaces) |
 | **Git / GitHub, Dependabot** | Versionnage, branches de travail, mise à jour automatique des dépendances |
 

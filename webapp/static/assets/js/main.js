@@ -49,12 +49,13 @@ function go(view, { push = true, section = null } = {}) {
     currentView = view;
     if (pendingView === view) pendingView = null;
     header.dataset.solid = String(view === 'rapport');
+    // Défilement instantané : la vue entrante doit apparaître en place, sans glisser
     if (view === 'rapport') {
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'instant' });
     } else if (section) {
       scrollToSection(section, { instant: true });
     } else {
-      window.scrollTo(0, landingScroll);
+      window.scrollTo({ top: landingScroll, behavior: 'instant' });
     }
   };
 

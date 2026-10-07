@@ -94,7 +94,7 @@ export function playWhenVisible(el, className = 'is-animating') {
   if (!motionAllowed() || !('IntersectionObserver' in window)) return;
   const io = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) { playOnce(el, className); io.disconnect(); }
-  }, { threshold: 0.2 });
+  }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });  // dès que le haut du graphique entre à l'écran
   io.observe(el);
 }
 
