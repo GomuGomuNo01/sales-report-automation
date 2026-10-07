@@ -47,6 +47,12 @@ def _job(periode: str = None):
         logger.error(f"Scheduler : erreur lors de l execution -> {e}")
 
 
+def _job_si_premier_du_mois():
+    """Lance _job uniquement le 1er du mois."""
+    if datetime.now().day == 1:
+        _job()
+
+
 def start_scheduler(periode: str = None):
     """
     Lance le scheduler en boucle infinie.
@@ -64,7 +70,9 @@ def start_scheduler(periode: str = None):
     _job(periode=periode)
 
     # Planification mensuelle — le 1er à 08:00
-    schedule.every().month.at("08:00").do(_job)
+    # (la librairie schedule n'a pas d'unité "mois" : vérification
+    # quotidienne à 08:00, exécution uniquement le 1er)
+    schedule.every().day.at("08:00").do(_job_si_premier_du_mois)
 
     # Pour les tests : décommenter la ligne ci-dessous
     # pour une exécution toutes les minutes
