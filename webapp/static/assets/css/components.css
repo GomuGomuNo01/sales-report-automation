@@ -85,6 +85,11 @@
 
 .btn.menu-toggle { display: none; }
 
+/* Bouton jour/nuit : la lune propose le thème sombre, le soleil le thème clair */
+.theme-toggle__sun { display: none; }
+:root[data-theme="dark"] .theme-toggle__moon { display: none; }
+:root[data-theme="dark"] .theme-toggle__sun { display: block; }
+
 @media (max-width: 63.99em) {
   .site-header__actions .btn--cta { display: none; }
   .site-nav__link { padding: 0 var(--space-2); }

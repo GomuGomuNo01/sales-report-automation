@@ -31,7 +31,7 @@
 }
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   /* ---------- Couleurs : thème clair ---------- */
   --color-bg:            #f8fafc;
@@ -169,51 +169,53 @@
   --z-tooltip: 100;
 }
 
-/* ---------- Thème sombre : choisi, pas inversé ---------- */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg:            #090d16;
-    --color-surface:       #0f1521;
-    --color-surface-2:     #151d2b;
-    --color-surface-3:     #1c2636;
-    --color-ink:           #f2f5f9;
-    --color-ink-2:         #b4bfce;
-    --color-ink-3:         #8794a7;
-    --color-border:        rgba(255, 255, 255, 0.08);
-    --color-border-strong: rgba(255, 255, 255, 0.16);
+/* ---------- Thème sombre : choisi, pas inversé ----------
+   Activé par data-theme="dark" sur <html> (script en tête de index.html :
+   choix du visiteur, sinon préférence du système). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
 
-    --color-brand:         #2f74cf;
-    --color-brand-hover:   #2a69bd;
-    --color-brand-active:  #245ea9;
-    --color-brand-ink:     #8bbcf3;
-    --color-brand-soft:    rgba(74, 144, 232, 0.14);
-    --color-brand-line:    rgba(139, 188, 243, 0.32);
+  --color-bg:            #090d16;
+  --color-surface:       #0f1521;
+  --color-surface-2:     #151d2b;
+  --color-surface-3:     #1c2636;
+  --color-ink:           #f2f5f9;
+  --color-ink-2:         #b4bfce;
+  --color-ink-3:         #8794a7;
+  --color-border:        rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
 
-    --color-success:       #3fcf86;
-    --color-success-soft:  rgba(63, 207, 134, 0.12);
-    --color-danger:        #ff7b7b;
-    --color-danger-soft:   rgba(255, 123, 123, 0.12);
-    --color-warning:       #f2b84b;
-    --color-warning-soft:  rgba(242, 184, 75, 0.12);
+  --color-brand:         #2f74cf;
+  --color-brand-hover:   #2a69bd;
+  --color-brand-active:  #245ea9;
+  --color-brand-ink:     #8bbcf3;
+  --color-brand-soft:    rgba(74, 144, 232, 0.14);
+  --color-brand-line:    rgba(139, 188, 243, 0.32);
 
-    --glow-1: rgba(57, 135, 229, 0.22);
-    --glow-2: rgba(144, 133, 233, 0.14);
-    --glow-3: rgba(25, 158, 112, 0.10);
+  --color-success:       #3fcf86;
+  --color-success-soft:  rgba(63, 207, 134, 0.12);
+  --color-danger:        #ff7b7b;
+  --color-danger-soft:   rgba(255, 123, 123, 0.12);
+  --color-warning:       #f2b84b;
+  --color-warning-soft:  rgba(242, 184, 75, 0.12);
 
-    --viz-series:      #3987e5;
-    --viz-series-soft: rgba(57, 135, 229, 0.14);
-    --viz-grid:        #222c3b;
-    --viz-axis:        #334156;
-    --viz-surface:     #0f1521;
+  --glow-1: rgba(57, 135, 229, 0.22);
+  --glow-2: rgba(144, 133, 233, 0.14);
+  --glow-3: rgba(25, 158, 112, 0.10);
 
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.3), 0 28px 56px -16px rgba(0, 0, 0, 0.6);
-    --shadow-xl: 0 40px 90px -30px rgba(0, 0, 0, 0.75);
-    --shadow-brand: 0 6px 22px -6px rgba(57, 135, 229, 0.6);
-    --focus-ring: 0 0 0 3px rgba(139, 188, 243, 0.45);
-  }
+  --viz-series:      #3987e5;
+  --viz-series-soft: rgba(57, 135, 229, 0.14);
+  --viz-grid:        #222c3b;
+  --viz-axis:        #334156;
+  --viz-surface:     #0f1521;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.3), 0 28px 56px -16px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 40px 90px -30px rgba(0, 0, 0, 0.75);
+  --shadow-brand: 0 6px 22px -6px rgba(57, 135, 229, 0.6);
+  --focus-ring: 0 0 0 3px rgba(139, 188, 243, 0.45);
 }
 
 /* ---------- Mouvement réduit : seules les animations fonctionnelles restent ---------- */

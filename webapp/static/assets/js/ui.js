@@ -8,6 +8,45 @@ import { afterMotion, duration, finePointer } from './motion.js';
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])';
 
+/* ---------- Thème jour/nuit ----------
+   Le script en tête de index.html pose data-theme avant le premier affichage.
+   Le bouton bascule et mémorise le choix ; sans choix enregistré, la page suit
+   le thème du système, y compris s'il change pendant la visite. */
+const THEME_KEY = 'theme';
+const THEME_COLOR = { light: '#f8fafc', dark: '#090d16' };
+
+export const isDarkTheme = () => document.documentElement.dataset.theme === 'dark';
+
+function syncThemeToggles() {
+  const label = isDarkTheme() ? 'Activer le thème clair' : 'Activer le thème sombre';
+  document.querySelectorAll('[data-action="toggle-theme"]').forEach((btn) => btn.setAttribute('aria-label', label));
+}
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_COLOR[theme]);
+  syncThemeToggles();
+  document.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
+}
+
+function savedTheme() {
+  try { return localStorage.getItem(THEME_KEY); } catch { return null; }
+}
+
+export function initTheme() {
+  syncThemeToggles();
+  document.querySelectorAll('[data-action="toggle-theme"]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const theme = isDarkTheme() ? 'light' : 'dark';
+      try { localStorage.setItem(THEME_KEY, theme); } catch { /* stockage indisponible : choix valable pour cette visite */ }
+      applyTheme(theme);
+    });
+  });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!savedTheme()) applyTheme(e.matches ? 'dark' : 'light');
+  });
+}
+
 /* ---------- Header : compact et flouté après le défilement ---------- */
 export function initHeader() {
   const header = document.getElementById('site-header');

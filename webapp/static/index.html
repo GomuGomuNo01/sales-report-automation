@@ -5,8 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Sales Report Automation · Le rapport de ventes mensuel, en 3 secondes</title>
   <meta name="description" content="Fusionnez vos exports de ventes, corrigez automatiquement les erreurs de saisie et obtenez un rapport PDF de 6 pages prêt pour la direction. Démo en ligne, sans inscription.">
-  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f8fafc">
+  <script>
+    /* Thème appliqué avant le premier affichage (pas de flash) : choix enregistré, sinon celui du système */
+    (function () {
+      var choix = null;
+      try { choix = localStorage.getItem('theme'); } catch (e) {}
+      var sombre = choix ? choix === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = sombre ? 'dark' : 'light';
+      document.querySelector('meta[name="theme-color"]').content = sombre ? '#090d16' : '#f8fafc';
+    })();
+  </script>
   <meta property="og:title" content="Sales Report Automation">
   <meta property="og:description" content="Des exports de ventes bruts au rapport de direction, en 3 secondes au lieu de 5 heures.">
   <meta property="og:type" content="website">
@@ -49,7 +58,8 @@
       <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 10"/></symbol>
       <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
       <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
-      <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
       <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
       <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
       <symbol id="i-report" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 17v-3M12 17v-6M16 17V8"/></symbol>
@@ -64,7 +74,6 @@
       <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
       <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/></symbol>
       <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7L20 8.5"/><path d="M20 4v4.5h-4.5"/></symbol>
-      <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
       <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></symbol>
       <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
     </defs>
@@ -92,9 +101,10 @@
       </nav>
 
       <div class="site-header__actions">
-        <a class="btn btn--ghost btn--icon btn--sm" href="https://github.com/GomuGomuNo01/sales-report-automation" target="_blank" rel="noopener" aria-label="Code source sur GitHub (nouvel onglet)">
-          <svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>
-        </a>
+        <button class="btn btn--ghost btn--icon btn--sm theme-toggle" type="button" data-action="toggle-theme" aria-label="Activer le thème sombre">
+          <svg class="icon theme-toggle__moon" aria-hidden="true"><use href="#i-moon"/></svg>
+          <svg class="icon theme-toggle__sun" aria-hidden="true"><use href="#i-sun"/></svg>
+        </button>
         <button class="btn btn--primary btn--sm btn--cta" type="button" data-action="run-demo">
           <span class="btn__label">Générer une démo</span>
           <span class="btn__state btn__state--loading"><span class="spinner" aria-hidden="true"></span>Génération…</span>
@@ -526,10 +536,6 @@
             <li class="skill" data-reveal="up"><h3 class="skill__title">Pensée utilisateur</h3><p class="skill__text">Un livrable lisible par une direction, une démo utilisable sans aucune compétence technique.</p></li>
             <li class="skill" data-reveal="up"><h3 class="skill__title">Autonomie</h3><p class="skill__text">Cadrage, développement, tests, documentation et déploiement réalisés de bout en bout.</p></li>
           </ul>
-          <div class="section-actions">
-            <a class="btn btn--secondary" href="https://github.com/GomuGomuNo01/sales-report-automation" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>Voir le code sur GitHub<span class="visually-hidden"> (nouvel onglet)</span></a>
-            <a class="btn btn--ghost" href="https://github.com/GomuGomuNo01/sales-report-automation#readme" target="_blank" rel="noopener">Lire la documentation <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-external"/></svg><span class="visually-hidden"> (nouvel onglet)</span></a>
-          </div>
         </div>
       </section>
 
@@ -573,7 +579,7 @@
             </details>
             <details class="accordion__item">
               <summary class="accordion__summary">Puis-je utiliser l'outil sur mon ordinateur&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
-              <div class="accordion__content"><p>Oui. Le code est open source (licence MIT) : il s'installe avec Python ou se lance avec Docker, et peut générer le rapport automatiquement chaque mois. Les étapes sont détaillées dans la <a href="https://github.com/GomuGomuNo01/sales-report-automation#readme" target="_blank" rel="noopener">documentation</a>.</p></div>
+              <div class="accordion__content"><p>Oui. L'outil s'installe avec Python ou se lance avec Docker, et peut générer le rapport automatiquement chaque mois, sans intervention.</p></div>
             </details>
             <details class="accordion__item">
               <summary class="accordion__summary">Pourquoi la page met-elle parfois du temps à s'ouvrir&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
@@ -594,7 +600,7 @@
                 <span class="btn__label">Générer un rapport de démo <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
                 <span class="btn__state btn__state--loading"><span class="spinner" aria-hidden="true"></span>Génération…</span>
               </button>
-              <a class="btn btn--secondary btn--lg" href="https://github.com/GomuGomuNo01/sales-report-automation" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>Voir le code<span class="visually-hidden"> sur GitHub (nouvel onglet)</span></a>
+              <a class="btn btn--secondary btn--lg" href="exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg>Voir un exemple de PDF<span class="visually-hidden"> (nouvel onglet)</span></a>
             </div>
           </div>
         </div>
@@ -691,15 +697,13 @@
         <div>
           <h2 class="site-footer__title">Ressources</h2>
           <ul class="site-footer__links">
-            <li><a href="https://github.com/GomuGomuNo01/sales-report-automation" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-github"/></svg>Code source<span class="visually-hidden"> (nouvel onglet)</span></a></li>
-            <li><a href="https://github.com/GomuGomuNo01/sales-report-automation#readme" target="_blank" rel="noopener">Documentation<span class="visually-hidden"> (nouvel onglet)</span></a></li>
             <li><a href="exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener">Exemple de rapport PDF<span class="visually-hidden"> (nouvel onglet)</span></a></li>
             <li><a href="api/modele.csv" download>Fichier CSV modèle</a></li>
           </ul>
         </div>
       </div>
       <div class="site-footer__bottom">
-        <p>© 2026 · Licence MIT · <a href="https://github.com/GomuGomuNo01" target="_blank" rel="noopener">@GomuGomuNo01</a></p>
+        <p>© 2026 · Licence MIT</p>
         <p>Données de démonstration fictives.</p>
       </div>
     </div>

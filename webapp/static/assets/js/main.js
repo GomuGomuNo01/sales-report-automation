@@ -6,7 +6,7 @@
    ========================================================================== */
 
 import { initMotion, transitionView, afterMotion } from './motion.js';
-import { initHeader, initMobileMenu, initScrollSpy, initTabs, initTooltips, initDialogs } from './ui.js';
+import { initTheme, initHeader, initMobileMenu, initScrollSpy, initTabs, initTooltips, initDialogs } from './ui.js';
 import { initDashboard, hasReport, isShowingReport, restoreLastReport, redrawWhenVisible } from './dashboard.js';
 import { initDemo, runDemo, retry, cancelGeneration } from './demo.js';
 
@@ -206,6 +206,7 @@ if (window.parent !== window) {
   window.parent.postMessage({ stCommVersion: 1, type: 'GUEST_READY' }, '*');
 }
 
+initTheme();
 initMotion();
 initHeader();
 initMobileMenu();

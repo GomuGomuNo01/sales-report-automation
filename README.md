@@ -11,7 +11,7 @@
 
 Projet d'automatisation de bout en bout : à partir d'exports de ventes bruts issus d'un ERP, production automatique d'un **rapport PDF de 6 pages** prêt pour la réunion de direction. Ce qui demandait **5 heures de travail manuel chaque mois** se fait désormais **en quelques secondes**, sans intervention.
 
-[![Tester la démo en ligne](https://img.shields.io/badge/Tester%20la%20d%C3%A9mo-en%20ligne%2C%20sans%20installation-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://sales-report-automation.streamlit.app)
+[![Tester la démo en ligne](https://img.shields.io/badge/Tester%20la%20d%C3%A9mo-en%20ligne%2C%20sans%20installation-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://sales-report-automation-cedric.streamlit.app)
 [![Télécharger un exemple de rapport](https://img.shields.io/badge/T%C3%A9l%C3%A9charger-un%20exemple%20de%20rapport%20PDF-2E86AB?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](examples/rapport_exemple_2024.pdf)
 
 *Application web : aucun compte, aucune installation, un clic suffit pour générer et télécharger un rapport. D'autres façons de tester le projet sont décrites dans [Reproduire le projet](#14-reproduire-le-projet).*
@@ -75,7 +75,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 
 ### Pour découvrir le travail en 2 minutes
 
-1. Ouvrir la [démo en ligne](https://sales-report-automation.streamlit.app) et cliquer sur **Générer un rapport de démo**.
+1. Ouvrir la [démo en ligne](https://sales-report-automation-cedric.streamlit.app) et cliquer sur **Générer un rapport de démo**.
 2. Parcourir [les pages du rapport généré](#9-le-rapport-généré).
 3. Lire [les résultats détaillés](#10-analyses-et-résultats-détaillés), en particulier la robustesse face aux données mal saisies.
 
@@ -93,7 +93,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 
 | Livrable | Lien |
 |---|---|
-| Application web de démonstration | [Ouvrir la démo](https://sales-report-automation.streamlit.app) |
+| Application web de démonstration | [Ouvrir la démo](https://sales-report-automation-cedric.streamlit.app) |
 | Exemple de rapport PDF généré (6 pages) | [rapport_exemple_2024.pdf](examples/rapport_exemple_2024.pdf) |
 | Exemple de fichier CSV source | [ventes_exemple_janvier_2024.csv](examples/ventes_exemple_janvier_2024.csv) |
 | Démonstration pas à pas dans un notebook | [Google Colab](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb) |
@@ -175,6 +175,7 @@ Les variantes d'accents, de majuscules et d'espaces sont harmonisées. Une valeu
 | **HTML, CSS, JavaScript** | Interface web sans framework : design system à base de tokens, système d'animation centralisé, graphiques natifs (SVG et HTML/CSS) |
 | **Streamlit (`st.App`) / Starlette** | Serveur web : sert l'interface et l'API de génération (progression en direct) |
 | **pytest** | 199 tests automatisés (nettoyage, calculs, service et API web) |
+| **Streamlit Community Cloud** | Hébergement gratuit de la démo en ligne, redéployée à chaque push sur `main` |
 | **Docker / Dev Containers** | Image prête pour l'hébergement (Google Cloud Run, Render) et lancement sans installer Python (Docker, GitHub Codespaces) |
 | **Git / GitHub, Dependabot** | Versionnage, branches de travail, mise à jour automatique des dépendances |
 
@@ -266,7 +267,7 @@ Les graphiques sont produits en PNG à 150 DPI, avec une palette et un style com
 
 ### 8.7 Application web
 
-L'interface est un frontend sur mesure, sans framework, servi avec son API par `st.App` (Streamlit 1.65). Elle appelle **exactement les mêmes modules** que la ligne de commande : rien n'est réimplémenté.
+L'interface est un frontend sur mesure, sans framework, servi avec son API par `st.App` (Streamlit 1.65). Elle appelle **exactement les mêmes modules** que la ligne de commande : rien n'est réimplémenté. La [démo en ligne](https://sales-report-automation-cedric.streamlit.app) est hébergée gratuitement sur Streamlit Community Cloud.
 
 | Accueil | Tableau de bord |
 |---|---|
@@ -284,6 +285,7 @@ L'interface est un frontend sur mesure, sans framework, servi avec son API par `
 - **Progression en direct** : le serveur envoie l'avancement réel de chaque étape (flux NDJSON), la vue rapport s'ouvre aussitôt avec un squelette de chargement.
 - **Tableau de bord** : 8 indicateurs (dont 3 avec leur mode de calcul en infobulle), 6 graphiques natifs sans bibliothèque : une courbe SVG explorable au survol, au toucher et au clavier, avec sa vue tableau, des barres en HTML/CSS qui affichent leurs valeurs, et une heatmap en tableau HTML. S'y ajoutent le diagnostic qualité, les données nettoyées en CSV et le journal d'exécution.
 - **Téléchargement du rapport PDF** de 6 pages.
+- **Thème clair ou sombre** : la page suit le réglage du système, un bouton dans l'en-tête permet de basculer, et le choix est mémorisé d'une visite à l'autre.
 
 **Design system** ([`tokens.css`](webapp/static/assets/css/tokens.css))
 - Une seule source de vérité pour les couleurs (thème clair et thème sombre choisis, pas inversés), la typographie fluide (`clamp()`), les espacements (4 à 128 px), les rayons, les ombres, les plans et les breakpoints.
@@ -499,7 +501,7 @@ sales-report-automation/
 
 **Option 1 : tester en ligne (recommandé, aucune installation)**
 
-1. Ouvrir la [démo en ligne](https://sales-report-automation.streamlit.app). Si personne ne l'a utilisée récemment, elle peut mettre quelques secondes à démarrer (jusqu'à une minute sur un hébergement gratuit).
+1. Ouvrir la [démo en ligne](https://sales-report-automation-cedric.streamlit.app). Si personne ne l'a ouverte depuis 12 heures, Streamlit affiche une page de mise en veille : cliquer sur le bouton de réveil, puis patienter environ une minute.
 2. Cliquer sur **Générer un rapport de démo**, ou déposer ses propres fichiers CSV dans la section **Démo**.
 3. Télécharger le rapport PDF.
 
@@ -538,14 +540,17 @@ pytest --cov=src --cov-report=term-missing   # avec la couverture (pip install p
 
 **Mettre l'application en ligne**
 
-Le guide complet, avec les commandes et les réglages, est dans [`docs/DEPLOIEMENT.md`](docs/DEPLOIEMENT.md). En résumé :
+La démo publique est hébergée sur **Streamlit Community Cloud** ([sales-report-automation-cedric.streamlit.app](https://sales-report-automation-cedric.streamlit.app)) : gratuit, sans carte bancaire, et redéployée automatiquement à chaque push sur `main`. Pour la publier depuis son propre compte : [share.streamlit.io](https://share.streamlit.io) > **Create app** > dépôt, branche `main`, fichier `app.py`, puis un sous-domaine libre.
+
+Le guide complet, avec les autres hébergeurs, les commandes et les réglages, est dans [`docs/DEPLOIEMENT.md`](docs/DEPLOIEMENT.md). En résumé :
 
 | Hébergeur | Coût | Premier visiteur après une période calme | Fichiers fournis |
 |---|---|---|---|
+| **Streamlit Community Cloud** (démo actuelle) | 0 €, sans carte | page de mise en veille à cliquer après 12 h sans visite, puis environ 1 minute | aucun : [`app.py`](app.py) et [`requirements.txt`](requirements.txt) suffisent |
 | **Google Cloud Run** (recommandé) | environ 0 € par mois, carte bancaire requise | quelques secondes | [`.gcloudignore`](.gcloudignore), [`deploy/`](deploy/) |
 | **Render** (gratuit, sans carte) | 0 € | environ 1 minute, sauf avec le maintien en éveil | [`render.yaml`](render.yaml), [`garder-eveille.yml`](.github/workflows/garder-eveille.yml) |
 
-Dans les deux cas, l'hébergeur construit l'image à partir du [`Dockerfile`](Dockerfile) et redéploie à chaque push sur `main`. Streamlit Community Cloud et Hugging Face Spaces sont déconseillés (application servie dans une iframe avec une page de mise en veille pour le premier, offre payante pour le second) : les raisons sont détaillées dans le guide.
+Sur Cloud Run et Render, l'hébergeur construit l'image à partir du [`Dockerfile`](Dockerfile) et redéploie à chaque push sur `main`. Hugging Face Spaces est écarté : l'hébergement d'une image Docker y est devenu payant.
 
 **Problèmes courants**
 
@@ -565,7 +570,7 @@ Dans les deux cas, l'hébergeur construit l'image à partir du [`Dockerfile`](Do
 - **Période par défaut** : sans `--periode`, le libellé du mois courant dépend de la langue du système.
 - **Format d'entrée strict** : CSV séparé par des virgules, noms de colonnes exacts. Les fichiers Excel ou séparés par des points-virgules ne sont pas acceptés.
 - **Planificateur simple** : il fonctionne tant que le processus reste lancé ; il ne remplace pas un ordonnanceur système.
-- **Hébergement gratuit** : la démo en ligne se met en veille quand elle n'est pas utilisée.
+- **Hébergement gratuit** : après 12 heures sans visite, la démo en ligne se met en veille ; le visiteur suivant doit cliquer sur un bouton pour la réveiller, puis attendre environ une minute.
 - **Une génération à la fois** : les demandes simultanées attendent leur tour. Les envois sont limités à 30 fichiers, 20 Mo, 200 vendeurs, 50 régions et 50 catégories.
 - **Rapports en mémoire** : un rapport généré en ligne reste téléchargeable jusqu'à une heure (dans la limite des 32 derniers), puis il est effacé.
 

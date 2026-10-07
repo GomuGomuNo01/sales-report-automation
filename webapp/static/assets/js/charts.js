@@ -7,6 +7,7 @@
    ========================================================================== */
 
 import { playWhenVisible } from './motion.js';
+import { isDarkTheme } from './ui.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -198,7 +199,7 @@ function inkFor(bg) {
 
 export function renderHeatmap(container, data, { format, formatCompact, label }) {
   container.replaceChildren();
-  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark = isDarkTheme();
   const ramp = dark ? RAMP_DARK : RAMP_LIGHT;
   const all = data.valeurs.flat();
   const max = Math.max(...all, 0) || 1;

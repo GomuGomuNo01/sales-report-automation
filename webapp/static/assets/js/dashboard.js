@@ -365,7 +365,7 @@ export function initDashboard() {
     cancelAnimationFrame(resizeFrame);
     resizeFrame = requestAnimationFrame(() => { redrawLine(); tabs?.refresh(); });
   }, { passive: true });
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  document.addEventListener('themechange', () => {
     if (current?.report) renderOverview($('panel-synthese'), current.report);
   });
 }

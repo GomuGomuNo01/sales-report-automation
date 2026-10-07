@@ -8,10 +8,12 @@ Ce guide explique comment publier l'application web pour que n'importe qui puiss
 |---|---|---|---|---|---|
 | **Google Cloud Run** | environ 0 € par mois (quotas gratuits) | oui | quelques secondes de chargement (démarrage à froid) | environ 2 s | **Recommandé** |
 | **Render** (offre gratuite) | 0 € | non (une vérification à 1 $ peut être demandée) | environ 1 minute, ou rien avec le maintien en éveil | plus lente (0,1 CPU) | Alternative sans carte |
-| Streamlit Community Cloud | 0 € | non | page « app endormie » à cliquer après 12 h | correcte | Déconseillé |
+| **Streamlit Community Cloud** | 0 € | non | page « app endormie » à cliquer après 12 h, puis environ 1 minute | rapide (environ 2 s) | **Utilisé pour la démo** |
 | Hugging Face Spaces (Docker) | 9 $ par mois (PRO) depuis juillet 2026 | oui | jusqu'à quelques minutes après 48 h | correcte | Déconseillé |
 
 **Recommandation :** Google Cloud Run si une carte bancaire n'est pas un obstacle. C'est l'expérience la plus fluide pour un recruteur : pas de page de mise en veille, quelques secondes au premier chargement, génération rapide, et un coût nul pour quelques dizaines de visites par mois. Sinon, Render gratuit avec le maintien en éveil.
+
+**Démo actuelle :** la démo publique tourne sur Streamlit Community Cloud ([sales-report-automation-cedric.streamlit.app](https://sales-report-automation-cedric.streamlit.app)). C'est gratuit, sans carte, et ça ne consomme pas les 750 heures gratuites de Render, déjà utilisées par d'autres projets. Seul défaut : la page de mise en veille après 12 heures sans visite.
 
 ## Ce dont l'application a besoin (partout)
 
@@ -124,11 +126,17 @@ Le workflow [`.github/workflows/garder-eveille.yml`](../.github/workflows/garder
 
 ---
 
-## Pourquoi pas Streamlit Community Cloud ou Hugging Face ?
+## Streamlit Community Cloud (démo actuelle)
 
-**Streamlit Community Cloud** est gratuit, mais :
-- l'application y tourne dans une iframe, sous le chemin `/~/+/`, derrière une page propre à Streamlit. Le frontend utilise des adresses relatives et fonctionne sous ce type de préfixe (vérifié en local), mais l'hébergement d'une application `st.App` à routes personnalisées n'est documenté nulle part chez Streamlit ;
+1. [share.streamlit.io](https://share.streamlit.io) > **Create app** > **Deploy a public app from GitHub**.
+2. Dépôt `GomuGomuNo01/sales-report-automation`, branche `main`, fichier `app.py`, puis un sous-domaine libre (les sous-domaines sont attribués au premier qui les prend : `sales-report-automation` appartient à une autre application).
+3. **Deploy** : l'installation des dépendances prend 2 à 5 minutes la première fois. Chaque push sur `main` redéploie ensuite l'application en quelques secondes.
+
+À savoir :
+- l'application y tourne dans une iframe, sous le chemin `/~/+/`, derrière une page propre à Streamlit. Le frontend utilise donc des adresses relatives, et il envoie à la page hôte le message `GUEST_READY` (dans [`main.js`](../webapp/static/assets/js/main.js)) : sans lui, Streamlit garde l'iframe masquée et la page reste blanche. L'hébergement d'une application `st.App` à routes personnalisées n'est pas documenté par Streamlit : ce message pourrait changer avec une future version ;
 - après 12 heures sans visite, le visiteur tombe sur une page « This app has gone to sleep » et doit cliquer sur un bouton pour la réveiller.
+
+## Pourquoi pas Hugging Face ?
 
 **Hugging Face Spaces** convient techniquement (Docker, 2 vCPU, 16 Go), mais la création d'un Space Docker exige l'abonnement PRO (9 $ par mois) depuis juillet 2026.
 
@@ -144,10 +152,10 @@ Le workflow [`.github/workflows/garder-eveille.yml`](../.github/workflows/garder
    curl -N -X POST -F source=demo -F anomalies=true https://VOTRE-ADRESSE/api/rapports
    ```
 
-4. Remplacer l'ancienne adresse de démonstration dans le README :
+4. En cas de changement d'hébergeur, remplacer l'adresse de la démo dans le README :
 
    ```bash
-   sed -i 's#https://sales-report-automation.streamlit.app#https://VOTRE-ADRESSE#g' README.md
+   sed -i 's#https://sales-report-automation-cedric.streamlit.app#https://VOTRE-ADRESSE#g' README.md
    ```
 
 ## Tester l'image Docker en local

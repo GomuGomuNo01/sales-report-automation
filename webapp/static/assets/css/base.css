@@ -102,9 +102,7 @@ a:hover { color: var(--color-ink); }
   background-clip: text;
   color: transparent;
 }
-@media (prefers-color-scheme: dark) {
-  .text-gradient { background-image: linear-gradient(100deg, var(--color-ink) 10%, #8bbcf3 55%, #b3a8f5 95%); }
-}
+:root[data-theme="dark"] .text-gradient { background-image: linear-gradient(100deg, var(--color-ink) 10%, #8bbcf3 55%, #b3a8f5 95%); }
 @media (forced-colors: active) {
   .text-gradient { background: none; color: CanvasText; }
 }
