@@ -463,7 +463,7 @@ def _page_top_produits(pdf: RapportPDF, chemins_charts: dict, df_produits):
 # ============================================================
 
 def generate_report(resultats: dict, chemins_charts: dict,
-                    periode: str = None) -> str:
+                    periode: str = None, output_dir: str = OUTPUT_DIR) -> str:
     """
     Genere le rapport PDF complet.
 
@@ -471,6 +471,7 @@ def generate_report(resultats: dict, chemins_charts: dict,
         resultats      : dict retourne par transformer.transform()
         chemins_charts : dict retourne par visualizer.generate_all_charts()
         periode        : ex "Janvier - Decembre 2024"
+        output_dir     : dossier de sortie du PDF (defaut : output/rapports)
 
     Returns:
         str : chemin vers le fichier PDF genere
@@ -490,7 +491,8 @@ def generate_report(resultats: dict, chemins_charts: dict,
     _page_top_produits(pdf, chemins_charts, resultats["top_produits"])
 
     nom_fichier = f"rapport_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-    chemin_pdf  = os.path.join(OUTPUT_DIR, nom_fichier)
+    os.makedirs(output_dir, exist_ok=True)
+    chemin_pdf  = os.path.join(output_dir, nom_fichier)
     pdf.output(chemin_pdf)
 
     logger.info(f"Rapport PDF genere : {chemin_pdf}")

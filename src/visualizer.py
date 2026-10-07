@@ -50,9 +50,11 @@ def _formatter_euros(x, _):
     return f"{x:.0f}€"
 
 
-def _sauvegarder(fig: plt.Figure, nom_fichier: str) -> str:
-    """Sauvegarde la figure en PNG et retourne le chemin."""
-    chemin = os.path.join(CHARTS_DIR, nom_fichier)
+def _sauvegarder(fig: plt.Figure, nom_fichier: str,
+                 charts_dir: str = CHARTS_DIR) -> str:
+    """Sauvegarde la figure en PNG dans charts_dir et retourne le chemin."""
+    os.makedirs(charts_dir, exist_ok=True)
+    chemin = os.path.join(charts_dir, nom_fichier)
     fig.savefig(chemin, dpi=150, bbox_inches="tight",
                 facecolor="white")
     plt.close(fig)
@@ -64,7 +66,8 @@ def _sauvegarder(fig: plt.Figure, nom_fichier: str) -> str:
 # GRAPHIQUE 1 — Bar chart : Top vendeurs par CA
 # ============================================================
 
-def chart_top_vendeurs(df_vendeurs: pd.DataFrame) -> str:
+def chart_top_vendeurs(df_vendeurs: pd.DataFrame,
+                       charts_dir: str = CHARTS_DIR) -> str:
     """
     Bar chart horizontal — Top N vendeurs par CA.
     df_vendeurs : colonnes [vendeur, ca_total]
@@ -102,14 +105,15 @@ def chart_top_vendeurs(df_vendeurs: pd.DataFrame) -> str:
     ax.set_xlim(0, df_sorted["ca_total"].max() * 1.18)
     fig.tight_layout()
 
-    return _sauvegarder(fig, "01_top_vendeurs.png")
+    return _sauvegarder(fig, "01_top_vendeurs.png", charts_dir)
 
 
 # ============================================================
 # GRAPHIQUE 2 — Line chart : Évolution mensuelle du CA
 # ============================================================
 
-def chart_evolution_mensuelle(df_mois: pd.DataFrame) -> str:
+def chart_evolution_mensuelle(df_mois: pd.DataFrame,
+                              charts_dir: str = CHARTS_DIR) -> str:
     """
     Line chart — Évolution du CA mois par mois.
     df_mois : colonnes [mois, mois_nom, ca_total]
@@ -155,14 +159,15 @@ def chart_evolution_mensuelle(df_mois: pd.DataFrame) -> str:
     plt.xticks(rotation=30, ha="right")
     fig.tight_layout()
 
-    return _sauvegarder(fig, "02_evolution_mensuelle.png")
+    return _sauvegarder(fig, "02_evolution_mensuelle.png", charts_dir)
 
 
 # ============================================================
 # GRAPHIQUE 3 — Pie chart : Répartition par catégorie
 # ============================================================
 
-def chart_repartition_categorie(df_categorie: pd.DataFrame) -> str:
+def chart_repartition_categorie(df_categorie: pd.DataFrame,
+                                charts_dir: str = CHARTS_DIR) -> str:
     """
     Pie chart — Répartition du CA par catégorie produit.
     df_categorie : colonnes [categorie, ca_total]
@@ -221,14 +226,15 @@ def chart_repartition_categorie(df_categorie: pd.DataFrame) -> str:
                  fontsize=15, fontweight="bold", y=1.01)
     fig.tight_layout()
 
-    return _sauvegarder(fig, "03_repartition_categorie.png")
+    return _sauvegarder(fig, "03_repartition_categorie.png", charts_dir)
 
 
 # ============================================================
 # GRAPHIQUE 4 — Heatmap : Performance vendeur × région
 # ============================================================
 
-def chart_heatmap_vendeur_region(df_heatmap: pd.DataFrame) -> str:
+def chart_heatmap_vendeur_region(df_heatmap: pd.DataFrame,
+                                 charts_dir: str = CHARTS_DIR) -> str:
     """
     Heatmap — CA par vendeur et par région.
     df_heatmap : pivot table vendeur × région
@@ -261,14 +267,15 @@ def chart_heatmap_vendeur_region(df_heatmap: pd.DataFrame) -> str:
 
     fig.tight_layout()
 
-    return _sauvegarder(fig, "04_heatmap_vendeur_region.png")
+    return _sauvegarder(fig, "04_heatmap_vendeur_region.png", charts_dir)
 
 
 # ============================================================
 # GRAPHIQUE 5 — Bar chart : Top produits par CA
 # ============================================================
 
-def chart_top_produits(df_produits: pd.DataFrame) -> str:
+def chart_top_produits(df_produits: pd.DataFrame,
+                       charts_dir: str = CHARTS_DIR) -> str:
     """
     Bar chart horizontal — Top N produits par CA.
     df_produits : colonnes [produit, ca_total]
@@ -305,17 +312,21 @@ def chart_top_produits(df_produits: pd.DataFrame) -> str:
     ax.set_xlim(0, df_sorted["ca_total"].max() * 1.18)
     fig.tight_layout()
 
-    return _sauvegarder(fig, "05_top_produits.png")
+    return _sauvegarder(fig, "05_top_produits.png", charts_dir)
 
 
 # ============================================================
 # POINT D'ENTRÉE PRINCIPAL
 # ============================================================
 
-def generate_all_charts(resultats: dict) -> dict:
+def generate_all_charts(resultats: dict, charts_dir: str = CHARTS_DIR) -> dict:
     """
-    Génère les 4 graphiques à partir du dict de résultats
+    Génère les 5 graphiques à partir du dict de résultats
     retourné par transformer.transform().
+
+    Args:
+        resultats  : dict retourné par transformer.transform()
+        charts_dir : dossier de sortie des PNG (défaut : output/charts)
 
     Returns:
         dict avec les chemins vers chaque fichier PNG
@@ -323,12 +334,12 @@ def generate_all_charts(resultats: dict) -> dict:
     logger.info("=== ÉTAPE 4 : VISUALISATION ===")
 
     chemins = {
-        "top_vendeurs":          chart_top_vendeurs(resultats["par_vendeur"]),
-        "evolution_mensuelle":   chart_evolution_mensuelle(resultats["par_mois"]),
-        "repartition_categorie": chart_repartition_categorie(resultats["par_categorie"]),
-        "heatmap":               chart_heatmap_vendeur_region(resultats["heatmap"]),
-        "top_produits":          chart_top_produits(resultats["top_produits"]),
+        "top_vendeurs":          chart_top_vendeurs(resultats["par_vendeur"], charts_dir),
+        "evolution_mensuelle":   chart_evolution_mensuelle(resultats["par_mois"], charts_dir),
+        "repartition_categorie": chart_repartition_categorie(resultats["par_categorie"], charts_dir),
+        "heatmap":               chart_heatmap_vendeur_region(resultats["heatmap"], charts_dir),
+        "top_produits":          chart_top_produits(resultats["top_produits"], charts_dir),
     }
 
-    logger.info(f"5 graphiques générés dans : {CHARTS_DIR}")
+    logger.info(f"5 graphiques générés dans : {charts_dir}")
     return chemins

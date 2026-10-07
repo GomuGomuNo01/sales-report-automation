@@ -1,6 +1,7 @@
 # Sales Report Automation
 
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![Démo en ligne](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sales-report-automation.streamlit.app)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb)
 [![Tests](https://img.shields.io/badge/tests-50%2B-brightgreen)](tests/)
 [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-025E8C?logo=dependabot)](/.github/dependabot.yml)
@@ -56,11 +57,19 @@ Pas besoin de connaître la technique pour comprendre l'essentiel :
 
 ### Voir la démo sans rien installer
 
-Cliquez sur le bouton ci-dessous — la démonstration se lance directement dans votre navigateur (compte Google requis, gratuit) :
+**Le plus simple : ouvrez l'application en ligne.** Aucun compte, aucune installation, un seul clic.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb)
+[![Démo en ligne](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sales-report-automation.streamlit.app)
 
-Le pipeline s'exécute en direct sous vos yeux et génère un rapport PDF que vous pouvez télécharger. Voir la section [Démonstration interactive](#5-démonstration-interactive-google-colab) pour le guide pas-à-pas.
+1. Cliquez sur **🚀 Lancer la démo**.
+2. Quelques secondes plus tard, le tableau de bord s'affiche : indicateurs clés, graphiques, anomalies corrigées dans les données brutes.
+3. Cliquez sur **⬇️ Télécharger le rapport PDF** pour récupérer le rapport de 6 pages.
+
+Vous pouvez aussi déposer vos propres fichiers CSV (un modèle est téléchargeable dans l'application).
+
+> L'application peut mettre une trentaine de secondes à se réveiller si personne ne l'a ouverte récemment. C'est normal, il suffit d'attendre.
+
+D'autres façons de tester sans rien installer sont décrites dans la section [Démonstration sans installation](#5-démonstration-sans-installation) : Google Colab (compte Google) et GitHub Codespaces (compte GitHub).
 
 ---
 
@@ -74,6 +83,7 @@ Le pipeline s'exécute en direct sous vos yeux et génère un rapport PDF que vo
 |---|---|---|
 | 📄 | Rapport PDF généré — 6 pages, mise en page professionnelle | [Télécharger l'exemple →](examples/rapport_exemple_2024.pdf) |
 | 📋 | Fichier CSV source — données de ventes réelles simulées | [Voir l'exemple →](examples/ventes_exemple_janvier_2024.csv) |
+| 🖥️ | Application web : générez un rapport en un clic | [Ouvrir la démo →](https://sales-report-automation.streamlit.app) |
 | ▶️ | Démonstration interactive pas-à-pas dans le navigateur | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb) |
 
 ---
@@ -131,7 +141,7 @@ Le pipeline s'exécute en direct sous vos yeux et génère un rapport PDF que vo
 2. [Comment ça fonctionne ?](#2-comment-ça-fonctionne-)
 3. [Prérequis](#3-prérequis)
 4. [Installation](#4-installation)
-5. [Démonstration interactive (Google Colab)](#5-démonstration-interactive-google-colab)
+5. [Démonstration sans installation](#5-démonstration-sans-installation)
 6. [Premier rapport en 3 commandes](#6-premier-rapport-en-3-commandes)
 7. [Utilisation au quotidien](#7-utilisation-au-quotidien)
 8. [Format des fichiers CSV attendus](#8-format-des-fichiers-csv-attendus)
@@ -269,17 +279,46 @@ pip install -r requirements.txt
 
 ---
 
-## 5. Démonstration interactive (Google Colab)
+## 5. Démonstration sans installation
+
+Trois façons de tester le projet depuis un navigateur, sans rien installer :
+
+| Option | Compte requis | Idéal pour |
+|--------|---------------|------------|
+| [Application web](https://sales-report-automation.streamlit.app) | Aucun | Recruteurs, RH, curieux : un clic, un PDF |
+| [Google Colab](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb) | Google | Suivre le pipeline cellule par cellule |
+| [GitHub Codespaces](https://codespaces.new/GomuGomuNo01/sales-report-automation?quickstart=1) | GitHub | Développeurs : le code + l'application, dans VS Code en ligne |
+
+### 5.1 Application web (Streamlit)
+
+[![Démo en ligne](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sales-report-automation.streamlit.app)
+
+L'interface ([`app.py`](app.py)) appelle exactement les mêmes modules que `python main.py`. Elle propose :
+
+- **🚀 Lancer la démo** : 12 mois de ventes fictives, avec des anomalies typiques d'un export ERP (doublons, remises saisies en %, statuts mal orthographiés, valeurs manquantes…) pour voir le nettoyage à l'œuvre ;
+- **Mes propres fichiers CSV** : déposez un ou plusieurs exports (format décrit en [section 8](#8-format-des-fichiers-csv-attendus)) ;
+- un **tableau de bord** (KPIs + 5 graphiques), un **diagnostic qualité** des données brutes, les **données nettoyées** téléchargeables en CSV et le **journal** d'exécution ;
+- le **téléchargement du rapport PDF** de 6 pages.
+
+Pour la lancer sur votre machine : `pip install -r requirements.txt` puis `streamlit run app.py`, et ouvrez http://localhost:8501.
+
+### 5.2 GitHub Codespaces
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/GomuGomuNo01/sales-report-automation?quickstart=1)
+
+Codespaces ouvre le projet dans un VS Code en ligne avec Python et toutes les dépendances déjà installées ([`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json)). L'application web démarre toute seule et s'affiche dans un onglet d'aperçu ; le terminal permet aussi de lancer `python main.py` ou `pytest`.
+
+### 5.3 Google Colab
 
 > **Aucune installation requise.** La démo fonctionne entièrement dans votre navigateur, gratuitement, grâce à Google Colab.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb)
 
-### Qu'est-ce que Google Colab ?
+#### Qu'est-ce que Google Colab ?
 
 Google Colab est un environnement Python en ligne hébergé par Google. Il vous permet d'exécuter du code Python directement dans votre navigateur, **sans installer quoi que ce soit** sur votre ordinateur. C'est la façon la plus rapide de voir le pipeline en action.
 
-### Lancer la démonstration en 5 étapes
+#### Lancer la démonstration en 5 étapes
 
 **Étape 1 — Ouvrir le notebook**
 
@@ -334,7 +373,7 @@ En faisant défiler le notebook vers le bas après exécution, vous trouverez :
 - 📄 **Un lien de téléchargement** pour récupérer le rapport PDF généré
 - 📋 **Le journal d'exécution** du pipeline avec les métriques (lignes traitées, KPIs calculés, durée)
 
-### Personnaliser la démonstration
+#### Personnaliser la démonstration
 
 Pour changer la période affichée sur la page de garde du rapport, repérez la cellule contenant :
 
@@ -343,6 +382,25 @@ PERIODE = "Janvier - Décembre 2024"
 ```
 
 Modifiez le texte entre guillemets (par exemple `"Janvier - Juin 2025"`), puis relancez toutes les cellules avec **`Ctrl + F9`**.
+
+### 5.4 Mettre l'application en ligne (pour le propriétaire du dépôt)
+
+**Streamlit Community Cloud** (gratuit) :
+
+1. Se connecter sur [share.streamlit.io](https://share.streamlit.io) avec son compte GitHub.
+2. **Create app** → *Deploy a public app from GitHub* → dépôt `GomuGomuNo01/sales-report-automation`, branche `main`, fichier `app.py`.
+3. Dans **App URL**, choisir `sales-report-automation` (c'est l'adresse utilisée dans ce README).
+4. Dans **Advanced settings**, choisir **Python 3.12** (pandas 3 exige Python 3.11 ou plus).
+5. **Deploy**. Chaque push sur `main` redéploie ensuite l'application automatiquement.
+
+**Docker** (Hugging Face Spaces, Render, Railway, un serveur…) :
+
+```bash
+docker build -t sales-report .
+docker run -p 8501:8501 sales-report      # → http://localhost:8501
+```
+
+Le port d'écoute se change avec la variable d'environnement `PORT` (ex. `-e PORT=7860` pour Hugging Face Spaces).
 
 ---
 
@@ -594,15 +652,19 @@ RAPPORT_AUTEUR = "Direction Régionale Sud"
 sales-report-automation/
 │
 ├── main.py               ← Point d'entrée. C'est le fichier à lancer.
+├── app.py                ← Interface web de démonstration (Streamlit)
 ├── config.py             ← Toutes les constantes (chemins, couleurs, règles métier)
 ├── generate_data.py      ← Génère des données fictives pour tester le pipeline
 ├── demo_colab.ipynb      ← Notebook Google Colab interactif
 ├── conftest.py           ← Configuration pytest (ne pas modifier)
 ├── pyproject.toml        ← Métadonnées du projet et config des outils
 ├── requirements.txt      ← Liste des dépendances Python
+├── Dockerfile            ← Image de l'interface web (déploiement)
 │
 ├── .github/
 │   └── dependabot.yml    ← Mise à jour automatique des dépendances (Dependabot)
+├── .devcontainer/        ← Environnement GitHub Codespaces prêt à l'emploi
+├── .streamlit/           ← Thème et réglages de l'interface web
 │
 ├── src/                  ← Cœur du pipeline (une responsabilité par fichier)
 │   ├── extractor.py      ← Lit et fusionne les CSV de data/raw/
@@ -614,7 +676,8 @@ sales-report-automation/
 │
 ├── tests/                ← Suite de tests automatisés
 │   ├── test_cleaner.py   ← 20+ tests du nettoyage
-│   └── test_transformer.py ← 30+ tests des calculs
+│   ├── test_transformer.py ← 30+ tests des calculs
+│   └── test_app.py       ← Tests de l'interface web
 │
 ├── examples/             ← Livrables d'exemple à consulter directement
 │   ├── rapport_exemple_2024.pdf           ← Rapport PDF complet (6 pages)
@@ -721,6 +784,7 @@ pytest tests/test_cleaner.py::TestCleanIntegration -v
 | `fpdf2` | 2.8 | Création du rapport PDF |
 | `openpyxl` | 3.1 | Support de l'export Excel (optionnel) |
 | `schedule` | 1.2 | Planification mensuelle automatique |
+| `streamlit` | 1.65 | Interface web de démonstration |
 | `faker` | 40 | Génération de données de test réalistes |
 | `pytest` | 9 | Exécution des tests automatisés |
 | `pytest-cov` | 5 | Rapport de couverture de code |

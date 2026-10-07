@@ -11,8 +11,6 @@ import random
 from config import RAW_DATA_DIR
 
 fake = Faker("fr_FR")
-np.random.seed(42)
-random.seed(42)
 
 # ============================================================
 # PARAMÈTRES DE GÉNÉRATION
@@ -101,10 +99,20 @@ def generer_mois(annee: int, mois: int, nb_lignes: int) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def main():
-    print("Génération des données de ventes...")
+def generer_annee(directory: str = RAW_DATA_DIR, annee: int = 2024,
+                  seed: int = 42, verbose: bool = False) -> list:
+    """
+    Génère 12 fichiers CSV mensuels (un par mois) dans `directory`.
+    La graine `seed` rend la génération reproductible.
 
-    # Générer 12 mois de données (2024)
+    Returns:
+        list : chemins des fichiers CSV créés
+    """
+    np.random.seed(seed)
+    random.seed(seed)
+    os.makedirs(directory, exist_ok=True)
+
+    chemins = []
     for mois in range(1, 13):
         # Volume variable selon le mois (pic en fin d'année)
         if mois in [11, 12]:
@@ -114,7 +122,7 @@ def main():
         else:
             nb_lignes = random.randint(85, 110)   # Mois normal
 
-        df = generer_mois(2024, mois, nb_lignes)
+        df = generer_mois(annee, mois, nb_lignes)
 
         # Nom du fichier
         nom_mois = {
@@ -123,9 +131,20 @@ def main():
             9: "septembre", 10: "octobre", 11: "novembre", 12: "decembre"
         }[mois]
 
-        chemin = os.path.join(RAW_DATA_DIR, f"ventes_{nom_mois}_2024.csv")
+        chemin = os.path.join(directory, f"ventes_{nom_mois}_{annee}.csv")
         df.to_csv(chemin, index=False, encoding="utf-8-sig")
-        print(f"  ✓ {chemin} ({len(df)} lignes)")
+        chemins.append(chemin)
+        if verbose:
+            print(f"  ✓ {chemin} ({len(df)} lignes)")
+
+    return chemins
+
+
+def main():
+    print("Génération des données de ventes...")
+
+    # Générer 12 mois de données (2024)
+    generer_annee(RAW_DATA_DIR, 2024, verbose=True)
 
     print(f"\nDonnées générées avec succès dans : {RAW_DATA_DIR}")
     print(f"Total : 12 fichiers CSV / ~1200 lignes de ventes")
