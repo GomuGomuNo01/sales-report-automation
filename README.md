@@ -30,7 +30,7 @@ chaque changement de scène, sans aucun droit à céder.*
 
 ![L'application de démonstration en action](docs/images/demo-app.gif)
 
-*L'application en action : un clic sur « Générer un rapport de démo » exécute le vrai pipeline sur 12 fichiers de ventes volontairement mal saisis. Chaque étape s'affiche en direct, puis le tableau de bord présente les indicateurs, les graphiques interactifs et les anomalies corrigées, avec le rapport PDF à télécharger.*
+*L'application en action : un clic sur « Générer un rapport de démo » exécute le vrai pipeline sur 12 fichiers de ventes volontairement mal saisis. Chaque étape s'affiche en direct, puis le tableau de bord présente les indicateurs, les graphiques interactifs et les anomalies corrigées, avec le rapport PDF à télécharger. La vidéo de présentation se retrouve aussi dans l'onglet « Présentation » de l'application.*
 
 ---
 
@@ -72,7 +72,9 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 | **Calculer les indicateurs** | CA brut, net et comptabilisé, panier moyen, taux d'annulation, remises, puis classements par vendeur, mois, catégorie, région et produit |
 | **Produire le livrable** | 5 graphiques et un rapport PDF A4 de 6 pages, mis en page et horodaté |
 | **Automatiser** | Une seule commande, et une planification qui génère le rapport seule le 1er de chaque mois |
-| **Rendre le projet testable par tous** | Une application web soignée (design system, animations, accessibilité, mobile) qui lance le vrai pipeline sur le serveur depuis le navigateur, sans installation |
+| **Rendre le projet testable par tous** | Une application web soignée (design system, thème clair ou sombre, animations, accessibilité, mobile) qui lance le vrai pipeline sur le serveur depuis le navigateur, sans installation, avec des fichiers d'exemple à télécharger |
+| **Mettre en ligne** | Démo publique hébergée gratuitement sur Streamlit Community Cloud, redéployée à chaque push, gardée éveillée par une visite automatique toutes les 6 heures |
+| **Présenter le projet** | Une vidéo de 40 s en motion design, sur une musique originale composée par code, intégrée à l'application et publiée sur GitHub Pages |
 | **Vérifier chaque résultat** | 207 tests automatisés sur le nettoyage, les calculs, le service et l'API web |
 
 ### Ce que ce projet démontre
@@ -83,7 +85,8 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 - **Organisation du code** : 5 modules indépendants avec une seule responsabilité chacun, une configuration centralisée, trois interfaces (ligne de commande, planificateur, application web) branchées sur le même cœur.
 - **Pensée utilisateur** : un livrable compréhensible par une direction non technique, et une démo utilisable par un recruteur en un clic, au clavier comme sur mobile.
 - **Soin du produit** : une interface conçue comme un produit fini, avec un design system, des animations au service de la compréhension et une accessibilité vérifiée.
-- **Autonomie** : projet mené seul de bout en bout, de l'identification du besoin au déploiement.
+- **Communication** : une vidéo de 40 secondes qui explique le problème, la solution et ses bénéfices à quelqu'un qui n'ouvrira jamais le code.
+- **Autonomie** : projet mené seul de bout en bout, de l'identification du besoin au déploiement et à la présentation.
 
 ### Pour découvrir le travail en 2 minutes
 
@@ -111,6 +114,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 | Exemple de rapport PDF généré (6 pages) | [rapport_exemple_2024.pdf](examples/rapport_exemple_2024.pdf) |
 | Exemple de fichier CSV source | [ventes_exemple_janvier_2024.csv](examples/ventes_exemple_janvier_2024.csv) |
 | Les 12 exports mensuels de 2024 (CSV), aussi téléchargeables depuis la démo | [examples/ventes_2024/](examples/ventes_2024/) |
+| Musique originale de la vidéo (MP3, libre de droits) | [musique.mp3](assets/video/musique.mp3) |
 | Démonstration pas à pas dans un notebook | [Google Colab](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb) |
 
 ## 3. Contexte et objectifs
@@ -147,6 +151,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 | Saisonnalité | plus de commandes en novembre et décembre (Black Friday, fêtes), moins de juin à août |
 | Devise | euros (EUR), prix hors taxes |
 | Anomalies | ajoutées à la demande dans l'application web pour simuler un export ERP réel |
+| Mise à disposition | les 12 fichiers sont dans [`examples/ventes_2024/`](examples/ventes_2024/) et se téléchargent depuis la démo (un mois ou les 12 en un `.zip`) |
 
 ### Structure attendue des fichiers CSV
 
@@ -191,8 +196,10 @@ Les variantes d'accents, de majuscules et d'espaces sont harmonisées. Une valeu
 | **Streamlit (`st.App`) / Starlette** | Serveur web : sert l'interface et l'API de génération (progression en direct) |
 | **pytest** | 207 tests automatisés (nettoyage, calculs, service et API web) |
 | **Streamlit Community Cloud** | Hébergement gratuit de la démo en ligne, redéployée à chaque push sur `main` |
+| **GitHub Actions / GitHub Pages** | Visite automatique de la démo toutes les 6 heures (Playwright), publication de la page de présentation vidéo |
+| **Playwright, ffmpeg, NumPy** | Vidéo de présentation : animation HTML/CSS capturée image par image, musique synthétisée par code, encodage H.264 |
 | **Docker** | Image prête pour l'hébergement (Google Cloud Run, Render) et lancement sans installer Python |
-| **Git / GitHub, Dependabot** | Versionnage, branches de travail, mise à jour automatique des dépendances |
+| **Git / GitHub, Dependabot** | Versionnage, branches `main` et `dev`, mise à jour automatique des dépendances |
 
 ## 7. Méthodologie
 
@@ -293,6 +300,8 @@ L'interface est un frontend sur mesure, sans framework, servi avec son API par `
 | Mobile | Thème sombre |
 |---|---|
 | ![Version mobile](docs/images/app-mobile.png) | ![Thème sombre](docs/images/app-sombre.png) |
+| **Onglet « Présentation »** | **Fichiers d'exemple** |
+| ![Onglet Présentation](docs/images/app-presentation.png) | ![Fichiers d'exemple à télécharger](docs/images/app-exemples.png) |
 
 **Parcours**
 - **Démo en un clic** : 12 mois de données, avec des anomalies typiques d'un export ERP ajoutées volontairement.
@@ -300,7 +309,7 @@ L'interface est un frontend sur mesure, sans framework, servi avec son API par `
 - **Progression en direct** : le serveur envoie l'avancement réel de chaque étape (flux NDJSON), la vue rapport s'ouvre aussitôt avec un squelette de chargement.
 - **Tableau de bord** : 8 indicateurs (dont 3 avec leur mode de calcul en infobulle), 6 graphiques natifs sans bibliothèque : une courbe SVG explorable au survol, au toucher et au clavier, avec sa vue tableau, des barres en HTML/CSS qui affichent leurs valeurs, et une heatmap en tableau HTML. S'y ajoutent le diagnostic qualité, les données nettoyées en CSV et le journal d'exécution.
 - **Téléchargement du rapport PDF** de 6 pages.
-- **Onglet « Présentation »** : en tête du menu, la vidéo de 40 s avec des chapitres cliquables (lecture automatique sans le son, lien direct `#presentation`).
+- **Onglet « Présentation »** : en tête du menu, la vidéo de 40 s avec 6 chapitres cliquables (lecture automatique sans le son, son activé au clic sur un chapitre, lien direct `#presentation`).
 - **Thème clair ou sombre** : la page suit le réglage du système, un bouton dans l'en-tête permet de basculer, et le choix est mémorisé d'une visite à l'autre.
 
 **Design system** ([`tokens.css`](webapp/static/assets/css/tokens.css))
@@ -331,7 +340,7 @@ L'interface est un frontend sur mesure, sans framework, servi avec son API par `
 | [`tests/test_cleaner.py`](tests/test_cleaner.py) | Doublons, valeurs manquantes, types, remises, valeurs négatives, statuts, colonnes temporelles, nettoyage complet |
 | [`tests/test_transformer.py`](tests/test_transformer.py) | CA brut, net et comptabilisé, cohérence des KPIs, tri des classements, heatmap, transformation complète |
 | [`tests/test_service.py`](tests/test_service.py) | Données de démo, anomalies et diagnostic, libellé de période, noms de fichiers sûrs, contrôle des en-têtes et des limites, cache des rapports, pipeline complet |
-| [`tests/test_webapp.py`](tests/test_webapp.py) | Routes de l'API, flux de progression (non mis en tampon, y compris compressé), validations 422, téléchargements PDF et CSV, en-têtes de sécurité |
+| [`tests/test_webapp.py`](tests/test_webapp.py) | Routes de l'API, flux de progression (non mis en tampon, y compris compressé), validations 422, téléchargements PDF et CSV, fichiers d'exemple (liste blanche), vidéo de présentation (requêtes partielles), en-têtes de sécurité |
 
 L'interface a en plus été auditée dans un navigateur réel (accessibilité automatique avec axe-core, clavier seul, 11 tailles d'écran, mouvement réduit, réseau lent), chaque problème trouvé étant vérifié puis corrigé.
 
@@ -460,6 +469,11 @@ EXCLUDED_STATUTS           = ["Annulé", "Retourné"]                # statuts e
 - **Un PDF doit embarquer ses polices** pour afficher correctement les accents et le symbole € sur toutes les machines.
 - **Un fichier minuscule peut coûter très cher** : 12 Ko de CSV avec 300 vendeurs et 300 régions bloquaient le serveur 73 secondes. Des limites vérifiées avant le calcul ramènent ce cas à 0,1 seconde.
 
+**Sur la mise en ligne**
+- **Une démo se vérifie là où elle tourne** : sur Streamlit Community Cloud, l'interface est servie dans une iframe sous `/~/+/`. Il a fallu des adresses relatives et le message `GUEST_READY` pour qu'elle s'affiche, ce qu'aucun test local ne révélait.
+- **Un lien public se contrôle** : le sous-domaine visé au départ appartenait déjà à une autre application ; le README envoyait les visiteurs chez quelqu'un d'autre.
+- **Les offres gratuites ont des limites précises** : les 750 heures mensuelles de Render sont partagées entre tous les services d'un compte, et un simple ping ne réveille pas une application Streamlit. Choisir l'hébergeur demande de lire ces règles avant de déployer.
+
 **Sur l'interface**
 - **Une animation doit expliquer quelque chose** : la progression réelle du pipeline, l'apparition d'un graphique ou le passage d'une vue à l'autre. Les animations décoratives ont été écartées, et toutes disparaissent si l'utilisateur préfère réduire les animations.
 - **Un design system évite les valeurs au hasard** : une couleur, une durée ou un espacement se modifient à un seul endroit.
@@ -489,7 +503,7 @@ sales-report-automation/
 │   ├── service.py               Préparation des données, contrôles, exécution du pipeline, cache
 │   ├── fallback.py              Page « introuvable » (Streamlit) pour les adresses inconnues
 │   └── static/
-│       ├── index.html           Page unique : accueil et vue rapport
+│       ├── index.html           Page unique : accueil, vue rapport et vue présentation
 │       └── assets/
 │           ├── css/             tokens, base, composants, sections, tableau de bord
 │           ├── js/              point d'entrée, motion, composants, formats, démo, tableau de bord, graphiques
@@ -505,10 +519,10 @@ sales-report-automation/
 ├── tests/                       Tests automatisés (pytest)
 ├── examples/                    Exemple de rapport PDF, CSV modèle et 12 exports mensuels 2024 (ventes_2024/)
 ├── docs/                        Guide de déploiement, captures du rapport et de l'application
-├── assets/video/                Présentation vidéo (MP4), son aperçu et sa page web (GitHub Pages)
+├── assets/video/                Présentation vidéo (MP4), son aperçu, sa musique, sa page web (GitHub Pages) et ses sources
 ├── deploy/                      Règle de nettoyage des images (Cloud Run)
 ├── .streamlit/                  Réglages du serveur Streamlit
-├── .github/                     Dependabot et maintien en éveil de la démo (visite automatique toutes les 6 h)
+├── .github/                     Dependabot, visite de la démo toutes les 6 h, publication de la présentation (GitHub Pages)
 ├── data/raw/                    Fichiers CSV d'entrée (non versionnés)
 └── output/                      Rapports, graphiques et journaux générés (non versionnés)
 ```
@@ -518,7 +532,7 @@ sales-report-automation/
 **Option 1 : tester en ligne (recommandé, aucune installation)**
 
 1. Ouvrir la [démo en ligne](https://sales-report-automation-cedric.streamlit.app). Si personne ne l'a ouverte depuis 12 heures, Streamlit affiche une page de mise en veille : cliquer sur le bouton de réveil, puis patienter environ une minute.
-2. Cliquer sur **Générer un rapport de démo**, ou déposer ses propres fichiers CSV dans la section **Démo**.
+2. Cliquer sur **Générer un rapport de démo**, ou déposer ses propres fichiers CSV dans la section **Démo** (des fichiers d'exemple y sont téléchargeables).
 3. Télécharger le rapport PDF.
 
 **Option 2 : installer le projet sur son poste**
@@ -567,6 +581,10 @@ Le guide complet, avec les autres hébergeurs, les commandes et les réglages, e
 
 Sur Cloud Run et Render, l'hébergeur construit l'image à partir du [`Dockerfile`](Dockerfile) et redéploie à chaque push sur `main`. Hugging Face Spaces est écarté : l'hébergement d'une image Docker y est devenu payant.
 
+À savoir sur Streamlit Community Cloud : après un push qui ajoute une route au serveur ([`webapp/api.py`](webapp/api.py)), il faut redémarrer l'application (**Manage app > Reboot app**), car les routes ne sont créées qu'au démarrage.
+
+**Régénérer la vidéo de présentation** : `python assets/video/source/rendu.py` (voir [`assets/video/`](assets/video/)). La page qui la publie est déployée sur GitHub Pages par [`deploy-pages.yml`](.github/workflows/deploy-pages.yml) à chaque modification de la vidéo.
+
 **Problèmes courants**
 
 | Problème | Cause | Solution |
@@ -588,6 +606,7 @@ Sur Cloud Run et Render, l'hébergeur construit l'image à partir du [`Dockerfil
 - **Hébergement gratuit** : après 12 heures sans visite, la démo en ligne se met en veille ; le visiteur suivant doit cliquer sur un bouton pour la réveiller, puis attendre environ une minute. Une tâche GitHub Actions visite la démo toutes les 6 heures pour l'éviter.
 - **Une génération à la fois** : les demandes simultanées attendent leur tour. Les envois sont limités à 30 fichiers, 20 Mo, 200 vendeurs, 50 régions et 50 catégories.
 - **Rapports en mémoire** : un rapport généré en ligne reste téléchargeable jusqu'à une heure (dans la limite des 32 derniers), puis il est effacé.
+- **Vidéo figée** : la présentation est un rendu daté ; si l'application change (nombre de tests, écrans), il faut la régénérer avec `rendu.py`.
 
 **Pistes d'amélioration**
 - Accepter les fichiers **Excel** et détecter automatiquement le **séparateur** et l'**encodage**.
@@ -600,7 +619,8 @@ Sur Cloud Run et Render, l'hébergeur construit l'image à partir du [`Dockerfil
 ## 16. Crédits
 
 - Polices : [DejaVu Fonts](https://dejavu-fonts.github.io/) pour le PDF (licence libre), [Inter](https://rsms.me/inter/) pour l'interface (SIL Open Font License).
-- Bibliothèques : pandas, matplotlib, seaborn, fpdf2, Streamlit, Starlette, pytest.
+- Bibliothèques : pandas, matplotlib, seaborn, fpdf2, Streamlit, Starlette, pytest ; Playwright, NumPy et ffmpeg pour la vidéo.
+- Musique de la vidéo : composée et synthétisée pour le projet par [`musique.py`](assets/video/source/musique.py), sans aucun échantillon externe, sous la même licence que le projet.
 - Licence du projet : [MIT](LICENSE).
 
 **Auteur :** Dibie Elisee Jules Cedric KOUADIO ([@GomuGomuNo01](https://github.com/GomuGomuNo01))
