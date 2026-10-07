@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Sales Report Automation · Vidéo de présentation</title>
+<!--
+  Vidéo de présentation (40 s, 1920 × 1080) en animations CSS.
+  Ouverte directement dans un navigateur, elle tourne en boucle (cliquer pour
+  lancer la musique). rendu.py la capture image par image : toutes les
+  animations sont mises en pause puis positionnées à l'instant voulu
+  (window.allerA), ce qui rend le résultat exact et reproductible.
+  Les instants clés sont les mêmes que dans musique.py.
+-->
+<style>
+  @font-face {
+    font-family: "Inter";
+    src: url("../../../webapp/static/assets/fonts/InterVariable-latin.woff2") format("woff2");
+    font-weight: 100 900;
+  }
+
+  :root {
+    --bg: #090d16;
+    --surface: #0f1521;
+    --surface-2: #151d2b;
+    --surface-3: #1c2636;
+    --ink: #f2f5f9;
+    --ink-2: #b4bfce;
+    --ink-3: #8794a7;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --brand: #3987e5;
+    --brand-ink: #8bbcf3;
+    --violet: #6d5bd0;
+    --violet-ink: #b3a8f5;
+    --success: #3fcf86;
+    --danger: #ff7b7b;
+    --warning: #f2b84b;
+    --degrade: linear-gradient(135deg, #2a78d6, #6d5bd0);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+    --ressort: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  .icone { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  /* ---------- Système d'animation ----------
+     .a : entre à l'instant --t0 (début de la scène) + --d (décalage), avec l'animation --anim. */
+  .a {
+    animation: var(--anim, monte) var(--duree, 0.8s) var(--courbe, var(--ease)) calc(var(--t0, 0s) + var(--d, 0s)) both;
+  }
+  @keyframes monte    { from { opacity: 0; transform: translateY(48px); } to { opacity: 1; transform: none; } }
+  @keyframes descend  { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: none; } }
+  @keyframes zoom     { from { opacity: 0; transform: scale(0.82); } to { opacity: 1; transform: none; } }
+  @keyframes gauche   { from { opacity: 0; transform: translateX(-90px); } to { opacity: 1; transform: none; } }
+  @keyframes droite   { from { opacity: 0; transform: translateX(90px); } to { opacity: 1; transform: none; } }
+  @keyframes fondu    { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes net      { from { opacity: 0; filter: blur(18px); transform: scale(1.06); } to { opacity: 1; filter: none; transform: none; } }
+  @keyframes pop      { 0% { opacity: 0; transform: scale(0.3); } 65% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes trace    { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes largeur  { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes hauteur  { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes eclaire  { from { opacity: 0.38; } to { opacity: 1; } }
+  @keyframes rature   { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes vibre    {
+    0%, 100% { transform: translateX(0) rotate(var(--r, 0deg)); }
+    20% { transform: translateX(-7px) rotate(var(--r, 0deg)); }
+    40% { transform: translateX(6px) rotate(var(--r, 0deg)); }
+    60% { transform: translateX(-4px) rotate(var(--r, 0deg)); }
+    80% { transform: translateX(3px) rotate(var(--r, 0deg)); }
+  }
+
+  /* Scènes : visibles à partir de --t0, effacées juste avant --t1 */
+  .scene { position: absolute; inset: 0; animation: fondu 0.01s linear var(--t0) both; }
+  .scene > .contenu {
+    position: absolute; inset: 0;
+    animation: sortie 0.45s var(--ease-in) calc(var(--t1) - 0.45s) forwards;
+  }
+  @keyframes sortie { to { opacity: 0; transform: scale(1.035); filter: blur(8px); } }
+
+  /* ---------- Décor permanent ---------- */
+  .fond { position: absolute; inset: 0; overflow: hidden; }
+  .lueur { position: absolute; border-radius: 50%; filter: blur(110px); }
+  .lueur--1 { width: 900px; height: 900px; left: 1150px; top: -380px; background: rgba(57, 135, 229, 0.30); animation: derive-1 40s linear both; }
+  .lueur--2 { width: 820px; height: 820px; left: -320px; top: 520px; background: rgba(109, 91, 208, 0.26); animation: derive-2 40s linear both; }
+  .lueur--3 { width: 600px; height: 600px; left: 700px; top: 700px; background: rgba(25, 158, 112, 0.10); animation: derive-3 40s linear both; }
+  @keyframes derive-1 { to { transform: translate(-420px, 260px) scale(1.15); } }
+  @keyframes derive-2 { to { transform: translate(520px, -300px) scale(0.9); } }
+  @keyframes derive-3 { to { transform: translate(-500px, -380px) scale(1.2); } }
+  .grille {
+    position: absolute; inset: -80px;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 80px 80px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, #000 30%, transparent 100%);
+    animation: grille 40s linear both;
+  }
+  @keyframes grille { to { transform: translate(80px, 80px); } }
+  .progression {
+    position: absolute; left: 0; bottom: 0; height: 5px; width: 100%;
+    background: var(--degrade); transform-origin: left;
+    animation: largeur 40s linear both;
+  }
+  .balayage {
+    position: absolute; top: -20%; left: -40%; width: 30%; height: 140%;
+    background: linear-gradient(90deg, transparent, rgba(139, 188, 243, 0.10), rgba(179, 168, 245, 0.16), transparent);
+    transform: rotate(14deg) translateX(-100%);
+    animation: balayage 0.9s var(--ease) var(--a) both;
+  }
+  @keyframes balayage { from { transform: rotate(14deg) translateX(-100%); opacity: 1; } to { transform: rotate(14deg) translateX(620%); opacity: 1; } }
+  .noir { position: absolute; inset: 0; background: var(--bg); animation: fondu 0.7s linear 39.3s both; }
+
+  /* ---------- Éléments communs ---------- */
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-size: 24px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand-ink);
+  }
+  .eyebrow::before { content: ""; width: 44px; height: 3px; border-radius: 2px; background: var(--degrade); }
+  .h2 { font-size: 72px; line-height: 1.04; font-weight: 750; letter-spacing: -0.035em; }
+  .doux { color: var(--ink-3); font-weight: 500; }
+  .degrade { background: linear-gradient(100deg, #8bbcf3, #b3a8f5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .carte {
+    background: linear-gradient(180deg, rgba(28, 38, 54, 0.92), rgba(15, 21, 33, 0.92));
+    border: 1px solid var(--border-strong); border-radius: 24px;
+    box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+  .pastille {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 22px; border-radius: 999px;
+    background: rgba(21, 29, 43, 0.9); border: 1px solid var(--border-strong);
+    font-size: 24px; font-weight: 600; color: var(--ink-2);
+  }
+  .logo { width: 150px; height: 150px; filter: drop-shadow(0 20px 50px rgba(57, 135, 229, 0.45)); }
+  .logo line { transform-box: fill-box; transform-origin: bottom; }
+
+  /* ---------- Scène 1 : intro ---------- */
+  .intro { display: grid; place-content: center; justify-items: center; text-align: center; gap: 34px; }
+  .intro h1 { font-size: 132px; line-height: 1; font-weight: 800; letter-spacing: -0.045em; }
+  .intro h1 span { display: inline-block; }
+  .intro p { font-size: 40px; color: var(--ink-2); max-width: 1300px; line-height: 1.35; }
+  .techno { display: flex; gap: 16px; margin-top: 10px; }
+  .techno .pastille { font-size: 22px; padding: 10px 20px; }
+
+  /* ---------- Scène 2 : problème ---------- */
+  .probleme { padding: 150px 130px; display: grid; grid-template-columns: 720px 1fr; gap: 70px; align-items: center; }
+  .probleme .h2 { margin: 26px 0 30px; }
+  .alerte { color: var(--warning); }
+  .probleme p { font-size: 32px; line-height: 1.45; color: var(--ink-2); }
+  .horloge { display: flex; align-items: center; gap: 30px; margin-top: 46px; }
+  .horloge svg { width: 130px; height: 130px; }
+  .horloge__aiguille { transform-origin: 65px 65px; animation: tour 3.8s cubic-bezier(0.45, 0, 0.2, 1) 4.7s both; }
+  .horloge__petite { transform-origin: 65px 65px; animation: petit-tour 3.8s cubic-bezier(0.45, 0, 0.2, 1) 4.7s both; }
+  @keyframes tour { from { transform: rotate(0deg); } to { transform: rotate(1800deg); } }
+  @keyframes petit-tour { from { transform: rotate(0deg); } to { transform: rotate(150deg); } }
+  .horloge__valeur { font-size: 96px; font-weight: 800; letter-spacing: -0.04em; color: var(--warning); font-variant-numeric: tabular-nums; }
+  .horloge__legende { font-size: 26px; color: var(--ink-3); margin-top: 4px; }
+  .fichiers { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .fichier {
+    display: flex; align-items: center; gap: 16px; padding: 20px 22px; border-radius: 18px;
+    background: rgba(21, 29, 43, 0.95); border: 1px solid var(--border-strong);
+    font-size: 20px; font-weight: 600; color: var(--ink-2); white-space: nowrap;
+    transform: rotate(var(--r, 0deg));
+  }
+  @keyframes zoom-r { from { opacity: 0; transform: scale(0.82) rotate(var(--r, 0deg)); } to { opacity: 1; transform: rotate(var(--r, 0deg)); } }
+  .fichier.a { animation: zoom-r 0.8s var(--ease) calc(var(--t0) + var(--d)) both; }
+  .fichier--erreur.a {
+    animation: zoom-r 0.8s var(--ease) calc(var(--t0) + var(--d)) both,
+               vibre 0.45s linear calc(var(--t0) + var(--e));
+  }
+  .fichier--erreur::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; border: 2px solid var(--danger);
+    box-shadow: 0 0 34px rgba(255, 123, 123, 0.35) inset;
+    animation: fondu 0.25s linear calc(var(--t0) + var(--e)) both;
+  }
+  .fichier { position: relative; }
+  .csv { flex: none; padding: 6px 10px; border-radius: 9px; background: rgba(63, 207, 134, 0.14); color: var(--success); font-size: 17px; font-weight: 800; letter-spacing: 0.04em; }
+  .erreur {
+    position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 12px;
+    padding: 14px 24px; border-radius: 999px; white-space: nowrap;
+    background: #2a1418; border: 1px solid rgba(255, 123, 123, 0.55); color: #ffb3b3;
+    font-size: 25px; font-weight: 650; box-shadow: 0 18px 50px -12px rgba(0, 0, 0, 0.8);
+  }
+  .erreur .icone { color: var(--danger); font-size: 28px; stroke-width: 2.4; }
+  .probleme__chute { position: absolute; left: 130px; right: 130px; bottom: 90px; font-size: 30px; color: var(--ink-3); font-style: italic; }
+
+  /* ---------- Scène 3 : fonctionnement ---------- */
+  .pipeline { padding: 120px 130px 0; }
+  .pipeline .h2 { margin-top: 24px; }
+  .etapes { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 34px; margin-top: 90px; }
+  .etapes__ligne {
+    position: absolute; left: 152px; right: 152px; top: -44px; height: 4px; border-radius: 2px;
+    background: var(--degrade); transform-origin: left; box-shadow: 0 0 24px rgba(57, 135, 229, 0.6);
+  }
+  .etapes__rail { position: absolute; left: 152px; right: 152px; top: -44px; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, 0.07); }
+  .etape { position: relative; padding: 34px 30px 32px; min-height: 420px; }
+  .etape__corps { animation: eclaire 0.5s var(--ease) calc(var(--t0) + var(--e)) both; display: grid; gap: 18px; }
+  .etape__halo {
+    position: absolute; inset: -1px; border-radius: 24px; border: 2px solid rgba(139, 188, 243, 0.85);
+    box-shadow: 0 0 60px -6px rgba(57, 135, 229, 0.55), inset 0 0 40px rgba(57, 135, 229, 0.12);
+  }
+  .etape__icone {
+    width: 76px; height: 76px; border-radius: 22px; display: grid; place-items: center;
+    background: var(--degrade); font-size: 40px; color: #fff; box-shadow: 0 14px 34px -10px rgba(57, 135, 229, 0.8);
+  }
+  .etape__num { position: absolute; top: 30px; right: 30px; font-size: 22px; font-weight: 700; color: var(--ink-3); }
+  .etape h3 { font-size: 36px; font-weight: 750; letter-spacing: -0.02em; margin-top: 8px; }
+  .etape p { font-size: 23px; line-height: 1.4; color: var(--ink-2); }
+  .etape__mesure { margin-top: 8px; font-size: 26px; color: var(--ink-3); }
+  .etape__mesure strong { display: block; font-size: 52px; line-height: 1.1; font-weight: 800; color: var(--ink); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .etape__noeud {
+    position: absolute; top: -57px; left: 50%; margin-left: -15px; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--surface-2); border: 3px solid rgba(255, 255, 255, 0.18);
+  }
+  .etape__ok {
+    position: absolute; top: -67px; left: 50%; margin-left: -25px; width: 50px; height: 50px; border-radius: 50%;
+    display: grid; place-items: center; background: var(--success); color: #062b18; font-size: 30px;
+    box-shadow: 0 10px 30px -6px rgba(63, 207, 134, 0.7);
+  }
+  .etape__ok .icone { stroke-width: 3; }
+  .chrono {
+    position: absolute; left: 0; right: 0; bottom: 96px; margin: 0 auto; width: max-content;
+    display: flex; align-items: center; gap: 30px; padding: 24px 48px; border-radius: 999px; white-space: nowrap;
+  }
+  .chrono .icone { font-size: 52px; color: var(--brand-ink); }
+  .chrono__texte { font-size: 34px; color: var(--ink-2); }
+  .chrono__valeur { font-size: 76px; font-weight: 850; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+  .chrono__barre { position: relative; color: var(--ink-3); }
+  .chrono__barre::after {
+    content: ""; position: absolute; left: -6px; right: -6px; top: 52%; height: 4px; border-radius: 2px;
+    background: var(--danger); transform-origin: left; animation: rature 0.4s var(--ease) 20.3s both;
+  }
+
+  /* ---------- Scène 4 : résultat ---------- */
+  .resultat { padding: 96px 130px 0; }
+  .resultat .h2 { font-size: 60px; margin-top: 20px; }
+  .tableau { position: absolute; left: 130px; top: 330px; width: 1000px; padding: 32px 36px; }
+  .tableau__tete { display: flex; align-items: center; justify-content: space-between; }
+  .tableau__titre { display: flex; align-items: center; gap: 16px; font-size: 28px; font-weight: 700; }
+  .tableau__titre i { width: 36px; height: 36px; border-radius: 10px; background: var(--degrade); }
+  .tableau__tete .pastille { font-size: 19px; padding: 8px 16px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 26px; }
+  .kpi { padding: 18px 20px; border-radius: 16px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); }
+  .kpi span { font-size: 18px; color: var(--ink-3); }
+  .kpi strong { display: block; margin-top: 6px; font-size: 38px; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .graphique { position: relative; margin-top: 26px; }
+  .graphique svg { display: block; width: 928px; height: 210px; overflow: visible; }
+  .graphique .courbe { fill: none; stroke: var(--brand); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; filter: drop-shadow(0 6px 14px rgba(57, 135, 229, 0.5)); }
+  .graphique .aire { fill: url(#g-aire); }
+  .graphique .repere { stroke: rgba(255, 255, 255, 0.07); stroke-width: 1; }
+  .graphique .mois { fill: var(--ink-3); font-size: 15px; font-family: inherit; text-anchor: middle; }
+  .pic { position: absolute; padding: 8px 14px; border-radius: 10px; background: var(--brand); color: #fff; font-size: 19px; font-weight: 700; white-space: nowrap; }
+  .categories { display: grid; gap: 12px; margin-top: 22px; }
+  .categorie { display: grid; grid-template-columns: 170px 1fr 120px; align-items: center; gap: 16px; font-size: 20px; color: var(--ink-2); }
+  .categorie b { font-weight: 700; color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
+  .categorie__barre { height: 14px; border-radius: 7px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
+  .categorie__barre i { display: block; height: 100%; border-radius: 7px; background: var(--degrade); transform-origin: left; }
+  .pages { position: absolute; left: 1240px; top: 360px; width: 560px; height: 560px; }
+  .page {
+    position: absolute; left: 140px; top: 40px; width: 300px; height: 424px; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.12);
+    animation: zoom 0.6s var(--ease) calc(var(--t0) + var(--d)) both, eventail 1.1s var(--ressort) 25.3s forwards;
+  }
+  .page img { width: 100%; height: 100%; display: block; }
+  @keyframes eventail { from { transform: none; } to { transform: translate(var(--x), var(--y)) rotate(var(--r)); } }
+  .pages__badge { position: absolute; left: 50%; bottom: -40px; transform: translateX(-50%); }
+  .pages__badge .a { background: var(--brand); color: #fff; border-color: transparent; font-size: 26px; padding: 14px 28px; box-shadow: 0 16px 40px -10px rgba(57, 135, 229, 0.8); white-space: nowrap; }
+  .atouts { position: absolute; left: 1210px; top: 1010px; display: flex; gap: 14px; }
+
+  /* ---------- Scène 5 : avantages ---------- */
+  .avantages { display: grid; align-content: center; justify-items: center; text-align: center; padding: 0 130px; }
+  .avantages .h2 { margin-top: 24px; }
+  .cartes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 90px; width: 100%; }
+  .avantage { padding: 44px 30px 46px; text-align: left; display: grid; gap: 18px; align-content: start; min-height: 400px; }
+  .avantage__icone { width: 72px; height: 72px; border-radius: 20px; display: grid; place-items: center; background: rgba(57, 135, 229, 0.14); color: var(--brand-ink); font-size: 38px; }
+  .avantage strong { font-size: 64px; line-height: 1.02; font-weight: 850; letter-spacing: -0.045em; white-space: nowrap; }
+  .avantage strong sup { font-size: 0.5em; vertical-align: 0.75em; line-height: 0; }
+  .avantage p { font-size: 27px; line-height: 1.4; color: var(--ink-2); }
+  .avantages__chute { margin-top: 64px; font-size: 32px; color: var(--ink-3); }
+
+  /* ---------- Scène 6 : conclusion ---------- */
+  .fin { display: grid; place-content: center; justify-items: center; text-align: center; gap: 30px; }
+  .fin .logo { width: 120px; height: 120px; }
+  .fin__marque { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; }
+  .fin h2 { font-size: 104px; line-height: 1; font-weight: 850; letter-spacing: -0.045em; margin-top: 10px; }
+  .url {
+    display: inline-flex; align-items: center; gap: 22px; margin-top: 18px;
+    padding: 26px 46px; border-radius: 999px; font-size: 44px; font-weight: 650; letter-spacing: -0.01em;
+    background: rgba(15, 21, 33, 0.9); border: 2px solid rgba(139, 188, 243, 0.6);
+    box-shadow: 0 0 70px -10px rgba(57, 135, 229, 0.65), inset 0 0 30px rgba(57, 135, 229, 0.12);
+  }
+  .url .icone { font-size: 48px; color: var(--brand-ink); }
+  .garanties { display: flex; gap: 40px; font-size: 28px; color: var(--ink-2); margin-top: 6px; }
+  .garanties span { display: inline-flex; align-items: center; gap: 12px; }
+  .garanties .icone { color: var(--success); stroke-width: 2.6; }
+  .auteur { margin-top: 34px; font-size: 24px; color: var(--ink-3); }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="g-brand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a78d6"/><stop offset="1" stop-color="#6d5bd0"/></linearGradient>
+    <linearGradient id="g-aire" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3987e5" stop-opacity="0.35"/><stop offset="1" stop-color="#3987e5" stop-opacity="0"/></linearGradient>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-report" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 17v-3M12 17v-6M16 17V8"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 17l.7 1.8 1.8.7-1.8.7L19 22l-.7-1.8-1.8-.7 1.8-.7z"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-5"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><path d="M8 16l3.5-4 3 2.5L20 8"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="M7.5 15h9"/></symbol>
+    <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+  </defs>
+</svg>
+
+<div class="fond" aria-hidden="true">
+  <div class="lueur lueur--1"></div>
+  <div class="lueur lueur--2"></div>
+  <div class="lueur lueur--3"></div>
+  <div class="grille"></div>
+</div>
+
+<!-- ================= 1. Intro (0 → 4 s) ================= -->
+<section class="scene" style="--t0: 0s; --t1: 4s">
+  <div class="contenu intro">
+    <svg class="logo a" viewBox="0 0 32 32" style="--anim: pop; --d: 0.25s; --duree: 0.9s; --courbe: linear">
+      <rect width="32" height="32" rx="9" fill="url(#g-brand)"/>
+      <g stroke="#fff" stroke-width="2.6" stroke-linecap="round">
+        <line class="a" x1="9" y1="22" x2="9" y2="18" style="--anim: hauteur; --d: 0.55s; --duree: 0.5s"/>
+        <line class="a" x1="14" y1="22" x2="14" y2="14" style="--anim: hauteur; --d: 0.65s; --duree: 0.5s"/>
+        <line class="a" x1="19" y1="22" x2="19" y2="16" style="--anim: hauteur; --d: 0.75s; --duree: 0.5s"/>
+        <line class="a" x1="24" y1="22" x2="24" y2="10" style="--anim: hauteur; --d: 0.85s; --duree: 0.5s"/>
+      </g>
+    </svg>
+    <h1><span class="a" style="--anim: net; --d: 0.8s; --duree: 0.9s">Sales Report</span> <span class="a doux" style="--anim: net; --d: 1s; --duree: 0.9s">Automation</span></h1>
+    <p class="a" style="--d: 1.5s">Des exports de ventes bruts au rapport de direction, <span class="degrade">automatiquement</span>.</p>
+    <div class="techno">
+      <span class="pastille a" style="--anim: pop; --d: 2.2s; --duree: 0.5s">Python</span>
+      <span class="pastille a" style="--anim: pop; --d: 2.3s; --duree: 0.5s">pandas</span>
+      <span class="pastille a" style="--anim: pop; --d: 2.4s; --duree: 0.5s">matplotlib</span>
+      <span class="pastille a" style="--anim: pop; --d: 2.5s; --duree: 0.5s">PDF</span>
+      <span class="pastille a" style="--anim: pop; --d: 2.6s; --duree: 0.5s">Application web</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 2. Problème (4 → 10 s) ================= -->
+<section class="scene" style="--t0: 4s; --t1: 10s">
+  <div class="contenu">
+    <div class="probleme">
+      <div>
+        <div class="eyebrow a" style="--anim: gauche; --d: 0.1s">Le problème</div>
+        <h2 class="h2 a" style="--d: 0.25s">Chaque mois, <span class="alerte">5&nbsp;heures</span> de travail manuel</h2>
+        <p class="a" style="--d: 0.5s">12 exports ERP à fusionner, des erreurs de saisie à corriger, des indicateurs et des graphiques à refaire à la main.</p>
+        <div class="horloge a" style="--d: 0.65s">
+          <svg viewBox="0 0 130 130">
+            <circle cx="65" cy="65" r="58" fill="rgba(242,184,75,0.08)" stroke="#f2b84b" stroke-width="5"/>
+            <g stroke="#f2b84b" stroke-linecap="round">
+              <line class="horloge__petite" x1="65" y1="65" x2="65" y2="35" stroke-width="7"/>
+              <line class="horloge__aiguille" x1="65" y1="65" x2="65" y2="18" stroke-width="5"/>
+            </g>
+            <circle cx="65" cy="65" r="6" fill="#f2b84b"/>
+          </svg>
+          <div>
+            <div class="horloge__valeur" data-compteur data-de="0" data-a="5" data-debut="4.7" data-duree="3.8" data-format="heures">0 h 00</div>
+            <div class="horloge__legende">passées chaque mois sur le rapport</div>
+          </div>
+        </div>
+      </div>
+      <div class="fichiers">
+        <div class="fichier a" style="--anim: zoom; --d: 0.45s; --r: -2deg"><span class="csv">CSV</span>janvier_2024.csv</div>
+        <div class="fichier a fichier--erreur" style="--anim: zoom; --d: 0.52s; --r: 1.5deg; --e: 2s"><span class="csv">CSV</span>fevrier_2024.csv</div>
+        <div class="fichier a" style="--anim: zoom; --d: 0.59s; --r: -1deg"><span class="csv">CSV</span>mars_2024.csv</div>
+        <div class="fichier a" style="--anim: zoom; --d: 0.66s; --r: 2deg"><span class="csv">CSV</span>avril_2024.csv</div>
+        <div class="fichier a" style="--anim: zoom; --d: 0.73s; --r: -1.5deg"><span class="csv">CSV</span>mai_2024.csv</div>
+        <div class="fichier a fichier--erreur" style="--anim: zoom; --d: 0.8s; --r: 1deg; --e: 2.5s"><span class="csv">CSV</span>juin_2024.csv</div>
+        <div class="fichier a fichier--erreur" style="--anim: zoom; --d: 0.87s; --r: -2deg; --e: 3s"><span class="csv">CSV</span>juillet_2024.csv</div>
+        <div class="fichier a" style="--anim: zoom; --d: 0.94s; --r: 1.5deg"><span class="csv">CSV</span>aout_2024.csv</div>
+        <div class="fichier a" style="--anim: zoom; --d: 1.01s; --r: -1deg"><span class="csv">CSV</span>septembre_2024.csv</div>
+        <div class="fichier a" style="--anim: zoom; --d: 1.08s; --r: 2deg"><span class="csv">CSV</span>octobre_2024.csv</div>
+        <div class="fichier a fichier--erreur" style="--anim: zoom; --d: 1.15s; --r: -1.5deg; --e: 3.5s"><span class="csv">CSV</span>novembre_2024.csv</div>
+        <div class="fichier a" style="--anim: zoom; --d: 1.22s; --r: 1deg"><span class="csv">CSV</span>decembre_2024.csv</div>
+
+        <div class="erreur a" style="--anim: pop; --d: 2s; --duree: 0.5s; left: 300px; top: -38px"><svg class="icone"><use href="#i-x"/></svg>Doublons</div>
+        <div class="erreur a" style="--anim: pop; --d: 2.5s; --duree: 0.5s; left: 230px; top: 110px"><svg class="icone"><use href="#i-x"/></svg>Remise saisie «&nbsp;10&nbsp;» au lieu de 0,10</div>
+        <div class="erreur a" style="--anim: pop; --d: 3s; --duree: 0.5s; left: -40px; top: 268px"><svg class="icone"><use href="#i-x"/></svg>Statut «&nbsp;livre&nbsp;» mal saisi</div>
+        <div class="erreur a" style="--anim: pop; --d: 3.5s; --duree: 0.5s; left: 480px; top: 362px"><svg class="icone"><use href="#i-x"/></svg>Valeurs manquantes</div>
+      </div>
+    </div>
+    <p class="probleme__chute a" style="--anim: fondu; --d: 4.6s; --duree: 0.6s">… et un risque d'erreur à chaque copier-coller.</p>
+  </div>
+</section>
+
+<!-- ================= 3. Fonctionnement (10 → 22 s) ================= -->
+<section class="scene" style="--t0: 10s; --t1: 22s">
+  <div class="contenu pipeline">
+    <div class="eyebrow a" style="--anim: gauche; --d: 0.1s">Le fonctionnement</div>
+    <h2 class="h2 a" style="--d: 0.25s">Un pipeline automatique en <span class="degrade">5 étapes</span></h2>
+
+    <div class="etapes">
+      <div class="etapes__rail a" style="--anim: fondu; --d: 0.5s"></div>
+      <div class="etapes__ligne a" style="--anim: largeur; --d: 1s; --duree: 6s; --courbe: linear"></div>
+
+      <div class="etape carte a" style="--d: 0.45s; --e: 1s">
+        <div class="etape__halo a" style="--anim: fondu; --d: 1s; --duree: 0.3s"></div>
+        <div class="etape__corps">
+          <div class="etape__icone"><svg class="icone"><use href="#i-layers"/></svg></div>
+          <h3>Extraction</h3>
+          <p>Tous les exports CSV fusionnés</p>
+          <div class="etape__mesure"><strong data-compteur data-de="0" data-a="1180" data-debut="11.05" data-duree="0.9" data-format="entier">0</strong>lignes · 12 fichiers</div>
+        </div>
+        <div class="etape__num">01</div>
+        <div class="etape__noeud"></div>
+        <div class="etape__ok a" style="--anim: pop; --d: 1s; --duree: 0.5s"><svg class="icone"><use href="#i-check"/></svg></div>
+      </div>
+
+      <div class="etape carte a" style="--d: 0.55s; --e: 2.5s">
+        <div class="etape__halo a" style="--anim: fondu; --d: 2.5s; --duree: 0.3s"></div>
+        <div class="etape__corps">
+          <div class="etape__icone"><svg class="icone"><use href="#i-shield"/></svg></div>
+          <h3>Nettoyage</h3>
+          <p>Doublons, remises et statuts corrigés</p>
+          <div class="etape__mesure"><strong data-compteur data-de="0" data-a="29" data-debut="12.55" data-duree="0.9" data-format="entier">0</strong>lignes écartées</div>
+        </div>
+        <div class="etape__num">02</div>
+        <div class="etape__noeud"></div>
+        <div class="etape__ok a" style="--anim: pop; --d: 2.5s; --duree: 0.5s"><svg class="icone"><use href="#i-check"/></svg></div>
+      </div>
+
+      <div class="etape carte a" style="--d: 0.65s; --e: 4s">
+        <div class="etape__halo a" style="--anim: fondu; --d: 4s; --duree: 0.3s"></div>
+        <div class="etape__corps">
+          <div class="etape__icone"><svg class="icone"><use href="#i-gauge"/></svg></div>
+          <h3>Calcul</h3>
+          <p>CA net, panier moyen, classements</p>
+          <div class="etape__mesure"><strong data-compteur data-de="0" data-a="8" data-debut="14.05" data-duree="0.7" data-format="entier">0</strong>indicateurs clés</div>
+        </div>
+        <div class="etape__num">03</div>
+        <div class="etape__noeud"></div>
+        <div class="etape__ok a" style="--anim: pop; --d: 4s; --duree: 0.5s"><svg class="icone"><use href="#i-check"/></svg></div>
+      </div>
+
+      <div class="etape carte a" style="--d: 0.75s; --e: 5.5s">
+        <div class="etape__halo a" style="--anim: fondu; --d: 5.5s; --duree: 0.3s"></div>
+        <div class="etape__corps">
+          <div class="etape__icone"><svg class="icone"><use href="#i-chart"/></svg></div>
+          <h3>Graphiques</h3>
+          <p>Évolution, vendeurs, catégories, heatmap</p>
+          <div class="etape__mesure"><strong data-compteur data-de="0" data-a="5" data-debut="15.55" data-duree="0.6" data-format="entier">0</strong>graphiques</div>
+        </div>
+        <div class="etape__num">04</div>
+        <div class="etape__noeud"></div>
+        <div class="etape__ok a" style="--anim: pop; --d: 5.5s; --duree: 0.5s"><svg class="icone"><use href="#i-check"/></svg></div>
+      </div>
+
+      <div class="etape carte a" style="--d: 0.85s; --e: 7s">
+        <div class="etape__halo a" style="--anim: fondu; --d: 7s; --duree: 0.3s"></div>
+        <div class="etape__corps">
+          <div class="etape__icone"><svg class="icone"><use href="#i-report"/></svg></div>
+          <h3>Rapport PDF</h3>
+          <p>Mis en page, horodaté, prêt à présenter</p>
+          <div class="etape__mesure"><strong data-compteur data-de="0" data-a="6" data-debut="17.05" data-duree="0.6" data-format="entier">0</strong>pages</div>
+        </div>
+        <div class="etape__num">05</div>
+        <div class="etape__noeud"></div>
+        <div class="etape__ok a" style="--anim: pop; --d: 7s; --duree: 0.5s"><svg class="icone"><use href="#i-check"/></svg></div>
+      </div>
+    </div>
+
+    <div class="chrono carte a" style="--anim: monte; --d: 8.4s">
+      <svg class="icone"><use href="#i-clock"/></svg>
+      <span class="chrono__texte">Tout le pipeline&nbsp;:</span>
+      <span class="chrono__valeur degrade">≈&nbsp;<span data-compteur data-de="0" data-a="3" data-debut="18.6" data-duree="1.4" data-format="secondes">0,0 s</span></span>
+      <span class="chrono__texte">au lieu de <span class="chrono__barre">5&nbsp;heures</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 4. Résultat (22 → 30 s) ================= -->
+<section class="scene" style="--t0: 22s; --t1: 30s">
+  <div class="contenu resultat">
+    <div class="eyebrow a" style="--anim: gauche; --d: 0.15s">Le résultat</div>
+    <h2 class="h2 a" style="--d: 0.3s">Un tableau de bord et un rapport PDF, <span class="degrade">prêts à présenter</span></h2>
+
+    <div class="tableau carte a" style="--d: 0.5s; --duree: 0.9s">
+      <div class="tableau__tete">
+        <div class="tableau__titre"><i></i>Rapport « Janvier – Décembre 2024 »</div>
+        <span class="pastille">12 fichiers · 1 180 lignes</span>
+      </div>
+      <div class="kpis">
+        <div class="kpi a" style="--d: 0.8s; --duree: 0.6s"><span>CA comptabilisé</span><strong data-compteur data-de="0" data-a="2.02" data-debut="22.8" data-duree="1.4" data-format="millions">0,00 M€</strong></div>
+        <div class="kpi a" style="--d: 0.9s; --duree: 0.6s"><span>Commandes</span><strong data-compteur data-de="0" data-a="731" data-debut="22.9" data-duree="1.4" data-format="entier">0</strong></div>
+        <div class="kpi a" style="--d: 1s; --duree: 0.6s"><span>Panier moyen</span><strong data-compteur data-de="0" data-a="2769" data-debut="23" data-duree="1.4" data-format="euros">0 €</strong></div>
+        <div class="kpi a" style="--d: 1.1s; --duree: 0.6s"><span>Lignes analysées</span><strong data-compteur data-de="0" data-a="1151" data-debut="23.1" data-duree="1.4" data-format="entier">0</strong></div>
+      </div>
+      <div class="graphique">
+        <svg viewBox="0 0 928 210">
+          <g id="reperes"></g>
+          <path class="aire a" id="aire" style="--anim: fondu; --d: 2.4s; --duree: 0.8s"/>
+          <path class="courbe a" id="courbe" pathLength="1" style="--anim: trace; --d: 1.1s; --duree: 1.8s; --courbe: cubic-bezier(0.45, 0, 0.25, 1)"/>
+          <g id="mois"></g>
+        </svg>
+        <div class="pic a" id="pic" style="--anim: pop; --d: 2.9s; --duree: 0.5s">Pic : 382 k€</div>
+      </div>
+      <div class="categories">
+        <div class="categorie"><span>Logiciels</span><div class="categorie__barre"><i class="a" style="--anim: largeur; --d: 2.4s; --duree: 0.9s; width: 100%"></i></div><b>51,0 %</b></div>
+        <div class="categorie"><span>Informatique</span><div class="categorie__barre"><i class="a" style="--anim: largeur; --d: 2.5s; --duree: 0.9s; width: 53%"></i></div><b>27,0 %</b></div>
+        <div class="categorie"><span>Périphériques</span><div class="categorie__barre"><i class="a" style="--anim: largeur; --d: 2.6s; --duree: 0.9s; width: 33%"></i></div><b>17,0 %</b></div>
+        <div class="categorie"><span>Réseau</span><div class="categorie__barre"><i class="a" style="--anim: largeur; --d: 2.7s; --duree: 0.9s; width: 10%"></i></div><b>4,9 %</b></div>
+      </div>
+    </div>
+
+    <div class="pages">
+      <div class="page" style="--d: 0.9s; --x: -165px; --y: 28px; --r: -12deg"><img src="../../../webapp/static/assets/img/rapport-p06-800.webp" alt=""></div>
+      <div class="page" style="--d: 0.97s; --x: -99px; --y: 8px; --r: -7deg"><img src="../../../webapp/static/assets/img/rapport-p05-800.webp" alt=""></div>
+      <div class="page" style="--d: 1.04s; --x: -33px; --y: -4px; --r: -2.5deg"><img src="../../../webapp/static/assets/img/rapport-p04-800.webp" alt=""></div>
+      <div class="page" style="--d: 1.11s; --x: 33px; --y: -4px; --r: 2.5deg"><img src="../../../webapp/static/assets/img/rapport-p03-800.webp" alt=""></div>
+      <div class="page" style="--d: 1.18s; --x: 99px; --y: 8px; --r: 7deg"><img src="../../../webapp/static/assets/img/rapport-p02-800.webp" alt=""></div>
+      <div class="page" style="--d: 1.25s; --x: 165px; --y: 28px; --r: 12deg"><img src="../../../webapp/static/assets/img/rapport-p01-800.webp" alt=""></div>
+      <div class="pages__badge"><span class="pastille a" style="--anim: pop; --d: 4.6s; --duree: 0.5s"><svg class="icone"><use href="#i-download"/></svg>Rapport PDF · 6 pages</span></div>
+    </div>
+    <div class="atouts" style="left: 1222px; top: 980px">
+      <span class="pastille a" style="--d: 5.3s; --duree: 0.6s; font-size: 21px"><svg class="icone"><use href="#i-table"/></svg>Données nettoyées en CSV</span>
+      <span class="pastille a" style="--d: 5.5s; --duree: 0.6s; font-size: 21px"><svg class="icone"><use href="#i-sparkle"/></svg>Diagnostic qualité</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5. Avantages (30 → 36 s) ================= -->
+<section class="scene" style="--t0: 30s; --t1: 36s">
+  <div class="contenu avantages">
+    <div class="eyebrow a" style="--anim: descend; --d: 0.05s">Les avantages</div>
+    <h2 class="h2 a" style="--d: 0.15s">Ce que l'outil change <span class="degrade">concrètement</span></h2>
+    <div class="cartes">
+      <div class="avantage carte a" style="--d: 0.5s">
+        <div class="avantage__icone"><svg class="icone"><use href="#i-clock"/></svg></div>
+        <strong class="degrade">5 h → 3 s</strong>
+        <p>Le rapport mensuel produit en quelques secondes</p>
+      </div>
+      <div class="avantage carte a" style="--d: 1.5s">
+        <div class="avantage__icone"><svg class="icone"><use href="#i-shield"/></svg></div>
+        <strong class="degrade"><span data-compteur data-de="9.9" data-a="1.1" data-debut="31.5" data-duree="0.9" data-format="pourcent">9,9 %</span></strong>
+        <p>d'écart avec le CA réel, malgré des exports mal saisis</p>
+      </div>
+      <div class="avantage carte a" style="--d: 2.5s">
+        <div class="avantage__icone"><svg class="icone"><use href="#i-calendar"/></svg></div>
+        <strong class="degrade">Le 1<sup>er</sup></strong>
+        <p>de chaque mois, le rapport se génère tout seul</p>
+      </div>
+      <div class="avantage carte a" style="--d: 3.5s">
+        <div class="avantage__icone"><svg class="icone"><use href="#i-flask"/></svg></div>
+        <strong class="degrade"><span data-compteur data-de="0" data-a="204" data-debut="33.5" data-duree="0.9" data-format="entier">0</span> tests</strong>
+        <p>vérifient automatiquement chaque calcul</p>
+      </div>
+    </div>
+    <p class="avantages__chute a" style="--anim: fondu; --d: 4.5s; --duree: 0.6s">Le même rapport, avec les mêmes définitions d'indicateurs, chaque mois.</p>
+  </div>
+</section>
+
+<!-- ================= 6. Conclusion (36 → 40 s) ================= -->
+<section class="scene" style="--t0: 36s; --t1: 99s">
+  <div class="contenu fin">
+    <svg class="logo a" viewBox="0 0 32 32" style="--anim: pop; --d: 0.05s; --duree: 0.7s; --courbe: linear">
+      <rect width="32" height="32" rx="9" fill="url(#g-brand)"/>
+      <path d="M9 22v-4M14 22v-8M19 22v-6M24 22V10" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+    </svg>
+    <div class="fin__marque a" style="--anim: fondu; --d: 0.2s">Sales Report <span class="doux">Automation</span></div>
+    <h2 class="a" style="--anim: net; --d: 0.4s; --duree: 0.8s">Testez la démo <span class="degrade">en ligne</span></h2>
+    <div class="url a" style="--anim: pop; --d: 1s; --duree: 0.6s"><svg class="icone"><use href="#i-globe"/></svg>sales-report-automation-cedric.streamlit.app</div>
+    <div class="garanties a" style="--d: 1.5s">
+      <span><svg class="icone"><use href="#i-check"/></svg>Sans inscription</span>
+      <span><svg class="icone"><use href="#i-check"/></svg>Sans installation</span>
+      <span><svg class="icone"><use href="#i-check"/></svg>Données de démonstration fournies</span>
+    </div>
+    <p class="auteur a" style="--anim: fondu; --d: 2.1s">Conçu et développé par Dibie Elisee Jules Cedric KOUADIO</p>
+  </div>
+</section>
+
+<!-- Transitions : un reflet balaie l'écran à chaque changement de scène -->
+<div class="balayage" style="--a: 3.75s"></div>
+<div class="balayage" style="--a: 9.75s"></div>
+<div class="balayage" style="--a: 21.75s"></div>
+<div class="balayage" style="--a: 29.75s"></div>
+<div class="balayage" style="--a: 35.75s"></div>
+<div class="progression"></div>
+<div class="noir"></div>
+
+<script>
+  /* ---------- Courbe du CA mensuel (k€, rapport 2024) ---------- */
+  const CA = [161, 169, 135, 136, 154, 100, 113, 152, 91, 188, 382, 244];
+  const MOIS = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Aoû", "Sep", "Oct", "Nov", "Déc"];
+  const L = 928, H = 180, MAX = 400;
+  const x = (i) => 24 + i * (L - 48) / 11;
+  const y = (v) => H - (v / MAX) * (H - 10);
+  const points = CA.map((v, i) => [x(i), y(v)]);
+  // Courbe lissée (Catmull-Rom → Bézier)
+  let d = `M${points[0][0]},${points[0][1]}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[Math.max(0, i - 1)], p1 = points[i], p2 = points[i + 1], p3 = points[Math.min(points.length - 1, i + 2)];
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${c1[0]},${c1[1]} ${c2[0]},${c2[1]} ${p2[0]},${p2[1]}`;
+  }
+  document.getElementById('courbe').setAttribute('d', d);
+  document.getElementById('aire').setAttribute('d', `${d} L${x(11)},${H} L${x(0)},${H} Z`);
+  const ns = 'http://www.w3.org/2000/svg';
+  for (const v of [0, 100, 200, 300, 400]) {
+    const l = document.createElementNS(ns, 'line');
+    Object.entries({ x1: 0, x2: L, y1: y(v), y2: y(v), class: 'repere' }).forEach(([k, val]) => l.setAttribute(k, val));
+    document.getElementById('reperes').append(l);
+  }
+  MOIS.forEach((m, i) => {
+    const t = document.createElementNS(ns, 'text');
+    Object.entries({ x: x(i), y: H + 26, class: 'mois' }).forEach(([k, val]) => t.setAttribute(k, val));
+    t.textContent = m;
+    document.getElementById('mois').append(t);
+  });
+  const pic = document.getElementById('pic');
+  pic.style.left = `${x(10) - 190}px`;
+  pic.style.top = `${y(382) - 12}px`;
+
+  /* ---------- Compteurs ---------- */
+  const fr = (v, dec = 0) => v.toLocaleString('fr-FR', { minimumFractionDigits: dec, maximumFractionDigits: dec }).replace(/ /g, ' ');
+  const FORMATS = {
+    entier: (v) => fr(Math.round(v)),
+    euros: (v) => `${fr(Math.round(v))} €`,
+    millions: (v) => `${fr(v, 2)} M€`,
+    secondes: (v) => `${fr(v, 1)} s`,
+    pourcent: (v) => `${fr(v, 1)} %`,
+    heures: (v) => { const h = Math.floor(v + 1e-9), m = Math.floor((v - h) * 60); return `${h} h ${String(m).padStart(2, '0')}`; },
+  };
+  const compteurs = [...document.querySelectorAll('[data-compteur]')];
+  const adoucir = (p) => 1 - Math.pow(1 - p, 3);
+  function majCompteurs(t) {
+    for (const el of compteurs) {
+      const p = Math.min(1, Math.max(0, (t - Number(el.dataset.debut)) / Number(el.dataset.duree)));
+      const v = Number(el.dataset.de) + (Number(el.dataset.a) - Number(el.dataset.de)) * adoucir(p);
+      el.textContent = FORMATS[el.dataset.format](v);
+    }
+  }
+
+  /* ---------- Pilotage du temps ----------
+     Toutes les animations CSS sont mises en pause, puis placées à l'instant t. */
+  let animations = null;
+  window.allerA = (t) => {
+    animations ??= document.getAnimations();
+    for (const a of animations) { a.pause(); a.currentTime = t * 1000; }
+    majCompteurs(t);
+  };
+  window.pret = Promise.all([
+    document.fonts.ready,
+    ...[...document.images].map((img) => img.decode().catch(() => {})),
+  ]);
+
+  // Aperçu dans un navigateur : lecture en boucle, clic pour lancer la musique
+  if (!new URLSearchParams(location.search).has('rendu')) {
+    const DUREE = 40;
+    let depart = performance.now();
+    const audio = new Audio('../musique.mp3');
+    document.addEventListener('click', () => { depart = performance.now(); audio.currentTime = 0; audio.play().catch(() => {}); });
+    const boucle = () => { window.allerA(((performance.now() - depart) / 1000) % DUREE); requestAnimationFrame(boucle); };
+    window.pret.then(() => requestAnimationFrame(boucle));
+  }
+</script>
+</body>
+</html>
