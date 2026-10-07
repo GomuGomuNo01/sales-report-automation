@@ -10,13 +10,13 @@
   <meta property="og:title" content="Sales Report Automation">
   <meta property="og:description" content="Des exports de ventes bruts au rapport de direction, en 3 secondes au lieu de 5 heures.">
   <meta property="og:type" content="website">
-  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="/assets/fonts/InterVariable-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/tokens.css">
-  <link rel="stylesheet" href="/assets/css/base.css">
-  <link rel="stylesheet" href="/assets/css/components.css">
-  <link rel="stylesheet" href="/assets/css/sections.css">
-  <link rel="stylesheet" href="/assets/css/dashboard.css">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/InterVariable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
   <script>
     /* Masque les éléments animés avant le premier rendu (sauf mouvement réduit).
        Filet de sécurité : si le JavaScript ne démarre pas, tout redevient visible. */
@@ -26,13 +26,13 @@
       window.__motionGuard = setTimeout(function () { root.classList.remove('has-motion'); }, 3000);
     })();
   </script>
-  <script type="module" src="/assets/js/main.js"></script>
-  <link rel="modulepreload" href="/assets/js/motion.js">
-  <link rel="modulepreload" href="/assets/js/ui.js">
-  <link rel="modulepreload" href="/assets/js/format.js">
-  <link rel="modulepreload" href="/assets/js/charts.js">
-  <link rel="modulepreload" href="/assets/js/dashboard.js">
-  <link rel="modulepreload" href="/assets/js/demo.js">
+  <script type="module" src="assets/js/main.js"></script>
+  <link rel="modulepreload" href="assets/js/motion.js">
+  <link rel="modulepreload" href="assets/js/ui.js">
+  <link rel="modulepreload" href="assets/js/format.js">
+  <link rel="modulepreload" href="assets/js/charts.js">
+  <link rel="modulepreload" href="assets/js/dashboard.js">
+  <link rel="modulepreload" href="assets/js/demo.js">
 </head>
 <body>
   <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -73,7 +73,7 @@
   <!-- ============ En-tête ============ -->
   <header class="site-header" id="site-header" data-scrolled="false">
     <div class="container site-header__inner">
-      <a class="brand" href="/" data-nav="accueil" aria-label="Sales Report Automation, retour à l'accueil">
+      <a class="brand" href="./" data-nav="accueil" aria-label="Sales Report Automation, retour à l'accueil">
         <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
           <defs><linearGradient id="g-brand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a78d6"/><stop offset="1" stop-color="#6d5bd0"/></linearGradient></defs>
           <rect width="32" height="32" rx="9" fill="url(#g-brand)"/>
@@ -146,7 +146,7 @@
                 <span class="btn__label">Générer un rapport de démo <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
                 <span class="btn__state btn__state--loading"><span class="spinner" aria-hidden="true"></span>Génération…</span>
               </button>
-              <a class="btn btn--secondary btn--lg" href="/exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener">
+              <a class="btn btn--secondary btn--lg" href="exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener">
                 <svg class="icon" aria-hidden="true"><use href="#i-file"/></svg>
                 Voir un exemple de PDF
                 <span class="visually-hidden">(nouvel onglet)</span>
@@ -278,9 +278,9 @@
           </div>
           <div class="showcase__stage" data-reveal="scale" data-reveal-delay="2">
             <figure class="paper" id="page-preview" role="tabpanel" aria-labelledby="page-tab-1" tabindex="0">
-              <img class="paper__img" src="/assets/img/rapport-p01-800.webp" srcset="/assets/img/rapport-p01-400.webp 400w, /assets/img/rapport-p01-800.webp 800w" sizes="(min-width: 64em) 30rem, 90vw" width="800" height="1131" alt="Page 1 du rapport : tableau de bord avec les indicateurs clés" loading="lazy" decoding="async">
+              <img class="paper__img" src="assets/img/rapport-p01-800.webp" srcset="assets/img/rapport-p01-400.webp 400w, assets/img/rapport-p01-800.webp 800w" sizes="(min-width: 64em) 30rem, 90vw" width="800" height="1131" alt="Page 1 du rapport : tableau de bord avec les indicateurs clés" loading="lazy" decoding="async">
             </figure>
-            <a class="btn btn--ghost btn--sm" href="/exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener">
+            <a class="btn btn--ghost btn--sm" href="exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener">
               <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Ouvrir l'exemple complet (PDF)<span class="visually-hidden"> (nouvel onglet)</span>
             </a>
           </div>
@@ -385,9 +385,9 @@
               <div class="story-visual" data-visual="4">
                 <div class="story-frame">
                   <div class="ill-pages">
-                    <div class="ill-page"><img src="/assets/img/rapport-p02-400.webp" alt="" width="400" height="565" loading="lazy" decoding="async"></div>
-                    <div class="ill-page"><img src="/assets/img/rapport-p01-400.webp" alt="" width="400" height="565" loading="lazy" decoding="async"></div>
-                    <div class="ill-page"><img src="/assets/img/rapport-p03-400.webp" alt="" width="400" height="565" loading="lazy" decoding="async"></div>
+                    <div class="ill-page"><img src="assets/img/rapport-p02-400.webp" alt="" width="400" height="565" loading="lazy" decoding="async"></div>
+                    <div class="ill-page"><img src="assets/img/rapport-p01-400.webp" alt="" width="400" height="565" loading="lazy" decoding="async"></div>
+                    <div class="ill-page"><img src="assets/img/rapport-p03-400.webp" alt="" width="400" height="565" loading="lazy" decoding="async"></div>
                   </div>
                 </div>
               </div>
@@ -464,7 +464,7 @@
                   </div>
                   <p class="demo-form__links">
                     <button class="link-btn" type="button" data-dialog-open="dialog-format"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-table"/></svg>Voir le format attendu</button>
-                    <a class="link-btn" href="/api/modele.csv" download><svg class="icon icon--sm" aria-hidden="true"><use href="#i-download"/></svg>Télécharger un fichier modèle</a>
+                    <a class="link-btn" href="api/modele.csv" download><svg class="icon icon--sm" aria-hidden="true"><use href="#i-download"/></svg>Télécharger un fichier modèle</a>
                   </p>
                 </div>
               </fieldset>
@@ -549,7 +549,7 @@
               <summary class="accordion__summary">Quel format de fichier dois-je fournir&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
               <div class="accordion__content">
                 <p>Un ou plusieurs fichiers CSV séparés par des virgules, encodés en UTF-8, avec ces 9 colonnes dans n'importe quel ordre : <code>date</code>, <code>vendeur</code>, <code>region</code>, <code>produit</code>, <code>categorie</code>, <code>quantite</code>, <code>prix_unitaire</code>, <code>remise</code>, <code>statut</code>.</p>
-                <p><a href="/api/modele.csv" download>Télécharger un fichier modèle</a></p>
+                <p><a href="api/modele.csv" download>Télécharger un fichier modèle</a></p>
               </div>
             </details>
             <details class="accordion__item">
@@ -577,7 +577,7 @@
             </details>
             <details class="accordion__item">
               <summary class="accordion__summary">Pourquoi la page met-elle parfois du temps à s'ouvrir&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
-              <div class="accordion__content"><p>La démo est hébergée gratuitement : quand personne ne l'a utilisée depuis un moment, le serveur se met en veille et met une trentaine de secondes à redémarrer.</p></div>
+              <div class="accordion__content"><p>Le serveur de la démo s'arrête quand personne ne l'utilise. Le visiteur suivant attend qu'il redémarre : quelques secondes en général, jusqu'à une minute sur un hébergement gratuit.</p></div>
             </details>
           </div>
         </div>
@@ -673,7 +673,7 @@
     <div class="container">
       <div class="site-footer__grid">
         <div class="site-footer__about">
-          <a class="brand" href="/" data-nav="accueil">
+          <a class="brand" href="./" data-nav="accueil">
             <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="url(#g-brand)"/><path d="M9 22v-4M14 22v-8M19 22v-6M24 22V10" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
             <span>Sales Report <span class="brand__light">Automation</span></span>
           </a>
@@ -693,8 +693,8 @@
           <ul class="site-footer__links">
             <li><a href="https://github.com/GomuGomuNo01/sales-report-automation" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-github"/></svg>Code source<span class="visually-hidden"> (nouvel onglet)</span></a></li>
             <li><a href="https://github.com/GomuGomuNo01/sales-report-automation#readme" target="_blank" rel="noopener">Documentation<span class="visually-hidden"> (nouvel onglet)</span></a></li>
-            <li><a href="/exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener">Exemple de rapport PDF<span class="visually-hidden"> (nouvel onglet)</span></a></li>
-            <li><a href="/api/modele.csv" download>Fichier CSV modèle</a></li>
+            <li><a href="exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener">Exemple de rapport PDF<span class="visually-hidden"> (nouvel onglet)</span></a></li>
+            <li><a href="api/modele.csv" download>Fichier CSV modèle</a></li>
           </ul>
         </div>
       </div>
@@ -731,7 +731,7 @@
       </div>
     </div>
     <div class="dialog__foot">
-      <a class="btn btn--secondary" href="/api/modele.csv" download><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Télécharger le modèle</a>
+      <a class="btn btn--secondary" href="api/modele.csv" download><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Télécharger le modèle</a>
       <button class="btn btn--primary" type="button" data-dialog-close>J'ai compris</button>
     </div>
   </dialog>

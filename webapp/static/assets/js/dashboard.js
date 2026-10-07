@@ -29,6 +29,9 @@ let lastGood = null;   // dernier rapport réussi, conservé même si une géné
 let runSteps = {};     // détails des étapes de l'exécution en cours
 let resizeFrame = null;
 
+/** Les URL de l'API commencent par « / » : on les rend relatives à la page (préfixe de chemin éventuel). */
+const relative = (url) => String(url).replace(/^\//, '');
+
 function h(tag, className, text) {
   const el = document.createElement(tag);
   if (className) el.className = className;
@@ -272,7 +275,7 @@ function renderData(panel, r) {
   const text = h('p', 'ink-2 small');
   text.append(h('strong', '', `${fmt.int(r.nb_lignes_donnees)} lignes`), ` nettoyées et enrichies. Aperçu des ${fmt.int(r.apercu.lignes.length)} premières.`);
   const dl = h('a', 'btn btn--secondary btn--sm');
-  dl.href = r.csv.url;
+  dl.href = relative(r.csv.url);
   dl.download = r.csv.nom;
   dl.innerHTML = `${icon('i-download', 'btn__icon btn__icon--down')}<span>Télécharger le CSV complet</span>`;
   head.append(text, dl);
@@ -329,7 +332,7 @@ export function renderReport(r, { source = 'demo' } = {}) {
   const pdf = $('pdf-link');
   pdf.classList.remove('is-pending');
   pdf.removeAttribute('aria-disabled');
-  pdf.href = r.pdf.url;
+  pdf.href = relative(r.pdf.url);
   pdf.download = r.pdf.nom;
   pdf.setAttribute('aria-label', `Télécharger le PDF (${fmt.kb(r.pdf.taille)})`);
 

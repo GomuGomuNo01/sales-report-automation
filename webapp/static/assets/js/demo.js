@@ -209,7 +209,7 @@ async function generate(request, { origin } = {}) {
     () => { timedOut = true; state.controller?.abort(); },
   );
   try {
-    const response = await fetch('/api/rapports', { method: 'POST', body: request, signal: state.controller.signal });
+    const response = await fetch('api/rapports', { method: 'POST', body: request, signal: state.controller.signal });
     watchdog.kick();
     if (response.status === 422) {
       const body = await response.json().catch(() => ({}));

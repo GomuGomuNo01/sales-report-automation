@@ -163,8 +163,8 @@ function initShowcase() {
       next.decoding = 'async';
       next.alt = tab.dataset.alt;
       next.sizes = '(min-width: 64em) 30rem, 90vw';
-      next.srcset = `/assets/img/rapport-p${page}-400.webp 400w, /assets/img/rapport-p${page}-800.webp 800w`;
-      next.src = `/assets/img/rapport-p${page}-800.webp`;
+      next.srcset = `assets/img/rapport-p${page}-400.webp 400w, assets/img/rapport-p${page}-800.webp 800w`;
+      next.src = `assets/img/rapport-p${page}-800.webp`;
       const swap = () => {
         if (mine !== token) return;
         figure.removeAttribute('aria-busy');

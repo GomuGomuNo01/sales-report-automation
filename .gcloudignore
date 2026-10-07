@@ -1,4 +1,8 @@
+# Fichiers non envoyés à Cloud Build par « gcloud run deploy --source . »
+# (même logique que .dockerignore, plus l'historique git)
+.gcloudignore
 .git
+.gitignore
 .github
 .devcontainer
 .venv
@@ -18,10 +22,3 @@ tests/
 conftest.py
 demo_colab.ipynb
 protect_branches.sh
-Dockerfile
-.dockerignore
-.gitignore
-render.yaml
-.gcloudignore
-deploy/
-requirements-dev.txt

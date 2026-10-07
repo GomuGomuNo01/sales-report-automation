@@ -173,9 +173,9 @@ Les variantes d'accents, de majuscules et d'espaces sont harmonisées. Une valeu
 | **schedule** | Exécution automatique le 1er de chaque mois |
 | **argparse** | Interface en ligne de commande |
 | **HTML, CSS, JavaScript** | Interface web sans framework : design system à base de tokens, système d'animation centralisé, graphiques natifs (SVG et HTML/CSS) |
-| **Streamlit (`st.App`) / Starlette** | Serveur web : sert l'interface et l'API de génération (progression en direct) ; hébergeable gratuitement sur Streamlit Community Cloud |
+| **Streamlit (`st.App`) / Starlette** | Serveur web : sert l'interface et l'API de génération (progression en direct) |
 | **pytest** | 199 tests automatisés (nettoyage, calculs, service et API web) |
-| **Docker / Dev Containers** | Lancement de l'application sans installer Python (Docker, GitHub Codespaces) |
+| **Docker / Dev Containers** | Image prête pour l'hébergement (Google Cloud Run, Render) et lancement sans installer Python (Docker, GitHub Codespaces) |
 | **Git / GitHub, Dependabot** | Versionnage, branches de travail, mise à jour automatique des dépendances |
 
 ## 7. Méthodologie
@@ -459,9 +459,12 @@ sales-report-automation/
 ├── config.py                    Chemins, règles métier, titre et couleurs du rapport
 ├── generate_data.py             Génération des données de démonstration
 ├── demo_colab.ipynb             Démonstration pas à pas dans Google Colab
-├── requirements.txt             Dépendances Python
+├── requirements.txt             Dépendances d'exécution
+├── requirements-dev.txt         Dépendances de développement (tests)
 ├── pyproject.toml               Métadonnées du projet et configuration des outils
 ├── Dockerfile                   Image de l'application web
+├── render.yaml                  Déploiement sur Render (Blueprint)
+├── .gcloudignore                Fichiers exclus d'un déploiement Cloud Run
 ├── DejaVuSans*.ttf              Polices Unicode embarquées dans le PDF
 ├── webapp/
 │   ├── api.py                   Routes web : page, fichiers statiques, API de génération en flux
@@ -483,10 +486,11 @@ sales-report-automation/
 │   └── scheduler.py             Exécution automatique mensuelle
 ├── tests/                       Tests automatisés (pytest)
 ├── examples/                    Exemple de CSV source et de rapport PDF
-├── docs/images/                 Captures du rapport et de l'application
+├── docs/                        Guide de déploiement, captures du rapport et de l'application
+├── deploy/                      Règle de nettoyage des images (Cloud Run)
 ├── .streamlit/                  Réglages du serveur Streamlit
 ├── .devcontainer/               Environnement GitHub Codespaces
-├── .github/dependabot.yml       Mise à jour automatique des dépendances
+├── .github/                     Dependabot et maintien en éveil de la démo (facultatif)
 ├── data/raw/                    Fichiers CSV d'entrée (non versionnés)
 └── output/                      Rapports, graphiques et journaux générés (non versionnés)
 ```
@@ -495,7 +499,7 @@ sales-report-automation/
 
 **Option 1 : tester en ligne (recommandé, aucune installation)**
 
-1. Ouvrir la [démo en ligne](https://sales-report-automation.streamlit.app). Si personne ne l'a utilisée récemment, elle peut mettre une trentaine de secondes à démarrer.
+1. Ouvrir la [démo en ligne](https://sales-report-automation.streamlit.app). Si personne ne l'a utilisée récemment, elle peut mettre quelques secondes à démarrer (jusqu'à une minute sur un hébergement gratuit).
 2. Cliquer sur **Générer un rapport de démo**, ou déposer ses propres fichiers CSV dans la section **Démo**.
 3. Télécharger le rapport PDF.
 
@@ -527,19 +531,21 @@ streamlit run app.py                 # Application web sur http://localhost:8501
 **Lancer les tests :**
 
 ```bash
+pip install -r requirements-dev.txt          # outils de test
 pytest
 pytest --cov=src --cov-report=term-missing   # avec la couverture (pip install pytest-cov)
 ```
 
-**Mettre l'application en ligne** (Streamlit Community Cloud, gratuit)
+**Mettre l'application en ligne**
 
-1. Se connecter sur [share.streamlit.io](https://share.streamlit.io) avec son compte GitHub.
-2. **Create app**, puis choisir ce dépôt, la branche `main` et le fichier `app.py`.
-3. Dans **App URL**, saisir `sales-report-automation` (adresse utilisée dans ce README).
-4. Dans **Advanced settings**, choisir **Python 3.12**.
-5. Cliquer sur **Deploy**. Chaque push sur `main` met ensuite l'application à jour.
+Le guide complet, avec les commandes et les réglages, est dans [`docs/DEPLOIEMENT.md`](docs/DEPLOIEMENT.md). En résumé :
 
-L'image Docker peut aussi être déployée sur Hugging Face Spaces, Render ou Railway (le port se règle avec la variable `PORT`).
+| Hébergeur | Coût | Premier visiteur après une période calme | Fichiers fournis |
+|---|---|---|---|
+| **Google Cloud Run** (recommandé) | environ 0 € par mois, carte bancaire requise | quelques secondes | [`.gcloudignore`](.gcloudignore), [`deploy/`](deploy/) |
+| **Render** (gratuit, sans carte) | 0 € | environ 1 minute, sauf avec le maintien en éveil | [`render.yaml`](render.yaml), [`garder-eveille.yml`](.github/workflows/garder-eveille.yml) |
+
+Dans les deux cas, l'hébergeur construit l'image à partir du [`Dockerfile`](Dockerfile) et redéploie à chaque push sur `main`. Streamlit Community Cloud et Hugging Face Spaces sont déconseillés (application servie dans une iframe avec une page de mise en veille pour le premier, offre payante pour le second) : les raisons sont détaillées dans le guide.
 
 **Problèmes courants**
 
