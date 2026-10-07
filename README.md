@@ -1,800 +1,517 @@
-# Sales Report Automation
+# Automatisation des rapports de ventes avec Python
 
-[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white)](https://www.python.org/downloads/)
-[![Démo en ligne](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sales-report-automation.streamlit.app)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb)
-[![Tests](https://img.shields.io/badge/tests-50%2B-brightgreen)](tests/)
-[![Dependabot](https://img.shields.io/badge/Dependabot-enabled-025E8C?logo=dependabot)](/.github/dependabot.yml)
-[![GitHub](https://img.shields.io/badge/GitHub-GomuGomuNo01-181717?logo=github)](https://github.com/GomuGomuNo01/sales-report-automation)
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
+![pandas](https://img.shields.io/badge/pandas-ETL-150458?logo=pandas&logoColor=white)
+![matplotlib](https://img.shields.io/badge/matplotlib%20%2F%20seaborn-5%20graphiques-11557C)
+![fpdf2](https://img.shields.io/badge/fpdf2-PDF%206%20pages-B22222)
+![Streamlit](https://img.shields.io/badge/Streamlit-d%C3%A9mo%20web-FF4B4B?logo=streamlit&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-88%20tests-0A9EDC?logo=pytest&logoColor=white)
 
-> **Transformez vos exports ERP en rapport PDF professionnel en quelques secondes.**  
-> Ce qui prenait 5 heures à la main — nettoyage Excel, calculs, graphiques, mise en page — se fait désormais en une seule commande.
+Projet d'automatisation de bout en bout : à partir d'exports de ventes bruts issus d'un ERP, production automatique d'un **rapport PDF de 6 pages** prêt pour la réunion de direction. Ce qui demandait **5 heures de travail manuel chaque mois** se fait désormais **en quelques secondes**, sans intervention.
 
----
+[![Tester la démo en ligne](https://img.shields.io/badge/Tester%20la%20d%C3%A9mo-en%20ligne%2C%20sans%20installation-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://sales-report-automation.streamlit.app)
+[![Télécharger un exemple de rapport](https://img.shields.io/badge/T%C3%A9l%C3%A9charger-un%20exemple%20de%20rapport%20PDF-2E86AB?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](examples/rapport_exemple_2024.pdf)
 
-## À l'attention des recruteurs
+*Application web : aucun compte, aucune installation, un clic suffit pour générer et télécharger un rapport. D'autres façons de tester le projet sont décrites dans [Reproduire le projet](#14-reproduire-le-projet).*
 
-**Vous êtes recruteur(se) et vous n'êtes pas développeur(se) ? Cette section est faite pour vous.**
+![L'application de démonstration en action](docs/images/demo-app.gif)
 
-Ce projet est une **démonstration concrète de mes compétences en développement et en traitement de données**. Il résout un problème réel du monde de l'entreprise : la production laborieuse et répétitive de rapports de ventes.
-
-### Le problème résolu
-
-Chaque mois, un responsable commercial exportait ses données de ventes depuis son logiciel de gestion (ERP) sous forme de fichiers bruts, puis passait **5 heures** à les mettre en forme à la main : fusion dans Excel, corrections, calculs, graphiques, mise en page dans PowerPoint, impression pour la réunion de direction.
-
-J'ai développé un outil qui **fait tout ça automatiquement en 7 secondes**, à partir des mêmes fichiers bruts.
-
-### Ce que ça produit concrètement
-
-→ **Un rapport PDF de 6 pages, prêt à imprimer**, avec indicateurs clés, classements, graphiques et tableaux de données.  
-→ **Zéro intervention humaine** entre l'export ERP et le rapport final.  
-→ **Planification automatique** : l'outil peut se déclencher seul le 1ᵉʳ de chaque mois sans que personne n'ait à y penser.
-
-Vous pouvez télécharger un exemple du rapport généré ici → [rapport_exemple_2024.pdf](examples/rapport_exemple_2024.pdf)
-
-### Ce que ce projet dit de moi en tant que candidat
-
-| Ce que vous cherchez | Ce que vous trouverez ici |
-|----------------------|--------------------------|
-| **Autonomie** | Projet conçu et réalisé seul, de l'identification du besoin au livrable final |
-| **Rigueur** | 50 tests automatisés qui vérifient que chaque calcul est juste — rien n'est laissé au hasard |
-| **Sens du résultat** | L'objectif était de faire gagner du temps : résultat, 5 heures réduites à 7 secondes |
-| **Organisation du travail** | Code découpé en 5 modules indépendants, chacun avec un seul rôle bien défini |
-| **Documentation** | README complet, exemples fournis, guide d'utilisation détaillé |
-| **Bonnes pratiques** | Tests, gestion des erreurs, mises à jour de sécurité automatisées, configuration centralisée |
-
-### Technologies utilisées — en langage courant
-
-Pas besoin de connaître la technique pour comprendre l'essentiel :
-
-| Outil | À quoi ça sert ici |
-|-------|-------------------|
-| **Python** | Le langage de programmation utilisé pour construire tout l'outil |
-| **pandas** | Lit, corrige et organise les données brutes (comme Excel, mais automatisé) |
-| **matplotlib / seaborn** | Génère les graphiques automatiquement |
-| **fpdf2** | Construit le document PDF page par page, avec mise en page professionnelle |
-| **pytest** | Vérifie automatiquement que tous les calculs produisent le bon résultat |
-
-### Voir la démo sans rien installer
-
-**Le plus simple : ouvrez l'application en ligne.** Aucun compte, aucune installation, un seul clic.
-
-[![Démo en ligne](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sales-report-automation.streamlit.app)
-
-1. Cliquez sur **🚀 Lancer la démo**.
-2. Quelques secondes plus tard, le tableau de bord s'affiche : indicateurs clés, graphiques, anomalies corrigées dans les données brutes.
-3. Cliquez sur **⬇️ Télécharger le rapport PDF** pour récupérer le rapport de 6 pages.
-
-Vous pouvez aussi déposer vos propres fichiers CSV (un modèle est téléchargeable dans l'application).
-
-> L'application peut mettre une trentaine de secondes à se réveiller si personne ne l'a ouverte récemment. C'est normal, il suffit d'attendre.
-
-D'autres façons de tester sans rien installer sont décrites dans la section [Démonstration sans installation](#5-démonstration-sans-installation) : Google Colab (compte Google) et GitHub Codespaces (compte GitHub).
-
----
-
-## Résultats
-
-```
-1 163 lignes CSV brutes  →  pipeline ETL  →  6 pages PDF  +  5 graphiques  →  ~7 secondes
-```
-
-| | Livrable | Lien |
-|---|---|---|
-| 📄 | Rapport PDF généré — 6 pages, mise en page professionnelle | [Télécharger l'exemple →](examples/rapport_exemple_2024.pdf) |
-| 📋 | Fichier CSV source — données de ventes réelles simulées | [Voir l'exemple →](examples/ventes_exemple_janvier_2024.csv) |
-| 🖥️ | Application web : générez un rapport en un clic | [Ouvrir la démo →](https://sales-report-automation.streamlit.app) |
-| ▶️ | Démonstration interactive pas-à-pas dans le navigateur | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb) |
-
----
-
-## Compétences techniques démontrées
-
-> *Section destinée aux recruteurs souhaitant identifier rapidement les technologies et pratiques mises en œuvre.*
-
-| Domaine | Technologies | Ce que ça signifie concrètement |
-|---------|-------------|--------------------------------|
-| **Traitement de données (ETL)** | Python, pandas, numpy | Lecture, fusion, nettoyage et transformation de milliers de lignes de données brutes issues d'un ERP |
-| **Visualisation** | matplotlib, seaborn | Génération automatique de 5 graphiques professionnels (classements, tendances, heatmap, camembert) |
-| **Génération de documents** | fpdf2 | Création de rapports PDF A4 multi-pages avec mise en page, tableaux et graphiques intégrés |
-| **Automatisation** | schedule, argparse | Interface en ligne de commande, planification mensuelle automatique sans intervention humaine |
-| **Qualité logicielle** | pytest, pytest-cov | 50+ tests unitaires et d'intégration, couverture de code mesurée |
-| **Architecture** | Modules découplés (5 stages) | Code organisé en 5 modules indépendants, chacun avec une seule responsabilité (principe SOLID) |
-| **Bonnes pratiques** | pyproject.toml, Dependabot | Configuration centralisée, mise à jour automatique des dépendances, documentation complète |
-
-**En chiffres :** ~700 lignes de code de production · 5 modules Python indépendants · 50+ tests automatisés · 6 pages PDF + 5 graphiques en ~7 secondes
-
----
-
-## Aperçu du rapport généré
-
-<table>
-  <tr>
-    <td align="center"><b>Page 1 — Tableau de bord</b></td>
-    <td align="center"><b>Page 2 — Performances vendeurs</b></td>
-    <td align="center"><b>Page 3 — Évolution mensuelle</b></td>
-  </tr>
-  <tr>
-    <td><img src="docs/images/01_couverture.png" width="230" alt="Page de garde et KPIs"/></td>
-    <td><img src="docs/images/02_vendeurs.png"   width="230" alt="Top vendeurs"/></td>
-    <td><img src="docs/images/03_evolution.png"  width="230" alt="Évolution CA mensuel"/></td>
-  </tr>
-  <tr>
-    <td align="center"><b>Page 4 — Répartition catégories</b></td>
-    <td align="center"><b>Page 5 — Heatmap régions</b></td>
-    <td align="center"><b>Page 6 — Top produits</b></td>
-  </tr>
-  <tr>
-    <td><img src="docs/images/04_categories.png"  width="230" alt="Répartition par catégorie"/></td>
-    <td><img src="docs/images/05_heatmap.png"     width="230" alt="Heatmap vendeurs × régions"/></td>
-    <td><img src="docs/images/06_top_produits.png" width="230" alt="Top produits"/></td>
-  </tr>
-</table>
+*L'application en action : un clic sur « Lancer la démo » exécute le pipeline complet sur 12 fichiers de ventes volontairement mal saisis, affiche les indicateurs, les graphiques et les anomalies corrigées, puis propose le rapport PDF en téléchargement.*
 
 ---
 
 ## Sommaire
 
-- [À l'attention des recruteurs et RH](#à-lattention-des-recruteurs-et-rh)
-
-1. [Pourquoi cet outil ?](#1-pourquoi-cet-outil-)
-2. [Comment ça fonctionne ?](#2-comment-ça-fonctionne-)
-3. [Prérequis](#3-prérequis)
-4. [Installation](#4-installation)
-5. [Démonstration sans installation](#5-démonstration-sans-installation)
-6. [Premier rapport en 3 commandes](#6-premier-rapport-en-3-commandes)
-7. [Utilisation au quotidien](#7-utilisation-au-quotidien)
-8. [Format des fichiers CSV attendus](#8-format-des-fichiers-csv-attendus)
-9. [Ce que contient le rapport](#9-ce-que-contient-le-rapport)
-10. [Personnaliser le pipeline](#10-personnaliser-le-pipeline)
-11. [Structure du projet](#11-structure-du-projet)
-12. [Tests et fiabilité](#12-tests-et-fiabilité)
-13. [Résolution des problèmes courants](#13-résolution-des-problèmes-courants)
-14. [Dépendances](#14-dépendances)
-
----
-
-## 1. Pourquoi cet outil ?
-
-Chaque mois, un commercial exportait les données de ventes depuis l'ERP sous forme de fichiers CSV bruts, puis passait **5 heures** à :
-
-- copier-coller les fichiers dans Excel pour les fusionner,
-- nettoyer les données (doublons, valeurs manquantes, remises mal saisies…),
-- calculer les KPIs à la main (CA net, panier moyen, taux d'annulation…),
-- créer les graphiques un par un,
-- assembler le tout dans un PowerPoint pour la réunion de direction.
-
-Ce projet **automatise l'intégralité de ce processus**. Il suffit de déposer les fichiers CSV dans un dossier et de lancer une commande. Le rapport PDF est prêt en moins de 10 secondes.
+1. [Le projet en bref](#1-le-projet-en-bref)
+2. [Les résultats en bref](#2-les-résultats-en-bref)
+3. [Contexte et objectifs](#3-contexte-et-objectifs)
+4. [Problématiques traitées](#4-problématiques-traitées)
+5. [Données utilisées](#5-données-utilisées)
+6. [Outils et technologies](#6-outils-et-technologies)
+7. [Méthodologie](#7-méthodologie)
+8. [Étapes de réalisation](#8-étapes-de-réalisation)
+9. [Le rapport généré](#9-le-rapport-généré)
+10. [Analyses et résultats détaillés](#10-analyses-et-résultats-détaillés)
+11. [Utilisation au quotidien](#11-utilisation-au-quotidien)
+12. [Principaux enseignements](#12-principaux-enseignements)
+13. [Structure du projet](#13-structure-du-projet)
+14. [Reproduire le projet](#14-reproduire-le-projet)
+15. [Limites et pistes d'amélioration](#15-limites-et-pistes-damélioration)
+16. [Crédits](#16-crédits)
 
 ---
 
-## 2. Comment ça fonctionne ?
+## 1. Le projet en bref
 
-Le pipeline suit 5 étapes enchaînées automatiquement :
+> **En une phrase :** j'ai remplacé une tâche manuelle de 5 heures par mois (fusionner des exports, les corriger, calculer les indicateurs, faire les graphiques, mettre en page) par un outil qui produit le même rapport en quelques secondes.
 
+### La situation
+
+Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de gestion de l'entreprise (ERP) sous forme de fichiers CSV bruts. Il les fusionne dans Excel, corrige les erreurs de saisie, calcule les indicateurs à la main, crée les graphiques un par un puis assemble le tout dans un PowerPoint pour la réunion de direction. Résultat : **5 heures perdues chaque mois**, et un risque d'erreur à chaque copier-coller.
+
+### Ce que j'ai fait
+
+| Étape | En pratique |
+|---|---|
+| **Comprendre le besoin** | Décomposition de la tâche manuelle en 5 étapes répétitives et identification des erreurs de saisie qui faussent les chiffres sans alerte visible |
+| **Fiabiliser les données** | Détection et correction automatiques des doublons, valeurs manquantes, remises saisies en pourcentage, statuts mal orthographiés, quantités négatives |
+| **Calculer les indicateurs** | CA brut, net et comptabilisé, panier moyen, taux d'annulation, remises, puis classements par vendeur, mois, catégorie, région et produit |
+| **Produire le livrable** | 5 graphiques et un rapport PDF A4 de 6 pages, mis en page et horodaté |
+| **Automatiser** | Une seule commande, et une planification qui génère le rapport seule le 1er de chaque mois |
+| **Rendre le projet testable par tous** | Une application web qui exécute le vrai pipeline dans le navigateur, sans installation |
+| **Vérifier chaque résultat** | 88 tests automatisés sur le nettoyage, les calculs et l'interface |
+
+### Ce que ce projet démontre
+
+- **Sens du résultat** : partir d'un temps perdu mesurable (5 heures) et le supprimer, plutôt que de produire du code pour lui-même.
+- **Rigueur** : les corrections appliquées aux données sont signalées dans un journal d'exécution, et les calculs sont vérifiés par des tests.
+- **Esprit critique sur les données** : repérer les pièges silencieux (une remise saisie `10` au lieu de `0.10` donnerait un chiffre d'affaires négatif sans aucun message d'erreur).
+- **Organisation du code** : 5 modules indépendants avec une seule responsabilité chacun, une configuration centralisée, trois interfaces (ligne de commande, planificateur, application web) branchées sur le même cœur.
+- **Pensée utilisateur** : un livrable compréhensible par une direction non technique, et une démo utilisable par un recruteur en un clic.
+- **Autonomie** : projet mené seul de bout en bout, de l'identification du besoin au déploiement.
+
+### Pour découvrir le travail en 2 minutes
+
+1. Ouvrir la [démo en ligne](https://sales-report-automation.streamlit.app) et cliquer sur **Lancer la démo**.
+2. Parcourir [les pages du rapport généré](#9-le-rapport-généré).
+3. Lire [les résultats détaillés](#10-analyses-et-résultats-détaillés), en particulier la robustesse face aux données mal saisies.
+
+## 2. Les résultats en bref
+
+**Le constat.** Le rapport mensuel demandait **5 heures** de travail manuel. Le pipeline le produit en **environ 3 secondes** pour 12 fichiers et 1 163 lignes de ventes, de la lecture des CSV jusqu'au PDF final.
+
+**Ce que l'outil apporte**
+
+1. **Un gain de temps immédiat** : une commande remplace une demi-journée de manipulations, et la planification supprime même cette commande.
+2. **Des chiffres fiables** : sur des données volontairement dégradées (doublons, remises mal saisies, statuts incohérents, valeurs manquantes), le pipeline retrouve le chiffre d'affaires réel **à 1,1 % près**. Sans nettoyage, le même calcul donnerait un chiffre d'affaires **négatif** (−1,48 M€).
+3. **Un livrable homogène** : le même rapport de 6 pages chaque mois, avec la même mise en page et les mêmes définitions d'indicateurs.
+
+**Les livrables**
+
+| Livrable | Lien |
+|---|---|
+| Application web de démonstration | [Ouvrir la démo](https://sales-report-automation.streamlit.app) |
+| Exemple de rapport PDF généré (6 pages) | [rapport_exemple_2024.pdf](examples/rapport_exemple_2024.pdf) |
+| Exemple de fichier CSV source | [ventes_exemple_janvier_2024.csv](examples/ventes_exemple_janvier_2024.csv) |
+| Démonstration pas à pas dans un notebook | [Google Colab](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb) |
+
+## 3. Contexte et objectifs
+
+**L'entreprise** est une PME (fictive) qui distribue du matériel et des logiciels informatiques. Elle emploie 10 commerciaux répartis sur 6 régions françaises et vend 15 produits classés en 4 catégories : Informatique, Périphériques, Logiciels et Réseau.
+
+**Scénario.** L'ERP de l'entreprise produit un fichier CSV de ventes par mois. Ces exports sont bruts : ils contiennent des doublons, des trous et des fautes de saisie. Le responsable commercial doit en tirer chaque mois un rapport pour la direction. L'objectif est de lui fournir un outil qui :
+
+- **supprime le travail manuel** entre l'export ERP et le rapport final ;
+- **fiabilise les chiffres**, quelles que soient les erreurs de saisie ;
+- **fonctionne sans lui**, grâce à une exécution planifiée ;
+- **peut être essayé par n'importe qui**, sans compétence technique ni installation.
+
+## 4. Problématiques traitées
+
+| # | Question | Partie prenante |
+|---|---|---|
+| 1 | Comment fusionner automatiquement un nombre variable d'exports mensuels ? | Responsable commercial |
+| 2 | Comment fiabiliser des données saisies à la main (doublons, remises en %, statuts incohérents, trous) ? | Contrôle de gestion |
+| 3 | Quel est le CA réellement acquis une fois les annulations et retours exclus, et qui le porte (vendeurs, produits, régions) ? | Direction commerciale |
+| 4 | Comment présenter ces résultats dans un document lisible en quelques minutes ? | Direction |
+| 5 | Comment produire ce rapport chaque mois sans avoir à y penser ? | Responsable commercial |
+| 6 | Comment permettre à une personne non technique de tester l'outil sans rien installer ? | Recruteurs, futurs utilisateurs |
+
+**Indicateur principal : le CA comptabilisé** (CA net des commandes livrées ou en cours), suivi avec le **taux d'annulation** comme garde-fou.
+
+## 5. Données utilisées
+
+| Élément | Détail |
+|---|---|
+| Source | Données fictives mais réalistes produites par [`generate_data.py`](generate_data.py), avec une graine fixe pour des résultats reproductibles |
+| Période | janvier à décembre 2024 |
+| Volume | 12 fichiers mensuels, 1 163 lignes de vente, 10 vendeurs, 6 régions, 15 produits, 4 catégories |
+| Saisonnalité | pic en novembre et décembre (Black Friday, fêtes), creux estival de juin à août |
+| Devise | euros (EUR), prix hors taxes |
+| Anomalies | ajoutées à la demande dans l'application web pour simuler un export ERP réel |
+
+### Structure attendue des fichiers CSV
+
+Le pipeline charge **tous les fichiers `.csv`** du dossier `data/raw/`, quel que soit leur nom ou leur nombre. Chaque fichier doit contenir ces **9 colonnes**, dans n'importe quel ordre :
+
+| Colonne | Type | Exemple | Description |
+|---|---|---|---|
+| `date` | Date | `2024-01-15` | Date de la commande (format AAAA-MM-JJ) |
+| `vendeur` | Texte | `Alice Martin` | Nom du commercial |
+| `region` | Texte | `Île-de-France` | Région de vente |
+| `produit` | Texte | `Laptop Pro 15` | Nom du produit |
+| `categorie` | Texte | `Informatique` | Catégorie du produit |
+| `quantite` | Entier | `3` | Nombre d'unités commandées |
+| `prix_unitaire` | Décimal | `1257.97` | Prix unitaire HT en euros |
+| `remise` | Décimal | `0.10` ou `10` | Remise appliquée (les deux formats sont acceptés) |
+| `statut` | Texte | `Livré` | Statut de la commande |
+
+**Statuts reconnus**
+
+| Valeur dans le CSV | Interprétation | Compté dans le CA |
+|---|---|---|
+| `Livré` (ou `livre`, `LIVRÉ`…) | Commande livrée | Oui |
+| `En cours` (ou `encours`…) | En cours de livraison | Oui |
+| `Annulé` (ou `annule`…) | Commande annulée | Non |
+| `Retourné` (ou `retourne`…) | Commande retournée | Non |
+
+Les variantes d'accents, de majuscules et d'espaces sont harmonisées. Une valeur non reconnue devient `Inconnu`.
+
+**Format technique :** séparateur virgule, encodage UTF-8 (avec ou sans BOM). Un fichier d'exemple est fourni : [examples/ventes_exemple_janvier_2024.csv](examples/ventes_exemple_janvier_2024.csv).
+
+## 6. Outils et technologies
+
+| Outil | Utilisation dans le projet |
+|---|---|
+| **Python 3.11+** | Langage de l'ensemble du projet |
+| **pandas** | Lecture et fusion des CSV, nettoyage, typage, calculs et agrégations |
+| **matplotlib / seaborn** | Les 5 graphiques (barres, courbe, camembert, heatmap) |
+| **fpdf2** | Construction du rapport PDF A4, avec polices Unicode embarquées (DejaVu) pour les accents et le symbole € |
+| **schedule** | Exécution automatique le 1er de chaque mois |
+| **argparse** | Interface en ligne de commande |
+| **Streamlit** | Application web de démonstration |
+| **pytest** | 88 tests automatisés (nettoyage, calculs, interface) |
+| **Docker / Dev Containers** | Lancement de l'application sans installer Python (Docker, GitHub Codespaces) |
+| **Git / GitHub, Dependabot** | Versionnage, branches de travail, mise à jour automatique des dépendances |
+
+## 7. Méthodologie
+
+```mermaid
+flowchart LR
+    A[CSV bruts<br/>exports ERP] --> B[1. Extraction<br/>fusion + contrôle des colonnes]
+    B --> C[2. Nettoyage<br/>doublons, trous, types, remises, statuts]
+    C --> D[3. Transformation<br/>CA, KPIs, agrégations]
+    D --> E[4. Visualisation<br/>5 graphiques]
+    E --> F[5. Rapport<br/>PDF 6 pages]
+    G[Ligne de commande] -.-> B
+    H[Planificateur mensuel] -.-> B
+    I[Application web] -.-> B
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        PIPELINE ETL + RAPPORT                       │
-│                                                                     │
-│  ① EXTRACTION      ② NETTOYAGE     ③ TRANSFORMATION                 │
-│  ┌──────────┐      ┌──────────┐    ┌──────────────┐                 │
-│  │ CSV bruts│ ───► │ Qualité  │───►│ Calculs KPIs │                 │
-│  │ (ERP)    │      │ des data │    │ + Agrégations│                 │
-│  └──────────┘      └──────────┘    └──────┬───────┘                 │
-│                                           │                         │
-│                    ⑤ RAPPORT PDF          ▼  ④ VISUALISATION        │
-│                    ┌──────────┐    ┌──────────────┐                 │
-│                    │ 6 pages  │◄───│ 5 graphiques │                 │
-│                    │  + KPIs  │    │     PNG      │                 │
-│                    └──────────┘    └──────────────┘                 │
-└─────────────────────────────────────────────────────────────────────┘
-```
 
-### Étape ① — Extraction
-Le script scanne automatiquement le dossier `data/raw/` et charge **tous les fichiers `.csv`** qu'il y trouve, quel que soit leur nombre. Ils sont fusionnés en un seul jeu de données unifié. Chaque ligne garde une trace de son fichier d'origine.
+Trois principes ont guidé le travail :
 
-### Étape ② — Nettoyage
-Les données brutes d'ERP sont rarement parfaites. Le nettoyage gère :
-- les **doublons** exacts (suppression automatique),
-- les **valeurs manquantes** (suppression si la date est absente, remplacement par la médiane pour les montants, par "Inconnu" pour les champs texte),
-- les **types incohérents** (dates mal formatées, quantités en texte…),
-- les **remises mal saisies** (10 au lieu de 0.10 — normalisé automatiquement),
-- les **valeurs impossibles** (quantités ou prix négatifs → ramenés à 0),
-- les **variantes orthographiques des statuts** (`livre`, `LIVRÉ`, `Livré` → toujours `Livré`).
+1. **Une responsabilité par module** : chaque étape est un fichier indépendant qui reçoit un résultat et en renvoie un autre. On peut modifier le nettoyage sans toucher au rapport, et brancher une nouvelle interface sans réécrire le pipeline.
+2. **Ne pas corriger en silence** : les anomalies détectées (doublons, valeurs manquantes, lignes supprimées…) et les étapes de correction sont signalées dans un journal d'exécution.
+3. **Vérifier chaque calcul** : les fonctions de nettoyage et de calcul sont couvertes par des tests qui comparent les résultats à des valeurs attendues calculées à la main.
 
-### Étape ③ — Transformation
-C'est ici que la valeur métier est calculée :
+## 8. Étapes de réalisation
+
+### 8.1 Extraction
+
+- Lecture de **tous les fichiers CSV** du dossier `data/raw/`, quel que soit leur nombre, puis fusion en un seul jeu de données.
+- Ajout d'une colonne `source_fichier` sur chaque ligne pour savoir d'où elle vient.
+- **Contrôle des colonnes** : si une colonne attendue manque, le pipeline s'arrête avec un message qui la nomme, plutôt que de produire un rapport faux.
+
+### 8.2 Nettoyage
+
+- **Doublons exacts** : supprimés.
+- **Valeurs manquantes** : ligne supprimée si la date manque (non récupérable), médiane pour les montants, `Inconnu` pour les champs texte.
+- **Types incohérents** : dates mal formatées, quantités saisies en texte, espaces parasites.
+- **Remises saisies en pourcentage** : `10` au lieu de `0.10` est divisé par 100. Sans cette correction, le CA de la ligne deviendrait négatif.
+- **Valeurs impossibles** : quantités ou prix négatifs ramenés à 0.
+- **Statuts** : `livre`, `LIVRÉ`, ` livré ` deviennent tous `Livré`.
+- **Colonnes temporelles** : année, mois, nom du mois en français (indépendant de la langue du système), semaine, trimestre.
+
+### 8.3 Transformation
 
 | Calcul | Formule |
-|--------|---------|
+|---|---|
 | CA brut | `quantité × prix_unitaire` |
 | CA net | `CA brut × (1 − remise)` |
-| CA comptabilisé | CA net si statut = Livré ou En cours, sinon 0 |
-| Panier moyen | `CA total ÷ nombre de commandes actives` |
-| Taux d'annulation | `(annulées + retournées) ÷ total × 100` |
-| Remise totale (€) | `somme des (CA brut − CA net)` |
+| CA comptabilisé | CA net, sauf commandes annulées ou retournées (0) |
+| Panier moyen | `CA comptabilisé ÷ nombre de commandes actives` |
+| Taux d'annulation | `(annulées + retournées) ÷ total des lignes × 100` |
+| Remises accordées | `somme des (CA brut − CA net)` |
 
-Les données sont ensuite agrégées par **vendeur**, **mois**, **catégorie**, **région** et **produit**.
-
-### Étape ④ — Visualisation
-Cinq graphiques PNG haute résolution (150 DPI) sont générés dans `output/charts/` :
-
-| Fichier | Type | Contenu |
-|---------|------|---------|
-| `01_top_vendeurs.png` | Barres horizontales | Classement des vendeurs par CA |
-| `02_evolution_mensuelle.png` | Courbe + aire | Tendance du CA mois par mois |
-| `03_repartition_categorie.png` | Camembert + barres | Part de chaque catégorie |
-| `04_heatmap_vendeur_region.png` | Heatmap | Croisement vendeur × région |
-| `05_top_produits.png` | Barres horizontales | Classement des produits par CA |
-
-### Étape ⑤ — Rapport PDF
-Les graphiques et les données calculées sont assemblés dans un rapport A4 de 6 pages avec en-tête, pied de page, et mise en page professionnelle. Le fichier est horodaté et déposé dans `output/rapports/`.
-
----
-
-## 3. Prérequis
-
-- **Python 3.9 ou supérieur** ([télécharger](https://www.python.org/downloads/))
-- **pip** (inclus avec Python)
-- Système : Windows, macOS ou Linux
-
-Pour vérifier votre version de Python :
-```bash
-python --version
-```
-
----
-
-## 4. Installation
-
-### 4.1 Cloner ou télécharger le projet
-
-```bash
-git clone https://github.com/GomuGomuNo01/sales-report-automation.git
-cd sales-report-automation
-```
-
-### 4.2 Créer un environnement virtuel (recommandé)
-
-Un environnement virtuel isole les dépendances du projet du reste de votre système.
-
-```bash
-# Créer l'environnement
-python -m venv .venv
-
-# L'activer — Windows
-.venv\Scripts\activate
-
-# L'activer — macOS / Linux
-source .venv/bin/activate
-```
-
-> Une fois activé, vous verrez `(.venv)` devant votre invite de commande.
-
-### 4.3 Installer les dépendances
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 5. Démonstration sans installation
-
-Trois façons de tester le projet depuis un navigateur, sans rien installer :
-
-| Option | Compte requis | Idéal pour |
-|--------|---------------|------------|
-| [Application web](https://sales-report-automation.streamlit.app) | Aucun | Recruteurs, RH, curieux : un clic, un PDF |
-| [Google Colab](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb) | Google | Suivre le pipeline cellule par cellule |
-| [GitHub Codespaces](https://codespaces.new/GomuGomuNo01/sales-report-automation?quickstart=1) | GitHub | Développeurs : le code + l'application, dans VS Code en ligne |
-
-### 5.1 Application web (Streamlit)
-
-[![Démo en ligne](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sales-report-automation.streamlit.app)
-
-L'interface ([`app.py`](app.py)) appelle exactement les mêmes modules que `python main.py`. Elle propose :
-
-- **🚀 Lancer la démo** : 12 mois de ventes fictives, avec des anomalies typiques d'un export ERP (doublons, remises saisies en %, statuts mal orthographiés, valeurs manquantes…) pour voir le nettoyage à l'œuvre ;
-- **Mes propres fichiers CSV** : déposez un ou plusieurs exports (format décrit en [section 8](#8-format-des-fichiers-csv-attendus)) ;
-- un **tableau de bord** (KPIs + 5 graphiques), un **diagnostic qualité** des données brutes, les **données nettoyées** téléchargeables en CSV et le **journal** d'exécution ;
-- le **téléchargement du rapport PDF** de 6 pages.
-
-Pour la lancer sur votre machine : `pip install -r requirements.txt` puis `streamlit run app.py`, et ouvrez http://localhost:8501.
-
-### 5.2 GitHub Codespaces
-
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/GomuGomuNo01/sales-report-automation?quickstart=1)
-
-Codespaces ouvre le projet dans un VS Code en ligne avec Python et toutes les dépendances déjà installées ([`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json)). L'application web démarre toute seule et s'affiche dans un onglet d'aperçu ; le terminal permet aussi de lancer `python main.py` ou `pytest`.
-
-### 5.3 Google Colab
-
-> **Aucune installation requise.** La démo fonctionne entièrement dans votre navigateur, gratuitement, grâce à Google Colab.
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb)
-
-#### Qu'est-ce que Google Colab ?
-
-Google Colab est un environnement Python en ligne hébergé par Google. Il vous permet d'exécuter du code Python directement dans votre navigateur, **sans installer quoi que ce soit** sur votre ordinateur. C'est la façon la plus rapide de voir le pipeline en action.
-
-#### Lancer la démonstration en 5 étapes
-
-**Étape 1 — Ouvrir le notebook**
-
-Cliquez sur le badge orange *"Open in Colab"* ci-dessus. Le notebook s'ouvre dans un nouvel onglet de votre navigateur.
-
-> Vous aurez besoin d'un compte Google (Gmail) gratuit pour exécuter les cellules.
-
----
-
-**Étape 2 — Se connecter à Google**
-
-Si vous n'êtes pas déjà connecté, Google vous demandera de vous identifier avec votre compte Google. Cliquez sur **"Se connecter"** en haut à droite.
-
----
-
-**Étape 3 — Exécuter toutes les cellules**
-
-Dans le menu en haut, cliquez sur :
-
-```
-Exécution  →  Tout exécuter
-```
-
-Ou utilisez le raccourci clavier : **`Ctrl + F9`** (Windows/Linux) · **`Cmd + F9`** (Mac)
-
-> La première fois, Google affiche un avertissement *"Ce notebook n'a pas été créé par Google"*.  
-> C'est normal — cliquez simplement sur **"Exécuter quand même"** pour continuer.
-
----
-
-**Étape 4 — Attendre la génération (~30–60 secondes)**
-
-Colab va exécuter automatiquement dans l'ordre :
-
-| # | Ce qui se passe | Durée estimée |
-|---|-----------------|---------------|
-| 1 | Installation des dépendances Python | ~20 sec |
-| 2 | Génération de données de ventes fictives (12 mois) | ~2 sec |
-| 3 | Extraction, nettoyage et calcul des KPIs | ~3 sec |
-| 4 | Génération des 5 graphiques | ~5 sec |
-| 5 | Assemblage du rapport PDF 6 pages | ~3 sec |
-
-Une barre de progression s'affiche à gauche de chaque cellule en cours d'exécution. Une coche verte ✅ indique qu'elle est terminée.
-
----
-
-**Étape 5 — Consulter et télécharger les résultats**
-
-En faisant défiler le notebook vers le bas après exécution, vous trouverez :
-
-- 📊 **Les 5 graphiques** affichés en pleine taille directement dans la page
-- 📄 **Un lien de téléchargement** pour récupérer le rapport PDF généré
-- 📋 **Le journal d'exécution** du pipeline avec les métriques (lignes traitées, KPIs calculés, durée)
-
-#### Personnaliser la démonstration
-
-Pour changer la période affichée sur la page de garde du rapport, repérez la cellule contenant :
+Les résultats sont ensuite agrégés par vendeur, mois, catégorie, région, produit, et croisés vendeur × région. Extrait de [`src/transformer.py`](src/transformer.py) :
 
 ```python
-PERIODE = "Janvier - Décembre 2024"
+df["ca_brut"] = df["quantite"] * df["prix_unitaire"]
+df["ca_net"]  = (df["ca_brut"] * (1 - df["remise"])).round(2)
+
+# Les commandes annulées ou retournées ne comptent pas dans le CA
+df["ca_comptabilise"] = np.where(
+    df["statut"].isin(EXCLUDED_STATUTS), 0.0, df["ca_net"]
+)
 ```
 
-Modifiez le texte entre guillemets (par exemple `"Janvier - Juin 2025"`), puis relancez toutes les cellules avec **`Ctrl + F9`**.
+### 8.4 Visualisation
 
-### 5.4 Mettre l'application en ligne (pour le propriétaire du dépôt)
+| Graphique | Type | Contenu |
+|---|---|---|
+| Top vendeurs | Barres horizontales | Classement des vendeurs par CA, le premier mis en évidence |
+| Évolution mensuelle | Courbe et aire | Tendance du CA mois par mois |
+| Répartition par catégorie | Camembert et barres | Part et montant de chaque catégorie |
+| Vendeurs × régions | Heatmap | CA de chaque vendeur dans chaque région |
+| Top produits | Barres horizontales | Classement des produits par CA |
 
-**Streamlit Community Cloud** (gratuit) :
+Les graphiques sont produits en PNG à 150 DPI, avec une palette et un style communs.
 
-1. Se connecter sur [share.streamlit.io](https://share.streamlit.io) avec son compte GitHub.
-2. **Create app** → *Deploy a public app from GitHub* → dépôt `GomuGomuNo01/sales-report-automation`, branche `main`, fichier `app.py`.
-3. Dans **App URL**, choisir `sales-report-automation` (c'est l'adresse utilisée dans ce README).
-4. Dans **Advanced settings**, choisir **Python 3.12** (pandas 3 exige Python 3.11 ou plus).
-5. **Deploy**. Chaque push sur `main` redéploie ensuite l'application automatiquement.
+### 8.5 Rapport PDF
 
-**Docker** (Hugging Face Spaces, Render, Railway, un serveur…) :
+- Document A4 de **6 pages** : tableau de bord, vendeurs, évolution mensuelle, catégories, régions, produits.
+- Une page de garde avec les indicateurs clés, puis 5 pages associant chacune un graphique et un tableau de valeurs exactes.
+- En-tête, pied de page, date de génération et nom de fichier horodaté.
+- Polices DejaVu embarquées pour afficher correctement les accents et le symbole €.
 
-```bash
-docker build -t sales-report .
-docker run -p 8501:8501 sales-report      # → http://localhost:8501
-```
+### 8.6 Automatisation
 
-Le port d'écoute se change avec la variable d'environnement `PORT` (ex. `-e PORT=7860` pour Hugging Face Spaces).
+- **Ligne de commande** : `python main.py --periode "Novembre 2024"` exécute les 5 étapes.
+- **Planification** : `python main.py --mode schedule` génère le rapport seul le 1er de chaque mois à 8 h.
+- **Journal** : chaque exécution écrit un fichier de log quotidien dans `output/logs/`.
 
----
+### 8.7 Application web
 
-## 6. Premier rapport en 3 commandes
+L'application [`app.py`](app.py) (Streamlit) appelle **exactement les mêmes modules** que la ligne de commande. Elle propose :
 
-Si vous souhaitez installer et tester le pipeline localement sur votre machine :
+- une **démo en un clic** sur 12 mois de données, avec des anomalies typiques d'un export ERP ajoutées volontairement ;
+- l'**envoi de ses propres fichiers CSV**, avec un fichier modèle téléchargeable et des messages d'erreur clairs ;
+- un **tableau de bord** (indicateurs et graphiques), un **diagnostic qualité** des données brutes, les **données nettoyées** en CSV et le **journal** d'exécution ;
+- le **téléchargement du rapport PDF**.
 
-```bash
-# 1. Générer des données de démonstration (12 mois de ventes fictives)
-python generate_data.py
+Chaque exécution travaille dans un dossier temporaire qui lui est propre, pour que plusieurs visiteurs puissent utiliser l'application en même temps.
 
-# 2. Lancer le pipeline
-python main.py --periode "Janvier - Décembre 2024"
+### 8.8 Contrôle qualité
 
-# 3. Ouvrir le rapport
-#    Le fichier PDF se trouve dans : output/rapports/
-```
+| Fichier de tests | Ce qui est vérifié |
+|---|---|
+| [`tests/test_cleaner.py`](tests/test_cleaner.py) | Doublons, valeurs manquantes, types, remises, valeurs négatives, statuts, colonnes temporelles, nettoyage complet |
+| [`tests/test_transformer.py`](tests/test_transformer.py) | CA brut, net et comptabilisé, cohérence des KPIs, tri des classements, heatmap, transformation complète |
+| [`tests/test_app.py`](tests/test_app.py) | Génération des données de démo, ajout et détection des anomalies, libellé de période, pipeline complet, affichage de l'application |
 
-Le rapport est généré en quelques secondes. Son nom est horodaté :  
-`output/rapports/rapport_20240201_083012.pdf`
+## 9. Le rapport généré
 
----
+📥 **[Télécharger un exemple de rapport (`rapport_exemple_2024.pdf`, 6 pages)](examples/rapport_exemple_2024.pdf)**
 
-## 7. Utilisation au quotidien
+| Page | Contenu |
+|---|---|
+| ![Tableau de bord](docs/images/01_couverture.png) | **Tableau de bord** : CA total, commandes, panier moyen, taux d'annulation, puis vendeurs actifs, produits vendus, remises accordées et nombre d'annulations |
+| ![Performances vendeurs](docs/images/02_vendeurs.png) | **Performances vendeurs** : classement par CA en barres, meilleur vendeur mis en évidence, tableau avec rang et CA exact |
+| ![Évolution mensuelle](docs/images/03_evolution.png) | **Évolution mensuelle** : courbe du CA, et pour chaque mois le CA, la variation par rapport au mois précédent et le cumul |
+| ![Répartition par catégorie](docs/images/04_categories.png) | **Catégories** : part de chaque catégorie en camembert et en barres, tableau du CA et du pourcentage |
+| ![Vendeurs et régions](docs/images/05_heatmap.png) | **Vendeurs × régions** : heatmap du CA par vendeur et par région, tableau du CA et de la part de chaque région |
+| ![Top produits](docs/images/06_top_produits.png) | **Top produits** : classement des produits par CA, tableau avec rang et CA exact |
 
-### Cas standard — rapport mensuel
+## 10. Analyses et résultats détaillés
 
-Chaque mois, vous exportez vos données depuis votre ERP, copiez les fichiers CSV dans `data/raw/`, puis lancez :
+### Performance
+
+| Mesure | Valeur |
+|---|---|
+| Temps du travail manuel remplacé | 5 heures par mois |
+| Durée d'exécution du pipeline complet (ligne de commande) | environ 3 secondes |
+| Volume traité | 12 fichiers, 1 163 lignes |
+| Livrables produits | 5 graphiques PNG et 1 rapport PDF de 6 pages |
+| Interventions humaines nécessaires | aucune en mode planifié |
+
+### Robustesse face aux données mal saisies
+
+Pour vérifier la fiabilité du nettoyage, l'application dégrade volontairement les 12 fichiers de démonstration. Voici ce que le pipeline détecte et corrige :
+
+| Anomalie dans les fichiers bruts | Lignes concernées | Correction appliquée |
+|---|---|---|
+| Doublons exacts | 17 | Supprimés |
+| Dates manquantes ou illisibles | 12 | Lignes supprimées |
+| Champs texte vides | 13 | Remplacés par `Inconnu` |
+| Montants manquants | 12 | Remplacés par la médiane |
+| Remises saisies en % (`10` au lieu de `0.10`) | 217 | Divisées par 100 |
+| Quantités ou prix négatifs | 12 | Ramenés à 0 |
+| Statuts mal orthographiés | 231 | Harmonisés |
+
+Comparaison des indicateurs calculés sur les données propres et sur les mêmes données dégradées :
+
+| Indicateur | Données propres | Données dégradées puis nettoyées | Écart |
+|---|---|---|---|
+| Lignes exploitables | 1 163 | 1 151 (sur 1 180 brutes) | -1,0 % |
+| CA comptabilisé | 2 023 784 € | 2 001 050 € | -1,1 % |
+| Commandes actives | 731 | 723 | -1,1 % |
+| Panier moyen | 2 769 € | 2 768 € | 0,0 % |
+| Taux d'annulation | 37,2 % | 37,2 % | 0,0 % |
+
+Sans la correction des remises, les 217 remises saisies en pourcentage suffisent à rendre le chiffre d'affaires négatif (−1 479 229 €). Après nettoyage, l'écart restant de 1,1 % vient surtout des 12 lignes sans date, qui ne peuvent être rattachées à aucun mois et sont écartées, et à la marge des montants manquants estimés par la médiane.
+
+### Exemple de résultats produits (données de démonstration 2024)
+
+| CA comptabilisé | Commandes actives | Panier moyen | Remises accordées | Taux d'annulation | Vendeurs | Produits |
+|---|---|---|---|---|---|---|
+| 2 023 784 € | 731 | 2 769 € | 171 612 € | 37,2 % | 10 | 15 |
+
+- **Saisonnalité** : novembre est le meilleur mois (381 777 €), plus du double d'un mois moyen, et septembre le plus faible (91 216 €).
+- **Catégories** : les Logiciels représentent 51 % du CA (1 028 403 €), devant l'Informatique (27 %).
+- **Vendeurs** : Claire Bernard arrive en tête avec 252 402 €, devant Emma Petit (232 961 €) et Hugo Laurent (227 794 €).
+
+Ces chiffres proviennent de données fictives : ils illustrent ce que le rapport met en évidence, pas la situation d'une entreprise réelle.
+
+## 11. Utilisation au quotidien
+
+### Rapport mensuel
+
+Chaque mois, copier les exports CSV dans `data/raw/` puis lancer :
 
 ```bash
 python main.py --periode "Novembre 2024"
 ```
 
-Le `--periode` est un **libellé libre** qui apparaît sur la page de garde du rapport. Vous pouvez écrire ce que vous voulez : `"T3 2024"`, `"Janvier - Juin 2024"`, `"Bilan annuel 2024"`.
+Le texte de `--periode` est libre (`"T3 2024"`, `"Bilan annuel 2024"`…) et s'affiche sur la page de garde. Le rapport est déposé dans `output/rapports/` avec un nom horodaté, par exemple `rapport_20241201_083012.pdf`.
 
-Si vous omettez `--periode`, le script utilise automatiquement le mois courant.
-
-### Automatisation mensuelle
-
-Pour que le rapport se génère **automatiquement le 1er de chaque mois à 08h00**, sans intervention :
+### Génération automatique
 
 ```bash
 python main.py --mode schedule
 ```
 
-Le processus tourne en continu. Il génère un rapport de test immédiatement au démarrage, puis attend le prochain 1er du mois. Pour l'arrêter : `Ctrl+C`.
-
-> **Conseil :** sur un serveur, utilisez un service système (systemd, Windows Task Scheduler) pour que le processus redémarre automatiquement après un reboot.
+Le processus génère un rapport immédiatement, puis un nouveau le 1er de chaque mois à 8 h. Pour une exécution durable sur un serveur, le lancer via un service système (Planificateur de tâches Windows, systemd).
 
 ### Toutes les options
 
 ```
 python main.py [--periode "..."] [--mode once|schedule]
 
-Options :
-  --periode   Libellé de la période affiché dans le rapport (ex: "Janvier 2024")
-              Par défaut : mois courant (ex: "Mai 2024")
-
-  --mode      once      → génère un rapport et s'arrête (défaut)
-              schedule  → tourne en continu, génère le 1er de chaque mois à 08h00
+  --periode   Libellé de la période affiché dans le rapport (par défaut : mois courant)
+  --mode      once      génère un rapport et s'arrête (par défaut)
+              schedule  génère un rapport le 1er de chaque mois à 8 h
 ```
 
-### Logs d'exécution
+### Personnalisation
 
-Chaque exécution produit un fichier de log journalier dans `output/logs/`. Il contient le détail de chaque étape, les éventuels avertissements (doublons détectés, valeurs manquantes…) et le résumé final.
-
-```
-output/logs/pipeline_20241201.log
-```
-
----
-
-## 8. Format des fichiers CSV attendus
-
-### Nommage des fichiers
-
-Les fichiers peuvent avoir n'importe quel nom. Ils doivent simplement être au format `.csv` et se trouver dans le dossier `data/raw/`. Tous les fichiers présents dans ce dossier seront automatiquement chargés et fusionnés.
-
-> **Conseil :** nommez vos fichiers avec le mois et l'année pour vous y retrouver, par exemple `ventes_janvier_2024.csv`.
-
-### Structure obligatoire
-
-Chaque fichier CSV doit contenir exactement ces **9 colonnes**, dans n'importe quel ordre :
-
-| Colonne | Type | Exemple | Description |
-|---------|------|---------|-------------|
-| `date` | Date | `2024-01-15` | Date de la commande (format YYYY-MM-DD) |
-| `vendeur` | Texte | `Alice Martin` | Nom complet du commercial |
-| `region` | Texte | `Île-de-France` | Région de vente |
-| `produit` | Texte | `Laptop Pro 15` | Nom exact du produit |
-| `categorie` | Texte | `Informatique` | Catégorie du produit |
-| `quantite` | Entier | `3` | Nombre d'unités commandées |
-| `prix_unitaire` | Décimal | `1257.97` | Prix HT par unité, en euros |
-| `remise` | Décimal | `0.10` ou `10` | Remise appliquée (0.10 = 10%, les deux formats sont acceptés) |
-| `statut` | Texte | `Livré` | Statut de la commande (voir ci-dessous) |
-
-Un fichier CSV d'exemple est disponible : [examples/ventes_exemple_janvier_2024.csv](examples/ventes_exemple_janvier_2024.csv)
-
-### Statuts reconnus
-
-| Valeur dans le CSV | Interprétation | Comptabilisé dans le CA ? |
-|--------------------|----------------|--------------------------|
-| `Livré` (ou `livre`, `LIVRÉ`…) | Commande livrée | ✅ Oui |
-| `En cours` (ou `encours`…) | En cours de livraison | ✅ Oui |
-| `Annulé` (ou `annule`…) | Commande annulée | ❌ Non |
-| `Retourné` (ou `retourne`…) | Commande retournée | ❌ Non |
-
-> Le script tolère les variantes orthographiques (avec ou sans accent, majuscules…). Les valeurs non reconnues sont classées `Inconnu` et exclues du CA.
-
-### Encodage des fichiers
-
-Les fichiers doivent être en **UTF-8 avec BOM** (`utf-8-sig`). C'est le format produit par le script `generate_data.py` et celui reconnu nativement par Excel Windows.
-
-Si vos fichiers ERP sont en UTF-8 sans BOM et affichent des caractères corrompus dans Excel, ouvrez-les avec Excel via *Données > À partir d'un fichier texte/CSV* et choisissez l'encodage UTF-8.
-
----
-
-## 9. Ce que contient le rapport
-
-Le rapport PDF généré contient **6 pages**. Un exemple complet est téléchargeable ici : [examples/rapport_exemple_2024.pdf](examples/rapport_exemple_2024.pdf)
-
-### Page 1 — Tableau de bord exécutif
-
-<img src="docs/images/01_couverture.png" width="480" alt="Page de garde" align="right"/>
-
-La page d'accueil résume l'essentiel en un coup d'œil :
-
-**Indicateurs principaux (4 cartes)**
-
-| Indicateur | Ce qu'il mesure |
-|------------|----------------|
-| **CA Total** | Somme du chiffre d'affaires net comptabilisé (commandes Livrées et En cours uniquement) |
-| **Commandes** | Nombre de commandes actives (hors annulées et retournées) |
-| **Panier Moyen** | CA Total ÷ Nombre de commandes — représente la valeur moyenne d'une commande |
-| **Taux d'Annulation** | Proportion des commandes annulées ou retournées — à surveiller si > 20% |
-
-**Indicateurs secondaires**
-
-| Indicateur | Ce qu'il mesure |
-|------------|----------------|
-| Vendeurs actifs | Nombre de commerciaux distincts ayant passé au moins une commande |
-| Produits vendus | Nombre de références produits distinctes |
-| Remises accordées | Montant total des remises en euros sur la période |
-| Annulations | Nombre brut de commandes annulées ou retournées |
-
----
-
-<br clear="right"/>
-
-### Page 2 — Performances vendeurs
-
-<img src="docs/images/02_vendeurs.png" width="480" alt="Top vendeurs" align="right"/>
-
-- **Graphique** : classement des vendeurs par CA, en barres horizontales. Le meilleur vendeur est mis en évidence en orange.
-- **Tableau** : liste complète avec le CA exact et le rang de chaque vendeur.
-
----
-
-<br clear="right"/>
-
-### Page 3 — Évolution mensuelle
-
-<img src="docs/images/03_evolution.png" width="480" alt="Évolution mensuelle" align="right"/>
-
-- **Graphique** : courbe du CA mois par mois sur la période analysée, avec l'aire sous la courbe pour visualiser la tendance globale.
-- **Tableau** : pour chaque mois, le CA, la variation par rapport au mois précédent (en %, vert si hausse, rouge si baisse) et le cumul depuis le début de la période.
-
-> La variation M/M (mois sur mois) permet d'identifier rapidement les mois atypiques — pic de fin d'année, creux estival, etc.
-
----
-
-<br clear="right"/>
-
-### Page 4 — Répartition par catégorie
-
-<img src="docs/images/04_categories.png" width="480" alt="Répartition catégories" align="right"/>
-
-- **Camembert** : part de chaque catégorie de produits dans le CA total.
-- **Barres** : même information sous forme de barres pour faciliter la comparaison des valeurs absolues.
-- **Tableau** : CA et pourcentage exacts par catégorie.
-
----
-
-<br clear="right"/>
-
-### Page 5 — Heatmap vendeurs × régions
-
-<img src="docs/images/05_heatmap.png" width="480" alt="Heatmap vendeurs régions" align="right"/>
-
-- **Heatmap** : matrice croisant chaque vendeur (lignes) avec chaque région (colonnes). Plus la case est foncée, plus le CA généré dans cette région par ce vendeur est élevé. Les cases à 0 indiquent qu'un vendeur n'a pas opéré dans cette région.
-- **Tableau** : CA par région avec la part en pourcentage — utile pour identifier les régions sous-exploitées.
-
----
-
-<br clear="right"/>
-
-### Page 6 — Top produits
-
-<img src="docs/images/06_top_produits.png" width="480" alt="Top produits" align="right"/>
-
-- **Graphique** : classement des produits les plus vendus en CA, le meilleur mis en évidence.
-- **Tableau** : liste complète avec le CA et le rang de chaque produit.
-
----
-
-## 10. Personnaliser le pipeline
-
-Toutes les constantes métier et visuelles sont centralisées dans **`config.py`**. Pas besoin de toucher au code du pipeline pour les modifier.
+Les réglages métier et visuels sont centralisés dans [`config.py`](config.py), sans toucher au pipeline :
 
 ```python
-# config.py
-
-# Titre affiché dans l'en-tête et la page de garde du PDF
-RAPPORT_TITRE = "Rapport de Performance Commerciale"
-
-# Nom affiché dans le pied de page
-RAPPORT_AUTEUR = "Service Commercial"
-
-# Couleur principale (bleu corporate) — format hexadécimal
-RAPPORT_COULEUR_PRINCIPALE = "#2E86AB"
-
-# Nombre de vendeurs et de produits à afficher dans les classements
-TOP_VENDEURS_N = 10
+RAPPORT_TITRE              = "Rapport de Performance Commerciale"  # titre du PDF
+RAPPORT_AUTEUR             = "Service Commercial"                  # pied de page
+RAPPORT_COULEUR_PRINCIPALE = "#2E86AB"                             # couleur principale
+TOP_VENDEURS_N             = 10                                    # taille des classements
+EXCLUDED_STATUTS           = ["Annulé", "Retourné"]                # statuts exclus du CA
 ```
 
-### Exemples de personnalisation courante
+## 12. Principaux enseignements
 
-**Changer la couleur du rapport :**
-```python
-RAPPORT_COULEUR_PRINCIPALE = "#1B4332"   # Vert foncé
-RAPPORT_COULEUR_PRINCIPALE = "#C0392B"   # Rouge bordeaux
-```
+**Sur la démarche**
+- **Partir du temps perdu par l'utilisateur** donne un objectif mesurable : chaque étape automatisée correspond à une tâche manuelle identifiée.
+- **Un livrable doit être utilisable sans moi** : un rapport lisible par une direction, une démo accessible à un recruteur, une documentation qui permet de reprendre le projet.
 
-**Afficher le top 5 vendeurs au lieu du top 10 :**
-```python
-TOP_VENDEURS_N = 5
-```
+**Sur les données**
+- **Les erreurs les plus graves sont silencieuses** : une remise saisie `10` au lieu de `0.10` ne provoque aucune erreur, mais rend le CA négatif. Seul un contrôle explicite la détecte.
+- **Toute valeur manquante n'a pas la même gravité** : un prix manquant peut être estimé, une date manquante rend la ligne inutilisable.
+- **Ne pas dépendre de la langue du système** : les noms de mois sont tirés d'un dictionnaire français, sinon le rapport afficherait « January » sur un serveur configuré en anglais.
 
-**Changer le nom de l'auteur dans le pied de page :**
-```python
-RAPPORT_AUTEUR = "Direction Régionale Sud"
-```
+**Sur le code**
+- **Séparer le cœur des interfaces** paie : l'application web a été ajoutée sans réécrire le pipeline, avec un seul paramètre supplémentaire (le dossier de sortie).
+- **Les tests protègent aussi des mises à jour** : ils ont signalé le changement de comportement de pandas 3 sur les colonnes de texte.
+- **Une application web sert plusieurs visiteurs à la fois** : matplotlib n'étant pas prévu pour cela, les exécutions sont sérialisées et chacune écrit dans son propre dossier temporaire.
+- **Un PDF doit embarquer ses polices** pour afficher correctement les accents et le symbole € sur toutes les machines.
 
----
-
-## 11. Structure du projet
+## 13. Structure du projet
 
 ```
 sales-report-automation/
-│
-├── main.py               ← Point d'entrée. C'est le fichier à lancer.
-├── app.py                ← Interface web de démonstration (Streamlit)
-├── config.py             ← Toutes les constantes (chemins, couleurs, règles métier)
-├── generate_data.py      ← Génère des données fictives pour tester le pipeline
-├── demo_colab.ipynb      ← Notebook Google Colab interactif
-├── conftest.py           ← Configuration pytest (ne pas modifier)
-├── pyproject.toml        ← Métadonnées du projet et config des outils
-├── requirements.txt      ← Liste des dépendances Python
-├── Dockerfile            ← Image de l'interface web (déploiement)
-│
-├── .github/
-│   └── dependabot.yml    ← Mise à jour automatique des dépendances (Dependabot)
-├── .devcontainer/        ← Environnement GitHub Codespaces prêt à l'emploi
-├── .streamlit/           ← Thème et réglages de l'interface web
-│
-├── src/                  ← Cœur du pipeline (une responsabilité par fichier)
-│   ├── extractor.py      ← Lit et fusionne les CSV de data/raw/
-│   ├── cleaner.py        ← Nettoie et standardise les données
-│   ├── transformer.py    ← Calcule les KPIs et les agrégations
-│   ├── visualizer.py     ← Génère les 5 graphiques PNG
-│   ├── reporter.py       ← Assemble le rapport PDF final
-│   └── scheduler.py      ← Gère l'exécution automatique mensuelle
-│
-├── tests/                ← Suite de tests automatisés
-│   ├── test_cleaner.py   ← 20+ tests du nettoyage
-│   ├── test_transformer.py ← 30+ tests des calculs
-│   └── test_app.py       ← Tests de l'interface web
-│
-├── examples/             ← Livrables d'exemple à consulter directement
-│   ├── rapport_exemple_2024.pdf           ← Rapport PDF complet (6 pages)
-│   └── ventes_exemple_janvier_2024.csv    ← Fichier CSV source d'exemple
-│
-├── data/
-│   ├── raw/              ← 📥 Déposez ici vos fichiers CSV d'entrée
-│   └── processed/        ← Données intermédiaires (géré automatiquement)
-│
-└── output/
-    ├── rapports/         ← 📤 Les rapports PDF générés arrivent ici
-    ├── charts/           ← Graphiques PNG (générés à chaque exécution)
-    └── logs/             ← Journaux d'exécution quotidiens
+├── README.md
+├── main.py                      Point d'entrée en ligne de commande
+├── app.py                       Application web de démonstration (Streamlit)
+├── config.py                    Chemins, règles métier, titre et couleurs du rapport
+├── generate_data.py             Génération des données de démonstration
+├── demo_colab.ipynb             Démonstration pas à pas dans Google Colab
+├── requirements.txt             Dépendances Python
+├── pyproject.toml               Métadonnées du projet et configuration des outils
+├── Dockerfile                   Image de l'application web
+├── DejaVuSans*.ttf              Polices Unicode embarquées dans le PDF
+├── src/
+│   ├── extractor.py             1. Lecture et fusion des CSV
+│   ├── cleaner.py               2. Nettoyage et standardisation
+│   ├── transformer.py           3. Calcul des KPIs et agrégations
+│   ├── visualizer.py            4. Les 5 graphiques
+│   ├── reporter.py              5. Le rapport PDF
+│   └── scheduler.py             Exécution automatique mensuelle
+├── tests/                       Tests automatisés (pytest)
+├── examples/                    Exemple de CSV source et de rapport PDF
+├── docs/images/                 Captures du rapport et de l'application
+├── .streamlit/                  Thème et réglages de l'application web
+├── .devcontainer/               Environnement GitHub Codespaces
+├── .github/dependabot.yml       Mise à jour automatique des dépendances
+├── data/raw/                    Fichiers CSV d'entrée (non versionnés)
+└── output/                      Rapports, graphiques et journaux générés (non versionnés)
 ```
 
-> **Les seuls dossiers que vous manipulez manuellement sont `data/raw/` (entrée) et `output/rapports/` (sortie).**
+## 14. Reproduire le projet
 
----
+**Option 1 : tester en ligne (recommandé, aucune installation)**
 
-## 12. Tests et fiabilité
+1. Ouvrir la [démo en ligne](https://sales-report-automation.streamlit.app). Si personne ne l'a utilisée récemment, elle peut mettre une trentaine de secondes à démarrer.
+2. Cliquer sur **Lancer la démo**, ou déposer ses propres fichiers CSV depuis le panneau de gauche.
+3. Télécharger le rapport PDF.
 
-Le projet inclut une suite de tests automatisés qui vérifient chaque fonction critique du pipeline.
+**Option 2 : installer le projet sur son poste**
 
-### Lancer les tests
+Prérequis : [Python 3.11 ou plus récent](https://www.python.org/downloads/).
 
 ```bash
-# Tous les tests avec détail
+git clone https://github.com/GomuGomuNo01/sales-report-automation.git
+cd sales-report-automation
+python -m venv .venv
+source .venv/bin/activate            # Windows : .venv\Scripts\activate
+pip install -r requirements.txt
+
+python generate_data.py              # 12 mois de données de démonstration
+python main.py --periode "Janvier - Décembre 2024"
+# Le rapport se trouve dans output/rapports/
+
+streamlit run app.py                 # Application web sur http://localhost:8501
+```
+
+**Option 3 : sans installer Python**
+
+- **Docker** : `docker build -t sales-report .` puis `docker run -p 8501:8501 sales-report`, et ouvrir http://localhost:8501.
+- **GitHub Codespaces** (compte GitHub) : [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/GomuGomuNo01/sales-report-automation?quickstart=1) ouvre le projet dans un VS Code en ligne, avec l'application lancée automatiquement.
+- **Google Colab** (compte Google) : [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb) exécute le pipeline cellule par cellule (menu *Exécution > Tout exécuter*).
+
+**Lancer les tests :**
+
+```bash
 pytest
-
-# Avec le rapport de couverture de code
-pytest --cov=src --cov-report=term-missing
-
-# Un module spécifique
-pytest tests/test_cleaner.py -v
-pytest tests/test_transformer.py -v
+pytest --cov=src --cov-report=term-missing   # avec la couverture (pip install pytest-cov)
 ```
 
-### Ce qui est testé
+**Mettre l'application en ligne** (Streamlit Community Cloud, gratuit)
 
-| Module | Ce que les tests vérifient |
-|--------|---------------------------|
-| `cleaner.py` | Suppression des doublons, gestion des NaN, correction des types, normalisation des remises, standardisation des statuts, colonnes temporelles |
-| `transformer.py` | Calcul du CA brut/net/comptabilisé, cohérence des KPIs, tri des agrégations, intégrité de la heatmap, résultat global du pipeline |
+1. Se connecter sur [share.streamlit.io](https://share.streamlit.io) avec son compte GitHub.
+2. **Create app**, puis choisir ce dépôt, la branche `main` et le fichier `app.py`.
+3. Dans **App URL**, saisir `sales-report-automation` (adresse utilisée dans ce README).
+4. Dans **Advanced settings**, choisir **Python 3.12**.
+5. Cliquer sur **Deploy**. Chaque push sur `main` met ensuite l'application à jour.
 
-Un test de base pour vérifier que tout est bien installé :
+L'image Docker peut aussi être déployée sur Hugging Face Spaces, Render ou Railway (le port se règle avec la variable `PORT`).
 
-```bash
-pytest tests/test_cleaner.py::TestCleanIntegration -v
-```
+**Problèmes courants**
 
----
+| Problème | Cause | Solution |
+|---|---|---|
+| `Aucun fichier CSV trouvé dans data/raw/` | Le dossier d'entrée est vide | Copier les CSV dans `data/raw/`, ou lancer `python generate_data.py` |
+| `Colonnes manquantes dans les données` | Un fichier n'a pas les 9 colonnes attendues | Vérifier les noms de colonnes (sensibles à la casse) et le séparateur virgule |
+| Accents illisibles dans Excel (`Ã©`) | Excel lit le fichier dans un autre encodage | *Données > À partir d'un fichier texte/CSV*, encodage UTF-8 |
+| Rapport PDF vide ou tronqué | Polices introuvables | Vérifier la présence des fichiers `DejaVuSans*.ttf` à la racine |
+| Le rapport planifié ne se génère pas | Le processus a été arrêté | Relancer `python main.py --mode schedule` via un service système |
 
-## 13. Résolution des problèmes courants
+## 15. Limites et pistes d'amélioration
 
-### Les caractères s'affichent mal dans Excel (Ã©, Ã¨, etc.)
+**Limites**
+- **Données fictives** : les ventes sont tirées au hasard de façon uniforme. Les constats chiffrés (par exemple un taux d'annulation de 37 %) illustrent le fonctionnement de l'outil, pas une situation réelle.
+- **Statuts inconnus** : une ligne dont le statut n'est pas reconnu est classée `Inconnu` et reste comptée dans le CA, car seuls les statuts annulé et retourné sont exclus.
+- **Période par défaut** : sans `--periode`, le libellé du mois courant dépend de la langue du système.
+- **Format d'entrée strict** : CSV séparé par des virgules, noms de colonnes exacts. Les fichiers Excel ou séparés par des points-virgules ne sont pas acceptés.
+- **Planificateur simple** : il fonctionne tant que le processus reste lancé ; il ne remplace pas un ordonnanceur système.
+- **Hébergement gratuit** : la démo en ligne se met en veille quand elle n'est pas utilisée.
 
-**Cause :** Excel Windows interprète le fichier UTF-8 comme du CP1252.  
-**Solution :** dans Excel, utilisez *Données → À partir d'un fichier texte/CSV* et sélectionnez l'encodage **UTF-8**. Si vous régénérez les données avec `generate_data.py`, les nouveaux fichiers incluront automatiquement un BOM reconnu par Excel.
+**Pistes d'amélioration**
+- Accepter les fichiers **Excel** et détecter automatiquement le **séparateur** et l'**encodage**.
+- Ajouter une **comparaison avec la période précédente** (N-1, mois précédent) sur la page de garde.
+- **Envoyer automatiquement le rapport par e-mail** après chaque génération planifiée.
+- Lire les ventes directement depuis une **base de données** ou l'API de l'ERP plutôt que depuis des CSV.
+- Exécuter les tests à chaque push avec **GitHub Actions**.
+- Exporter les agrégats dans un **classeur Excel** en complément du PDF.
 
----
+## 16. Crédits
 
-### `FileNotFoundError: Aucun fichier CSV trouvé dans data/raw/`
+- Polices : [DejaVu Fonts](https://dejavu-fonts.github.io/) (licence libre).
+- Bibliothèques : pandas, matplotlib, seaborn, fpdf2, Streamlit, pytest.
 
-**Cause :** le dossier `data/raw/` est vide.  
-**Solution :** copiez vos fichiers CSV dans `data/raw/`. Pour un test rapide, lancez d'abord `python generate_data.py`.
-
----
-
-### `ValueError: Colonnes manquantes dans les données`
-
-**Cause :** un ou plusieurs fichiers CSV ne contiennent pas les 9 colonnes attendues.  
-**Solution :** vérifiez que vos fichiers ont bien les colonnes `date`, `vendeur`, `region`, `produit`, `categorie`, `quantite`, `prix_unitaire`, `remise`, `statut`. Les noms de colonnes sont sensibles à la casse.
-
----
-
-### Le rapport PDF est vide ou tronqué
-
-**Cause :** les polices DejaVuSans ne sont pas trouvées.  
-**Solution :** vérifiez que les fichiers `DejaVuSans.ttf`, `DejaVuSans-Bold.ttf` et `DejaVuSans-Oblique.ttf` sont bien présents à la racine du projet.
-
----
-
-### Les mois s'affichent en anglais dans le rapport
-
-**Cause :** ancienne version du pipeline utilisant `strftime("%B")` (dépendant de la locale système).  
-**Solution :** assurez-vous d'utiliser la version à jour du code (la version actuelle utilise un dictionnaire de noms français indépendant de la locale).
-
----
-
-### Le scheduler ne se déclenche pas à l'heure prévue
-
-**Cause probable :** le processus a été interrompu (redémarrage du serveur, fermeture du terminal).  
-**Solution :** relancez `python main.py --mode schedule`. Pour une exécution persistante, configurez un service système (Windows Task Scheduler, systemd sur Linux).
-
----
-
-## 14. Dépendances
-
-| Package | Version minimale | Rôle dans le projet |
-|---------|-----------------|---------------------|
-| `pandas` | 3.0 | Chargement, nettoyage et agrégation des données |
-| `matplotlib` | 3.10 | Génération de tous les graphiques |
-| `seaborn` | 0.13 | Heatmap et styles visuels avancés |
-| `fpdf2` | 2.8 | Création du rapport PDF |
-| `openpyxl` | 3.1 | Support de l'export Excel (optionnel) |
-| `schedule` | 1.2 | Planification mensuelle automatique |
-| `streamlit` | 1.65 | Interface web de démonstration |
-| `faker` | 40 | Génération de données de test réalistes |
-| `pytest` | 9 | Exécution des tests automatisés |
-| `pytest-cov` | 5 | Rapport de couverture de code |
-
-Les mises à jour de ces dépendances sont gérées automatiquement chaque lundi via [Dependabot](.github/dependabot.yml).
-
----
-
-<br clear="right"/>
-
----
-
-*Généré automatiquement par le pipeline — pour toute question, consultez les logs dans `output/logs/`.*
+**Auteur :** Dibie Elisee Jules Cedric KOUADIO ([@GomuGomuNo01](https://github.com/GomuGomuNo01))
