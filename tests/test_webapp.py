@@ -217,7 +217,7 @@ class TestGenerationDemo:
         assert re.fullmatch(r"[\d ]+ lignes valides · [\d ]+ retirées", details["nettoyage"])
         assert details["transformation"] == "8 indicateurs · 6 agrégations"
         assert details["visualisation"] == "5 graphiques"
-        assert re.fullmatch(r"PDF de 6 pages · [\d ]+ Ko", details["rapport"])
+        assert re.fullmatch(r"PDF de 6 pages · [\d ]+ Ko", details["rapport"])
 
     def test_resultat_conforme_au_contrat(self, demo):
         _, lignes = demo

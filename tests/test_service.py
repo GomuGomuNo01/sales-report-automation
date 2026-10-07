@@ -395,7 +395,7 @@ class TestExecuterPipeline:
         assert details["nettoyage"] == "1 ligne valide · 0 retirée"
         assert details["transformation"] == "8 indicateurs · 6 agrégations"
         assert details["visualisation"] == "5 graphiques"
-        assert details["rapport"].startswith("PDF de 6 pages · ")
+        assert details["rapport"].startswith("PDF de 6 pages · ")
 
     @pytest.mark.parametrize("modification", [
         {"statut": "Annulé"},
