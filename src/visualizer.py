@@ -341,5 +341,5 @@ def generate_all_charts(resultats: dict, charts_dir: str = CHARTS_DIR) -> dict:
         "top_produits":          chart_top_produits(resultats["top_produits"], charts_dir),
     }
 
-    logger.info(f"5 graphiques générés dans : {charts_dir}")
+    logger.info(f"5 graphiques générés ({os.path.basename(charts_dir.rstrip(os.sep)) or charts_dir})")
     return chemins

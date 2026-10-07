@@ -10,13 +10,13 @@
   <meta property="og:title" content="Sales Report Automation">
   <meta property="og:description" content="Des exports de ventes bruts au rapport de direction, en 3 secondes au lieu de 5 heures.">
   <meta property="og:type" content="website">
-  <link rel="icon" href="/assets/img/favicon.svg?v=1" type="image/svg+xml">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/fonts/InterVariable-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/tokens.css?v=1">
-  <link rel="stylesheet" href="/assets/css/base.css?v=1">
-  <link rel="stylesheet" href="/assets/css/components.css?v=1">
-  <link rel="stylesheet" href="/assets/css/sections.css?v=1">
-  <link rel="stylesheet" href="/assets/css/dashboard.css?v=1">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/sections.css">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
   <script>
     /* Masque les éléments animés avant le premier rendu (sauf mouvement réduit).
        Filet de sécurité : si le JavaScript ne démarre pas, tout redevient visible. */
@@ -26,7 +26,13 @@
       window.__motionGuard = setTimeout(function () { root.classList.remove('has-motion'); }, 3000);
     })();
   </script>
-  <script type="module" src="/assets/js/main.js?v=1"></script>
+  <script type="module" src="/assets/js/main.js"></script>
+  <link rel="modulepreload" href="/assets/js/motion.js">
+  <link rel="modulepreload" href="/assets/js/ui.js">
+  <link rel="modulepreload" href="/assets/js/format.js">
+  <link rel="modulepreload" href="/assets/js/charts.js">
+  <link rel="modulepreload" href="/assets/js/dashboard.js">
+  <link rel="modulepreload" href="/assets/js/demo.js">
 </head>
 <body>
   <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -90,7 +96,7 @@
           <svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>
         </a>
         <button class="btn btn--primary btn--sm btn--cta" type="button" data-action="run-demo">
-          <span class="btn__label">Lancer la démo</span>
+          <span class="btn__label">Générer une démo</span>
           <span class="btn__state btn__state--loading"><span class="spinner" aria-hidden="true"></span>Génération…</span>
         </button>
         <button class="btn btn--ghost btn--icon menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
@@ -123,19 +129,19 @@
 
       <!-- Hero -->
       <section class="hero" id="accueil" aria-labelledby="hero-titre">
-        <div class="hero__bg" aria-hidden="true" data-parallax="0.25"></div>
-        <div class="hero__grid" aria-hidden="true" data-parallax="0.12"></div>
+        <div class="hero__bg" aria-hidden="true" data-parallax="0.08"></div>
+        <div class="hero__grid" aria-hidden="true" data-parallax="0.04"></div>
         <div class="hero__spot" aria-hidden="true"></div>
         <div class="container hero__inner">
           <div class="hero__copy">
-            <p class="badge" data-reveal="up"><span class="badge__dot" aria-hidden="true"></span>Démo en ligne · sans inscription</p>
-            <h1 class="display hero__title" id="hero-titre" data-reveal="up">
+            <p class="badge hero-enter" style="--step:0"><span class="badge__dot" aria-hidden="true"></span>Démo en ligne · sans inscription</p>
+            <h1 class="display hero__title hero-enter" id="hero-titre" style="--step:1">
               Votre rapport de ventes, <span class="text-gradient">en 3&nbsp;secondes</span> au lieu de 5&nbsp;heures.
             </h1>
-            <p class="lead hero__lead" data-reveal="up" data-reveal-delay="1">
-              Déposez vos exports ERP : l'outil les fusionne, corrige les erreurs de saisie, calcule les indicateurs clés et produit un rapport PDF de 6&nbsp;pages prêt pour la réunion de direction.
+            <p class="lead hero__lead hero-enter" style="--step:2">
+              Déposez vos exports ERP : l'outil les fusionne, corrige les erreurs de saisie, calcule les indicateurs clés et produit un rapport PDF de 6&nbsp;pages prêt pour la réunion de direction.
             </p>
-            <div class="hero__actions" data-reveal="up" data-reveal-delay="2">
+            <div class="hero__actions hero-enter" style="--step:3">
               <button class="btn btn--primary btn--lg" type="button" data-action="run-demo" data-magnetic>
                 <span class="btn__label">Générer un rapport de démo <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
                 <span class="btn__state btn__state--loading"><span class="spinner" aria-hidden="true"></span>Génération…</span>
@@ -146,7 +152,7 @@
                 <span class="visually-hidden">(nouvel onglet)</span>
               </a>
             </div>
-            <ul class="hero__reassure" data-reveal="up" data-reveal-delay="3">
+            <ul class="hero__reassure hero-enter" style="--step:4">
               <li><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"/></svg>Sans inscription</li>
               <li><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"/></svg>Sans installation</li>
               <li><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"/></svg>Données de démonstration fournies</li>
@@ -186,7 +192,7 @@
                   <line class="hv-chart__grid" x1="0" y1="72" x2="300" y2="72"/>
                   <line class="hv-chart__grid" x1="0" y1="109" x2="300" y2="109"/>
                   <path class="hv-chart__area" d="M0.0,65.1 L27.3,63.2 L54.5,70.8 L81.8,70.8 L109.1,66.6 L136.4,79.1 L163.6,75.9 L190.9,67.1 L218.2,81.0 L245.5,58.9 L272.7,14.2 L300.0,45.9 L300,110 L0,110 Z"/>
-                  <path class="hv-chart__line" pathLength="1" vector-effect="non-scaling-stroke" d="M0.0,65.1 L27.3,63.2 L54.5,70.8 L81.8,70.8 L109.1,66.6 L136.4,79.1 L163.6,75.9 L190.9,67.1 L218.2,81.0 L245.5,58.9 L272.7,14.2 L300.0,45.9"/>
+                  <path class="hv-chart__line" vector-effect="non-scaling-stroke" d="M0.0,65.1 L27.3,63.2 L54.5,70.8 L81.8,70.8 L109.1,66.6 L136.4,79.1 L163.6,75.9 L190.9,67.1 L218.2,81.0 L245.5,58.9 L272.7,14.2 L300.0,45.9"/>
                 </svg>
                 <div class="hv-bars">
                   <div class="hv-bar"><span class="hv-bar__name">Claire Bernard</span><span class="hv-bar__track"><span class="hv-bar__fill" style="--w:1;--i:0"></span></span><span class="hv-bar__value">252&nbsp;k€</span></div>
@@ -215,7 +221,7 @@
           <ul class="proof__list" data-reveal-group>
             <li class="proof__item" data-reveal="up"><span class="proof__value">5&nbsp;h → 3&nbsp;s</span><span class="proof__label">de travail manuel remplacées chaque mois</span></li>
             <li class="proof__item" data-reveal="up"><span class="proof__value">1,1&nbsp;%</span><span class="proof__label">d'écart sur le CA, même avec des données volontairement faussées</span></li>
-            <li class="proof__item" data-reveal="up"><span class="proof__value">88</span><span class="proof__label">tests automatisés vérifient chaque calcul</span></li>
+            <li class="proof__item" data-reveal="up"><span class="proof__value">197</span><span class="proof__label">tests automatisés vérifient chaque calcul</span></li>
             <li class="proof__item" data-reveal="up"><span class="proof__value">6&nbsp;pages</span><span class="proof__label">de rapport PDF, prêtes à imprimer</span></li>
           </ul>
         </div>
@@ -239,7 +245,7 @@
             <article class="card card--interactive benefit" data-reveal="up" data-glow>
               <span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span>
               <h3 class="h3 card__title">Des chiffres fiables</h3>
-              <p class="card__text">Doublons, remises saisies en %, statuts incohérents, valeurs manquantes : chaque anomalie est détectée, corrigée et signalée dans un journal.</p>
+              <p class="card__text">Doublons, remises saisies en %, statuts incohérents, valeurs manquantes : chaque anomalie est détectée, corrigée et signalée dans un journal.</p>
               <p class="benefit__metric"><strong>7</strong><span>types d'anomalies corrigés</span></p>
             </article>
             <article class="card card--interactive benefit" data-reveal="up" data-glow>
@@ -295,13 +301,13 @@
               <li class="story-step is-active" data-step="0">
                 <span class="story-step__num" aria-hidden="true">1</span>
                 <h3 class="h3">Extraction</h3>
-                <p class="story-step__text">Tous les fichiers CSV du dossier sont chargés et fusionnés, quel que soit leur nombre. Une colonne manquante ? Le pipeline s'arrête avec un message clair plutôt que de produire un rapport faux.</p>
+                <p class="story-step__text">Tous les fichiers CSV du dossier sont chargés et fusionnés, quel que soit leur nombre. Une colonne manquante ? Le pipeline s'arrête avec un message clair plutôt que de produire un rapport faux.</p>
                 <p class="story-step__tags"><span class="tag">Multi-fichiers</span><span class="tag">Contrôle des colonnes</span></p>
               </li>
               <li class="story-step" data-step="1">
                 <span class="story-step__num" aria-hidden="true">2</span>
                 <h3 class="h3">Nettoyage</h3>
-                <p class="story-step__text">Doublons supprimés, valeurs manquantes complétées, remises saisies « 10 » au lieu de « 0,10 » corrigées, statuts harmonisés. Sans cette étape, le chiffre d'affaires deviendrait négatif.</p>
+                <p class="story-step__text">Doublons supprimés, valeurs manquantes complétées, remises saisies « 10 » au lieu de « 0,10 » corrigées, statuts harmonisés. Sans cette étape, le chiffre d'affaires deviendrait négatif.</p>
                 <p class="story-step__tags"><span class="tag">7 types d'anomalies</span><span class="tag">Journal des corrections</span></p>
               </li>
               <li class="story-step" data-step="2">
@@ -313,7 +319,7 @@
               <li class="story-step" data-step="3">
                 <span class="story-step__num" aria-hidden="true">4</span>
                 <h3 class="h3">Visualisation</h3>
-                <p class="story-step__text">Cinq graphiques sont produits avec un style commun : classements, tendance mensuelle, répartition par catégorie et heatmap vendeurs × régions.</p>
+                <p class="story-step__text">Cinq graphiques sont produits avec un style commun : classements, tendance mensuelle, répartition par catégorie et heatmap vendeurs × régions.</p>
                 <p class="story-step__tags"><span class="tag">matplotlib</span><span class="tag">seaborn</span></p>
               </li>
               <li class="story-step" data-step="4">
@@ -334,7 +340,7 @@
                       <div class="ill-file"><b>mars.csv</b><i></i><i></i></div>
                     </div>
                     <svg class="icon icon--lg ill-arrow"><use href="#i-arrow-right" transform="rotate(90 12 12)"/></svg>
-                    <div class="ill-merged"><b>1 163 lignes fusionnées · 12 fichiers</b><i></i><i></i><i style="width:70%"></i></div>
+                    <div class="ill-merged"><b>1 163 lignes fusionnées · 12 fichiers</b><i></i><i></i><i style="width:70%"></i></div>
                   </div>
                 </div>
               </div>
@@ -368,7 +374,7 @@
                 <div class="story-frame">
                   <div class="ill ill-charts">
                     <div class="ill-chart"><div class="ill-cols"><i style="height:100%"></i><i style="height:92%"></i><i style="height:90%"></i><i style="height:82%"></i><i style="height:74%"></i><i style="height:66%"></i></div></div>
-                    <div class="ill-chart"><svg viewBox="0 0 120 88"><path d="M0,58 L11,57 L22,62 L33,62 L44,59 L55,67 L66,65 L77,59 L88,68 L99,53 L110,14 L120,40" fill="none" stroke="var(--viz-series)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+                    <div class="ill-chart"><svg viewBox="0 0 120 88" preserveAspectRatio="none"><path vector-effect="non-scaling-stroke" d="M0,58 L11,57 L22,62 L33,62 L44,59 L55,67 L66,65 L77,59 L88,68 L99,53 L110,14 L120,40" fill="none" stroke="var(--viz-series)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
                     <div class="ill-heat">
                       <i style="background:#cde2fb"></i><i style="background:#6da7ec"></i><i style="background:#9ec5f4"></i><i style="background:#2a78d6"></i><i style="background:#b7d3f6"></i><i style="background:#86b6ef"></i>
                       <i style="background:#5598e7"></i><i style="background:#cde2fb"></i><i style="background:#1c5cab"></i><i style="background:#9ec5f4"></i><i style="background:#6da7ec"></i><i style="background:#b7d3f6"></i>
@@ -405,7 +411,7 @@
             <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-file"/></svg></span><h3 class="h3 card__title">PDF de 6 pages</h3><p class="card__text">Mise en page A4 soignée, horodatée, polices embarquées.</p></li>
             <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-calendar"/></svg></span><h3 class="h3 card__title">Planification</h3><p class="card__text">Le rapport se génère seul le 1<sup>er</sup> de chaque mois à 8&nbsp;h.</p></li>
             <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-list"/></svg></span><h3 class="h3 card__title">Journal d'exécution</h3><p class="card__text">Chaque étape et chaque anomalie détectée sont consignées.</p></li>
-            <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-flask"/></svg></span><h3 class="h3 card__title">88 tests</h3><p class="card__text">Nettoyage, calculs et interface vérifiés à chaque modification.</p></li>
+            <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-flask"/></svg></span><h3 class="h3 card__title">197 tests</h3><p class="card__text">Nettoyage, calculs, service et API vérifiés à chaque modification.</p></li>
           </ul>
         </div>
       </section>
@@ -426,7 +432,7 @@
                 <div class="choices">
                   <label class="choice">
                     <input class="choice__input" type="radio" name="source" value="demo" checked>
-                    <span class="choice__box"><span class="choice__radio" aria-hidden="true"></span><span class="choice__title">Données de démonstration</span><span class="choice__desc">12 fichiers mensuels fictifs, environ 1 200 ventes.</span></span>
+                    <span class="choice__box"><span class="choice__radio" aria-hidden="true"></span><span class="choice__title">Données de démonstration</span><span class="choice__desc">12 fichiers mensuels fictifs, environ 1 200 ventes.</span></span>
                   </label>
                   <label class="choice">
                     <input class="choice__input" type="radio" name="source" value="fichiers">
@@ -497,7 +503,7 @@
               </ul>
               <div class="callout last-report" id="last-report" hidden>
                 <span>Un rapport est déjà prêt.</span>
-                <button class="btn btn--secondary btn--sm" type="button" data-nav="rapport">Le revoir <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+                <button class="btn btn--secondary btn--sm" type="button" data-nav="rapport">Revoir le rapport <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
               </div>
             </aside>
           </div>
@@ -514,7 +520,7 @@
           </div>
           <ul class="skills" data-reveal-group>
             <li class="skill" data-reveal="up"><h3 class="skill__title">Sens du résultat</h3><p class="skill__text">Un temps perdu mesurable, 5 heures par mois, supprimé plutôt que du code écrit pour lui-même.</p></li>
-            <li class="skill" data-reveal="up"><h3 class="skill__title">Rigueur</h3><p class="skill__text">Corrections signalées dans un journal, calculs couverts par 88 tests automatisés.</p></li>
+            <li class="skill" data-reveal="up"><h3 class="skill__title">Rigueur</h3><p class="skill__text">Corrections signalées dans un journal, calculs couverts par 197 tests automatisés.</p></li>
             <li class="skill" data-reveal="up"><h3 class="skill__title">Esprit critique sur les données</h3><p class="skill__text">Repérer les pièges silencieux, comme une remise saisie 10 au lieu de 0,10 qui rendrait le CA négatif.</p></li>
             <li class="skill" data-reveal="up"><h3 class="skill__title">Architecture</h3><p class="skill__text">Cinq modules indépendants, une configuration centralisée, trois interfaces branchées sur le même cœur.</p></li>
             <li class="skill" data-reveal="up"><h3 class="skill__title">Pensée utilisateur</h3><p class="skill__text">Un livrable lisible par une direction, une démo utilisable sans aucune compétence technique.</p></li>
@@ -542,36 +548,36 @@
             <details class="accordion__item">
               <summary class="accordion__summary">Quel format de fichier dois-je fournir&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
               <div class="accordion__content">
-                <p>Un ou plusieurs fichiers CSV séparés par des virgules, encodés en UTF-8, avec ces 9 colonnes dans n'importe quel ordre : <code>date</code>, <code>vendeur</code>, <code>region</code>, <code>produit</code>, <code>categorie</code>, <code>quantite</code>, <code>prix_unitaire</code>, <code>remise</code>, <code>statut</code>.</p>
+                <p>Un ou plusieurs fichiers CSV séparés par des virgules, encodés en UTF-8, avec ces 9 colonnes dans n'importe quel ordre : <code>date</code>, <code>vendeur</code>, <code>region</code>, <code>produit</code>, <code>categorie</code>, <code>quantite</code>, <code>prix_unitaire</code>, <code>remise</code>, <code>statut</code>.</p>
                 <p><a href="/api/modele.csv" download>Télécharger un fichier modèle</a></p>
               </div>
             </details>
             <details class="accordion__item">
               <summary class="accordion__summary">Que corrige exactement le nettoyage&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
               <div class="accordion__content"><ul>
-                <li>Doublons exacts : supprimés.</li>
-                <li>Date manquante ou illisible : ligne écartée.</li>
-                <li>Texte manquant : remplacé par « Inconnu ». Montant manquant : remplacé par la médiane.</li>
-                <li>Remise saisie en pourcentage (10 au lieu de 0,10) : divisée par 100.</li>
-                <li>Quantité ou prix négatif : ramené à 0.</li>
-                <li>Statuts mal orthographiés (livre, LIVRÉ…) : harmonisés.</li>
+                <li>Doublons exacts : supprimés.</li>
+                <li>Date manquante ou illisible : ligne écartée.</li>
+                <li>Texte manquant : remplacé par « Inconnu ». Montant manquant : remplacé par la médiane.</li>
+                <li>Remise saisie en pourcentage (10 au lieu de 0,10) : divisée par 100.</li>
+                <li>Quantité ou prix négatif : ramené à 0.</li>
+                <li>Statuts mal orthographiés (livre, LIVRÉ…) : harmonisés.</li>
               </ul></div>
             </details>
             <details class="accordion__item">
               <summary class="accordion__summary">Comment le chiffre d'affaires est-il calculé&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
-              <div class="accordion__content"><p>Pour chaque ligne : <code>quantité × prix unitaire × (1 − remise)</code>. Les commandes annulées ou retournées sont exclues du chiffre d'affaires comptabilisé et comptent dans le taux d'annulation.</p></div>
+              <div class="accordion__content"><p>Pour chaque ligne : <code>quantité × prix unitaire × (1 − remise)</code>. Les commandes annulées ou retournées sont exclues du chiffre d'affaires comptabilisé et comptent dans le taux d'annulation.</p></div>
             </details>
             <details class="accordion__item">
               <summary class="accordion__summary">Les données de démonstration sont-elles réelles&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
-              <div class="accordion__content"><p>Non. Elles sont générées par un script avec une graine fixe : 10 vendeurs fictifs, 6 régions, 15 produits sur l'année 2024. Les chiffres illustrent le fonctionnement de l'outil, pas une entreprise réelle.</p></div>
+              <div class="accordion__content"><p>Non. Elles sont générées par un script avec une graine fixe : 10 vendeurs fictifs, 6 régions, 15 produits sur l'année 2024. Les chiffres illustrent le fonctionnement de l'outil, pas une entreprise réelle.</p></div>
             </details>
             <details class="accordion__item">
               <summary class="accordion__summary">Puis-je utiliser l'outil sur mon ordinateur&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
-              <div class="accordion__content"><p>Oui. Le code est open source (licence MIT) : il s'installe avec Python ou se lance avec Docker, et peut générer le rapport automatiquement chaque mois. Les étapes sont détaillées dans la <a href="https://github.com/GomuGomuNo01/sales-report-automation#readme" target="_blank" rel="noopener">documentation</a>.</p></div>
+              <div class="accordion__content"><p>Oui. Le code est open source (licence MIT) : il s'installe avec Python ou se lance avec Docker, et peut générer le rapport automatiquement chaque mois. Les étapes sont détaillées dans la <a href="https://github.com/GomuGomuNo01/sales-report-automation#readme" target="_blank" rel="noopener">documentation</a>.</p></div>
             </details>
             <details class="accordion__item">
               <summary class="accordion__summary">Pourquoi la page met-elle parfois du temps à s'ouvrir&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
-              <div class="accordion__content"><p>La démo est hébergée gratuitement : quand personne ne l'a utilisée depuis un moment, le serveur se met en veille et met une trentaine de secondes à redémarrer.</p></div>
+              <div class="accordion__content"><p>La démo est hébergée gratuitement : quand personne ne l'a utilisée depuis un moment, le serveur se met en veille et met une trentaine de secondes à redémarrer.</p></div>
             </details>
           </div>
         </div>
@@ -606,8 +612,8 @@
             <h1 class="report-head__title" id="rapport-titre" tabindex="-1">Génération du rapport…</h1>
             <div class="report-head__meta" id="rapport-meta"></div>
           </div>
-          <div class="report-head__actions" id="rapport-actions" hidden>
-            <a class="btn btn--primary btn--lg" id="pdf-link" href="#" download data-magnetic>
+          <div class="report-head__actions" id="rapport-actions">
+            <a class="btn btn--primary btn--lg is-pending" id="pdf-link" aria-disabled="true" download data-magnetic>
               <svg class="icon btn__icon btn__icon--down" aria-hidden="true"><use href="#i-download"/></svg>Télécharger le PDF
             </a>
             <button class="btn btn--secondary btn--lg" type="button" data-nav="demo">
@@ -625,6 +631,7 @@
             <li class="step" data-step="visualisation" data-state="pending"><span class="step__icon" aria-hidden="true">4</span><span class="step__title">Visualisation</span><span class="step__detail">En attente</span></li>
             <li class="step" data-step="rapport" data-state="pending"><span class="step__icon" aria-hidden="true">5</span><span class="step__title">Rapport PDF</span><span class="step__detail">En attente</span></li>
           </ol>
+          <p class="callout report-progress__slow" id="progress-slow" hidden><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Plus long que prévu : le serveur traite peut-être une autre demande ou sort de veille. Merci de patienter.</p>
           <p class="visually-hidden" id="progress-live" aria-live="polite"></p>
         </div>
 

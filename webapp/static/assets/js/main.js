@@ -7,7 +7,7 @@
 
 import { initMotion, transitionView, afterMotion } from './motion.js';
 import { initHeader, initMobileMenu, initScrollSpy, initTabs, initTooltips, initDialogs } from './ui.js';
-import { initDashboard, hasReport, redrawWhenVisible } from './dashboard.js';
+import { initDashboard, hasReport, isShowingReport, restoreLastReport, redrawWhenVisible } from './dashboard.js';
 import { initDemo, runDemo, retry, cancelGeneration } from './demo.js';
 
 const views = {
@@ -17,6 +17,8 @@ const views = {
 const header = document.getElementById('site-header');
 let currentView = 'accueil';
 let landingScroll = 0;
+let returnFocus = null;  // élément qui a ouvert la vue rapport
+let pendingView = null;  // vue visée pendant une transition en cours
 
 function focusWithoutScroll(el) {
   if (!el) return;
@@ -28,18 +30,24 @@ function focusWithoutScroll(el) {
  * Affiche une vue. `section` (id) fait défiler l'accueil jusqu'à une section.
  */
 function go(view, { push = true, section = null } = {}) {
-  const changing = view !== currentView;
+  const from = pendingView ?? currentView;
+  const changing = view !== from;
   if (!changing) {
     if (section) scrollToSection(section);
     return;
   }
-  if (currentView === 'accueil') landingScroll = window.scrollY;
-  if (view === 'accueil' && currentView === 'rapport') cancelGeneration();
+  pendingView = view;
+  if (from === 'accueil' && currentView === 'accueil') {
+    landingScroll = window.scrollY;
+    const active = document.activeElement;
+    returnFocus = active && active !== document.body && views.accueil.contains(active) ? active : null;
+  }
+  if (view === 'accueil' && from === 'rapport') cancelGeneration();
 
   const update = () => {
-    views[currentView].hidden = true;
-    views[view].hidden = false;
+    Object.entries(views).forEach(([name, el]) => { el.hidden = name !== view; });
     currentView = view;
+    if (pendingView === view) pendingView = null;
     header.dataset.solid = String(view === 'rapport');
     if (view === 'rapport') {
       window.scrollTo(0, 0);
@@ -61,6 +69,10 @@ function go(view, { push = true, section = null } = {}) {
       redrawWhenVisible();
     } else if (section) {
       focusWithoutScroll(document.getElementById(`${section}-titre`) ?? document.getElementById(section));
+    } else if (returnFocus?.isConnected && returnFocus.offsetParent !== null) {
+      returnFocus.focus({ preventScroll: true });
+    } else {
+      focusWithoutScroll(document.getElementById('hero-titre'));
     }
   });
 
@@ -77,7 +89,10 @@ function scrollToSection(id, { instant = false } = {}) {
 }
 
 function onNavigate(target) {
-  if (target === 'rapport') go('rapport');
+  if (target === 'rapport') {
+    if (!isShowingReport()) restoreLastReport();
+    go('rapport');
+  }
   else if (target === 'demo') go('accueil', { section: 'demo' });
   else go('accueil');
 }
@@ -136,7 +151,8 @@ function initShowcase() {
     onChange: (tab) => {
       const page = tab.dataset.page;
       const mine = ++token;
-      figure.setAttribute('aria-labelledby', tab.id);
+      figure.setAttribute('aria-busy', 'true');
+      figure.classList.add('is-loading');
       const next = new Image();
       next.className = 'paper__img is-entering';
       next.width = 800;
@@ -148,6 +164,9 @@ function initShowcase() {
       next.src = `/assets/img/rapport-p${page}-800.webp`;
       const swap = () => {
         if (mine !== token) return;
+        figure.removeAttribute('aria-busy');
+        figure.classList.remove('is-loading');
+        figure.setAttribute('aria-labelledby', tab.id);
         const previous = img;
         previous.classList.add('is-leaving');
         figure.append(next);

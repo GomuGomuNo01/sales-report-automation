@@ -4,6 +4,7 @@ Le rapport est généré automatiquement le 1er de chaque mois à 8h00.
 Usage : python main.py --mode schedule
 """
 
+import os
 import schedule
 import time
 import logging
@@ -42,7 +43,7 @@ def _job(periode: str = None):
 
     try:
         chemin = run_pipeline(periode=periode)
-        logger.info(f"Scheduler : rapport genere -> {chemin}")
+        logger.info(f"Scheduler : rapport généré -> {os.path.basename(chemin)}")
     except Exception as e:
         logger.error(f"Scheduler : erreur lors de l execution -> {e}")
 

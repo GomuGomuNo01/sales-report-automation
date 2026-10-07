@@ -5,7 +5,7 @@
 import { fmt } from './format.js';
 import { afterMotion } from './motion.js';
 import { setLoading, flashSuccess, toast } from './ui.js';
-import { resetReport, setStep, showError, renderReport } from './dashboard.js';
+import { resetReport, setStep, showError as showReportError, renderReport } from './dashboard.js';
 
 const MAX_FILES = 30;
 const MAX_TOTAL = 20 * 1024 * 1024;
@@ -23,7 +23,7 @@ function setFieldError(name, message) {
   const error = $(`${name}-error`);
   const input = name === 'fichiers' ? $('fichiers') : $(name);
   if (!field || !error) return;
-  error.textContent = message || '';
+  if (error.textContent !== (message || '')) error.textContent = message || '';
   field.classList.toggle('is-invalid', Boolean(message));
   if (input) {
     if (message) input.setAttribute('aria-invalid', 'true');
@@ -45,7 +45,7 @@ function validatePeriode({ quiet = false } = {}) {
   const value = input.value.trim();
   const field = $('field-periode');
   if (value.length > MAX_PERIODE) {
-    setFieldError('periode', `${MAX_PERIODE} caractères maximum (actuellement ${value.length}).`);
+    setFieldError('periode', `La période ne doit pas dépasser ${MAX_PERIODE} caractères.`);
     return false;
   }
   setFieldError('periode', '');
@@ -155,13 +155,29 @@ function triggers() {
   return [...document.querySelectorAll('[data-action="run-demo"]'), $('submit-btn')];
 }
 
-async function readStream(response, onLine) {
+/* Chien de garde : signale une attente anormale puis abandonne proprement */
+const SLOW_AFTER = 12000;
+const GIVE_UP_AFTER = 60000;
+function createWatchdog(onSlow, onTimeout) {
+  let slow = null;
+  let dead = null;
+  const arm = () => {
+    clearTimeout(slow); clearTimeout(dead);
+    slow = setTimeout(onSlow, SLOW_AFTER);
+    dead = setTimeout(onTimeout, GIVE_UP_AFTER);
+  };
+  arm();
+  return { kick: arm, stop: () => { clearTimeout(slow); clearTimeout(dead); } };
+}
+
+async function readStream(response, onLine, onChunk = () => {}) {
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
   for (;;) {
     const { value, done } = await reader.read();
     if (done) break;
+    onChunk();
     buffer += decoder.decode(value, { stream: true });
     let index;
     while ((index = buffer.indexOf('\n')) >= 0) {
@@ -179,13 +195,22 @@ async function generate(request, { origin } = {}) {
   state.lastRequest = request;
   state.controller = new AbortController();
   const buttons = triggers();
+  const source = request.get('source');
+  const showError = (message) => showReportError(message, { source });
   setLoading(buttons, true);
+  document.querySelectorAll('#toasts .toast').forEach((t) => t.remove());
   resetReport();
   navigate('rapport');
 
   let finished = false;
+  let timedOut = false;
+  const watchdog = createWatchdog(
+    () => markSlow(),
+    () => { timedOut = true; state.controller?.abort(); },
+  );
   try {
     const response = await fetch('/api/rapports', { method: 'POST', body: request, signal: state.controller.signal });
+    watchdog.kick();
     if (response.status === 422) {
       const body = await response.json().catch(() => ({}));
       finished = true;
@@ -203,31 +228,54 @@ async function generate(request, { origin } = {}) {
       throw new Error(`Le serveur a répondu avec une erreur (${response.status}). Réessayez dans un instant.`);
     }
     await readStream(response, (event) => {
+      clearSlow();
       if (event.type === 'etape') setStep(event.etape, event.statut, event.detail);
       else if (event.type === 'resultat') {
         finished = true;
-        renderReport(event.rapport);
+        renderReport(event.rapport, { source });
         $('last-report').hidden = false;
         flashSuccess(origin === 'form' ? $('submit-btn') : null);
         toast('Rapport prêt', { text: `Généré en ${fmt.seconds(event.rapport.duree)} à partir de ${fmt.int(event.rapport.nb_lignes_brutes)} lignes.` });
       } else if (event.type === 'erreur') {
         finished = true;
         showError(event.message);
+        if (source === 'fichiers') setFieldError('fichiers', event.message);
+        toast('Échec de la génération', { type: 'error', text: event.message });
       }
-    });
+    }, () => watchdog.kick());
     if (!finished) throw new Error('La génération s\'est interrompue avant la fin. Réessayez.');
   } catch (error) {
-    if (error.name === 'AbortError') return;
+    if (error.name === 'AbortError' && !timedOut) {
+      toast('Génération annulée', { type: 'error', text: 'Relancez-la quand vous voulez.' });
+      return;
+    }
+    if (timedOut) error = new Error('Le serveur ne répond plus. Il redémarre peut-être après une période d\'inactivité : réessayez dans un instant.');
     const message = error instanceof TypeError
       ? 'Connexion au serveur impossible. Vérifiez votre connexion puis réessayez.'
-      : error.message;
+      : error instanceof SyntaxError
+        ? 'Réponse inattendue du serveur. Réessayez dans un instant.'
+        : error.message;
     showError(message);
     toast('Échec de la génération', { type: 'error', text: message });
   } finally {
+    watchdog.stop();
+    clearSlow();
     state.running = false;
     state.controller = null;
     setLoading(buttons, false);
   }
+}
+
+function markSlow() {
+  const live = $('progress-live');
+  const note = $('progress-slow');
+  note.hidden = false;
+  live.textContent = note.textContent;
+}
+
+function clearSlow() {
+  const note = $('progress-slow');
+  if (note) note.hidden = true;
 }
 
 export function cancelGeneration() {

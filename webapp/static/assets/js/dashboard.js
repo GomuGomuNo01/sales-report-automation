@@ -11,6 +11,10 @@ const STEP_LABELS = {
   extraction: 'Extraction', nettoyage: 'Nettoyage', transformation: 'Transformation',
   visualisation: 'Visualisation', rapport: 'Rapport PDF',
 };
+const STEP_DONE = {
+  extraction: 'terminée', nettoyage: 'terminé', transformation: 'terminée',
+  visualisation: 'terminée', rapport: 'terminé',
+};
 const COLUMN_LABELS = {
   date: 'Date', vendeur: 'Vendeur', region: 'Région', produit: 'Produit', categorie: 'Catégorie',
   quantite: 'Quantité', prix_unitaire: 'Prix unitaire', remise: 'Remise', statut: 'Statut',
@@ -21,6 +25,7 @@ const NUMERIC = new Set(['quantite', 'prix_unitaire', 'remise', 'ca_net', 'ca_co
 const $ = (id) => document.getElementById(id);
 let tabs = null;
 let current = null;
+let lastGood = null;   // dernier rapport réussi, conservé même si une génération suivante échoue
 let resizeFrame = null;
 
 function h(tag, className, text) {
@@ -40,7 +45,11 @@ export function resetReport() {
   current = null;
   $('rapport-titre').textContent = 'Génération du rapport…';
   $('rapport-meta').replaceChildren();
-  $('rapport-actions').hidden = true;
+  const pdf = $('pdf-link');
+  pdf.removeAttribute('href');
+  pdf.classList.add('is-pending');
+  pdf.setAttribute('aria-disabled', 'true');
+  pdf.setAttribute('aria-label', 'Télécharger le PDF (disponible à la fin de la génération)');
   $('rapport-progression').hidden = false;
   $('rapport-chargement').hidden = false;
   $('rapport-erreur').hidden = true;
@@ -67,14 +76,16 @@ export function setStep(name, status, detail) {
     step.dataset.state = 'done';
     step.querySelector('.step__icon').innerHTML = icon('i-check', 'icon--sm');
     step.querySelector('.step__detail').textContent = detail || 'Terminé';
-    $('progress-live').textContent = `${STEP_LABELS[name]} terminée${detail ? ` : ${detail}` : ''}.`;
+    $('progress-live').textContent = `${STEP_LABELS[name]} ${STEP_DONE[name]}${detail ? ` : ${detail}` : ''}.`;
   }
   const done = document.querySelectorAll('#steps .step[data-state="done"]').length;
   const active = status === 'en_cours' ? 0.5 : 0;
   $('progress-fill').style.setProperty('--progress', ((done + active) / STEP_ORDER.length).toFixed(3));
 }
 
-export function showError(message) {
+export function showError(message, { source = 'demo' } = {}) {
+  const back = document.querySelector('#rapport-erreur [data-nav="demo"]');
+  if (back) back.textContent = source === 'fichiers' ? 'Modifier mes fichiers' : 'Modifier les paramètres';
   const active = document.querySelector('#steps .step[data-state="active"]');
   if (active) {
     active.dataset.state = 'error';
@@ -113,7 +124,7 @@ function chartCard({ title, sub, wide = false }) {
   const card = h('section', `card chart-card${wide ? ' chart-card--wide' : ''}`);
   const head = h('div', 'chart-card__head');
   const titles = h('div');
-  const heading = h('h3', 'chart-card__title', title);
+  const heading = h('h2', 'chart-card__title', title);
   titles.append(heading);
   if (sub) titles.append(h('p', 'chart-card__sub', sub));
   head.append(titles);
@@ -148,7 +159,7 @@ function renderOverview(panel, r) {
   const k = r.kpis;
   const primary = h('div', 'kpis');
   primary.append(
-    kpiCard({ label: 'CA comptabilisé', value: fmt.eur(k.ca_total), sub: `sur ${r.periode}`, hero: true,
+    kpiCard({ label: 'CA comptabilisé', value: fmt.eur(k.ca_total), sub: `sur ${r.periode.replace(/ - /g, '\u00a0– ')}`, hero: true,
       tip: 'Chiffre d\'affaires net (après remise) des commandes livrées ou en cours. Annulations et retours sont exclus.' }),
     kpiCard({ label: 'Commandes actives', value: fmt.int(k.nb_commandes), sub: `${fmt.plural(k.nb_annulations, 'annulée ou retournée', 'annulées ou retournées')}` }),
     kpiCard({ label: 'Panier moyen', value: fmt.eur(k.panier_moyen), tip: 'CA comptabilisé divisé par le nombre de commandes actives.' }),
@@ -182,7 +193,7 @@ function renderOverview(panel, r) {
   renderBars(cats.body, s.categories.map((c) => ({ label: c.nom, value: c.ca, share: c.part, shareLabel: fmt.pct(c.part) })), { format: fmt.eurCompact, share: true, label: 'Chiffre d\'affaires par catégorie' });
   charts.append(cats.card);
 
-  const heat = chartCard({ title: 'Vendeurs × régions', sub: 'CA de chaque vendeur dans chaque région · plus la case est foncée, plus le CA est élevé', wide: true });
+  const heat = chartCard({ title: 'Vendeurs × régions', sub: 'CA de chaque vendeur dans chaque région · l\'échelle sous le tableau indique les montants', wide: true });
   renderHeatmap(heat.body, s.heatmap, { format: fmt.eur, formatCompact: fmt.eurCompact, label: 'Chiffre d\'affaires par vendeur et par région' });
   charts.append(heat.card);
 
@@ -202,7 +213,7 @@ function renderOverview(panel, r) {
   current.lineData = months;
 }
 
-function renderQuality(panel, r) {
+function renderQuality(panel, r, source) {
   panel.replaceChildren();
   const total = r.qualite.reduce((sum, q) => sum + q.lignes, 0);
   const max = Math.max(...r.qualite.map((q) => q.lignes), 1);
@@ -231,7 +242,9 @@ function renderQuality(panel, r) {
     const tipBox = h('p', 'callout');
     tipBox.style.marginTop = 'var(--space-4)';
     tipBox.innerHTML = icon('i-info');
-    tipBox.append(' Ces données étaient déjà propres. Activez « Ajouter des anomalies » dans le formulaire pour voir le nettoyage à l\'œuvre.');
+    tipBox.append(source === 'demo'
+      ? ' Ces données étaient déjà propres. Activez « Ajouter des anomalies » dans le formulaire pour voir le nettoyage à l\'œuvre.'
+      : ' Aucune anomalie détectée : vos fichiers étaient déjà propres.');
     panel.append(tipBox);
   }
   $('qualite-count').textContent = fmt.int(total);
@@ -279,9 +292,12 @@ function renderJournal(panel, r) {
   panel.append(pre);
 }
 
-export function renderReport(r) {
-  current = { report: r };
-  $('rapport-titre').textContent = `Rapport « ${r.periode} »`;
+export function renderReport(r, { source = 'demo' } = {}) {
+  current = { report: r, source };
+  lastGood = { report: r, source };
+  // Tiret demi-cadratin collé au premier mois et espaces insécables : pas de tiret orphelin en fin de ligne
+  const periode = r.periode.replace(/ - /g, '\u00a0– ');
+  $('rapport-titre').textContent = `Rapport «\u00a0${periode}\u00a0»`;
   const meta = $('rapport-meta');
   meta.replaceChildren();
   [
@@ -295,13 +311,14 @@ export function renderReport(r) {
     meta.append(chip);
   });
   const pdf = $('pdf-link');
+  pdf.classList.remove('is-pending');
+  pdf.removeAttribute('aria-disabled');
   pdf.href = r.pdf.url;
   pdf.download = r.pdf.nom;
-  pdf.setAttribute('aria-label', `Télécharger le rapport PDF (${fmt.kb(r.pdf.taille)})`);
+  pdf.setAttribute('aria-label', `Télécharger le PDF (${fmt.kb(r.pdf.taille)})`);
 
   $('rapport-chargement').hidden = true;
   $('rapport-erreur').hidden = true;
-  $('rapport-actions').hidden = false;
   $('rapport-onglets').hidden = false;
   $('progress-fill').style.setProperty('--progress', 1);
 
@@ -310,7 +327,7 @@ export function renderReport(r) {
   });
   tabs.select('tab-synthese');
   renderOverview($('panel-synthese'), r);
-  renderQuality($('panel-qualite'), r);
+  renderQuality($('panel-qualite'), r, source);
   renderData($('panel-donnees'), r);
   renderJournal($('panel-journal'), r);
   tabs.refresh();
@@ -334,5 +351,13 @@ export function initDashboard() {
   });
 }
 
-export const hasReport = () => Boolean(current?.report);
+export const hasReport = () => Boolean(current?.report || lastGood);
+export const isShowingReport = () => Boolean(current?.report);
+export function restoreLastReport() {
+  if (!lastGood) return false;
+  $('rapport-progression').hidden = false;
+  STEP_ORDER.forEach((name) => setStep(name, 'termine'));
+  renderReport(lastGood.report, { source: lastGood.source });
+  return true;
+}
 export const redrawWhenVisible = () => requestAnimationFrame(() => { redrawLine(); tabs?.refresh(); });

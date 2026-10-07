@@ -100,13 +100,17 @@ class TestPagesStatiques:
         assert "max-age" not in r.headers.get("cache-control", "")
 
     def test_asset_present_cache_long(self, client):
-        chemin = _premier_fichier_asset()
-        if chemin is None:
-            pytest.skip("aucun fichier dans webapp/static/assets")
-        r = client.get(f"/assets/{chemin}")
+        r = client.get("/assets/fonts/InterVariable-latin.woff2")
         assert r.status_code == 200
         assert r.headers["cache-control"] == "public, max-age=604800"
         assert r.headers["x-content-type-options"] == "nosniff"
+
+    @pytest.mark.parametrize("chemin", ["/assets/js/main.js", "/assets/css/tokens.css"])
+    def test_code_revalide_a_chaque_visite(self, client, chemin):
+        r = client.get(chemin)
+        assert r.status_code == 200
+        assert r.headers["cache-control"] == "no-cache"
+        assert r.headers.get("etag")
 
     def test_modele_csv(self, client):
         r = client.get("/api/modele.csv")
@@ -213,7 +217,7 @@ class TestGenerationDemo:
         assert re.fullmatch(r"[\d ]+ lignes valides · [\d ]+ retirées", details["nettoyage"])
         assert details["transformation"] == "8 indicateurs · 6 agrégations"
         assert details["visualisation"] == "5 graphiques"
-        assert re.fullmatch(r"PDF de 6 pages · [\d ]+ Ko", details["rapport"])
+        assert re.fullmatch(r"PDF de 6 pages · [\d ]+ Ko", details["rapport"])
 
     def test_resultat_conforme_au_contrat(self, demo):
         _, lignes = demo
@@ -453,7 +457,7 @@ class TestFichiersUtilisateur:
                                          files=[_fichier("ventes.csv")]))
         details = {l["etape"]: l["detail"] for l in lignes if l.get("statut") == "termine"}
         assert details["extraction"] == "25 lignes · 1 fichier"
-        assert details["nettoyage"] == "25 lignes valides · 0 retirées"
+        assert details["nettoyage"] == "25 lignes valides · 0 retirée"
 
     def test_en_tete_tres_large_refuse_sans_pandas(self, client, monkeypatch):
         """60 000 colonnes « a,a,… » : pandas y passerait des dizaines de secondes, verrou pris."""

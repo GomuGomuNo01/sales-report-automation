@@ -13,23 +13,25 @@
   view-transition-name: site-header;
   transition: background-color var(--dur-component) var(--ease-out),
               box-shadow var(--dur-component) var(--ease-out),
-              backdrop-filter var(--dur-component) var(--ease-out);
+              backdrop-filter var(--dur-component) var(--ease-out),
+              transform var(--dur-component) var(--ease-out);
 }
 .site-header__inner {
   display: flex;
   align-items: center;
   gap: var(--space-5);
   height: var(--header-h);
-  transition: height var(--dur-component) var(--ease-out);
 }
 .site-header[data-scrolled="true"],
 .site-header[data-solid="true"] {
-  background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
   box-shadow: 0 1px 0 var(--color-border);
   -webkit-backdrop-filter: saturate(1.6) blur(16px);
   backdrop-filter: saturate(1.6) blur(16px);
 }
-.site-header[data-scrolled="true"] .site-header__inner { height: 3.75rem; }
+/* Plus compact après défilement : la barre remonte de quelques pixels (transform, pas de hauteur animée) */
+.site-header[data-scrolled="true"] { transform: translate3d(0, calc(-1 * var(--move-sm) - 2px), 0); }
+.site-header[data-scrolled="true"] .site-header__inner { transform: translate3d(0, 3px, 0); }
 @supports not (background: color-mix(in srgb, red 50%, transparent)) {
   .site-header[data-scrolled="true"], .site-header[data-solid="true"] { background: var(--color-surface); }
 }
@@ -150,9 +152,9 @@
 }
 .mobile-menu__link:active { background: var(--color-surface-2); }
 .mobile-menu.is-open .mobile-menu__list li { animation: rise-in var(--dur-component) var(--ease-out) both; }
-.mobile-menu.is-open .mobile-menu__list li:nth-child(2) { animation-delay: 40ms; }
-.mobile-menu.is-open .mobile-menu__list li:nth-child(3) { animation-delay: 80ms; }
-.mobile-menu.is-open .mobile-menu__list li:nth-child(4) { animation-delay: 120ms; }
+.mobile-menu.is-open .mobile-menu__list li:nth-child(2) { animation-delay: calc(1 * var(--stagger-tight)); }
+.mobile-menu.is-open .mobile-menu__list li:nth-child(3) { animation-delay: calc(2 * var(--stagger-tight)); }
+.mobile-menu.is-open .mobile-menu__list li:nth-child(4) { animation-delay: calc(3 * var(--stagger-tight)); }
 .mobile-menu-backdrop {
   position: fixed;
   inset: 0;
@@ -253,7 +255,7 @@
   border-radius: 50%;
   border: 2px solid currentColor;
   border-right-color: transparent;
-  animation: spin 0.7s linear infinite;
+  animation: spin var(--dur-loop-spin) linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
   .spinner { animation: none; border-style: dotted; border-right-color: currentColor; }
@@ -577,7 +579,7 @@ legend { padding: 0; }
   background: var(--color-surface);
   box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--color-border);
   transform: translateX(var(--tab-x, 0px));
-  transition: transform var(--dur-component) var(--ease-out), width var(--dur-component) var(--ease-out);
+  transition: transform var(--dur-component) var(--ease-out);
 }
 .tabpanel:focus-visible { outline-offset: 6px; border-radius: var(--radius-md); }
 .tabpanel.is-active { animation: rise-in var(--dur-component) var(--ease-out) both; }
@@ -725,7 +727,7 @@ legend { padding: 0; }
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-surface) 60%, transparent), transparent);
-  animation: shimmer 1.4s var(--ease-in-out) infinite;
+  animation: shimmer var(--dur-loop-shimmer) var(--ease-in-out) infinite;
 }
 @media (prefers-reduced-motion: reduce) { .skeleton::after { display: none; } }
 
@@ -807,3 +809,17 @@ legend { padding: 0; }
 .table tbody tr { transition: background-color var(--dur-micro) var(--ease-out); }
 .table tbody tr:hover { background: var(--color-surface-2); }
 .table .is-num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- Écrans tactiles : toutes les cibles font au moins 44 × 44 px ---------- */
+@media (pointer: coarse) {
+  .btn--sm, .site-nav__link, .tab, .link-btn, .back-link, .site-footer__links a, .brand, .mobile-menu__link { min-height: 44px; }
+  .btn--icon, .btn--icon.btn--sm, .toast .btn--icon, .file-item .btn--icon { width: 44px; min-height: 44px; flex: none; }
+  .toast .btn--icon { margin: -6px -6px -6px 0; }
+  .tip-trigger { width: 44px; height: 44px; margin: -14px; flex: none; }
+  .accordion__summary { min-height: 56px; }
+}
+
+/* ---------- Petits écrans : les grands boutons peuvent passer sur deux lignes ---------- */
+@media (max-width: 29.99em) {
+  .btn--lg { white-space: normal; text-align: center; padding-inline: var(--space-5); line-height: 1.25; }
+}

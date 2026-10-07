@@ -4,8 +4,9 @@
 ![pandas](https://img.shields.io/badge/pandas-ETL-150458?logo=pandas&logoColor=white)
 ![matplotlib](https://img.shields.io/badge/matplotlib%20%2F%20seaborn-5%20graphiques-11557C)
 ![fpdf2](https://img.shields.io/badge/fpdf2-PDF%206%20pages-B22222)
-![Streamlit](https://img.shields.io/badge/Streamlit-d%C3%A9mo%20web-FF4B4B?logo=streamlit&logoColor=white)
-![pytest](https://img.shields.io/badge/pytest-88%20tests-0A9EDC?logo=pytest&logoColor=white)
+![Frontend](https://img.shields.io/badge/Frontend-HTML%20%C2%B7%20CSS%20%C2%B7%20JS-1F63B8)
+![Streamlit](https://img.shields.io/badge/Streamlit-st.App-FF4B4B?logo=streamlit&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-197%20tests-0A9EDC?logo=pytest&logoColor=white)
 ![Licence](https://img.shields.io/badge/Licence-MIT-green)
 
 Projet d'automatisation de bout en bout : à partir d'exports de ventes bruts issus d'un ERP, production automatique d'un **rapport PDF de 6 pages** prêt pour la réunion de direction. Ce qui demandait **5 heures de travail manuel chaque mois** se fait désormais **en quelques secondes**, sans intervention.
@@ -17,7 +18,7 @@ Projet d'automatisation de bout en bout : à partir d'exports de ventes bruts is
 
 ![L'application de démonstration en action](docs/images/demo-app.gif)
 
-*L'application en action : un clic sur « Lancer la démo » exécute le pipeline complet sur 12 fichiers de ventes volontairement mal saisis, affiche les indicateurs, les graphiques et les anomalies corrigées, puis propose le rapport PDF en téléchargement.*
+*L'application en action : un clic sur « Générer un rapport de démo » exécute le vrai pipeline sur 12 fichiers de ventes volontairement mal saisis. Chaque étape s'affiche en direct, puis le tableau de bord présente les indicateurs, les graphiques interactifs et les anomalies corrigées, avec le rapport PDF à télécharger.*
 
 ---
 
@@ -59,8 +60,8 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 | **Calculer les indicateurs** | CA brut, net et comptabilisé, panier moyen, taux d'annulation, remises, puis classements par vendeur, mois, catégorie, région et produit |
 | **Produire le livrable** | 5 graphiques et un rapport PDF A4 de 6 pages, mis en page et horodaté |
 | **Automatiser** | Une seule commande, et une planification qui génère le rapport seule le 1er de chaque mois |
-| **Rendre le projet testable par tous** | Une application web qui exécute le vrai pipeline dans le navigateur, sans installation |
-| **Vérifier chaque résultat** | 88 tests automatisés sur le nettoyage, les calculs et l'interface |
+| **Rendre le projet testable par tous** | Une application web soignée (design system, animations, accessibilité, mobile) qui exécute le vrai pipeline dans le navigateur, sans installation |
+| **Vérifier chaque résultat** | 197 tests automatisés sur le nettoyage, les calculs, le service et l'API web |
 
 ### Ce que ce projet démontre
 
@@ -68,12 +69,13 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 - **Rigueur** : les corrections appliquées aux données sont signalées dans un journal d'exécution, et les calculs sont vérifiés par des tests.
 - **Esprit critique sur les données** : repérer les pièges silencieux (une remise saisie `10` au lieu de `0.10` donnerait un chiffre d'affaires négatif sans aucun message d'erreur).
 - **Organisation du code** : 5 modules indépendants avec une seule responsabilité chacun, une configuration centralisée, trois interfaces (ligne de commande, planificateur, application web) branchées sur le même cœur.
-- **Pensée utilisateur** : un livrable compréhensible par une direction non technique, et une démo utilisable par un recruteur en un clic.
+- **Pensée utilisateur** : un livrable compréhensible par une direction non technique, et une démo utilisable par un recruteur en un clic, au clavier comme sur mobile.
+- **Soin du produit** : une interface conçue comme un produit fini, avec un design system, des animations au service de la compréhension et une accessibilité vérifiée.
 - **Autonomie** : projet mené seul de bout en bout, de l'identification du besoin au déploiement.
 
 ### Pour découvrir le travail en 2 minutes
 
-1. Ouvrir la [démo en ligne](https://sales-report-automation.streamlit.app) et cliquer sur **Lancer la démo**.
+1. Ouvrir la [démo en ligne](https://sales-report-automation.streamlit.app) et cliquer sur **Générer un rapport de démo**.
 2. Parcourir [les pages du rapport généré](#9-le-rapport-généré).
 3. Lire [les résultats détaillés](#10-analyses-et-résultats-détaillés), en particulier la robustesse face aux données mal saisies.
 
@@ -170,8 +172,9 @@ Les variantes d'accents, de majuscules et d'espaces sont harmonisées. Une valeu
 | **fpdf2** | Construction du rapport PDF A4, avec polices Unicode embarquées (DejaVu) pour les accents et le symbole € |
 | **schedule** | Exécution automatique le 1er de chaque mois |
 | **argparse** | Interface en ligne de commande |
-| **Streamlit** | Application web de démonstration |
-| **pytest** | 88 tests automatisés (nettoyage, calculs, interface) |
+| **HTML, CSS, JavaScript** | Interface web sans framework : design system à base de tokens, système d'animation centralisé, graphiques SVG natifs |
+| **Streamlit (`st.App`) / Starlette** | Serveur web : sert l'interface et l'API de génération (progression en direct) ; hébergeable gratuitement sur Streamlit Community Cloud |
+| **pytest** | 197 tests automatisés (nettoyage, calculs, service et API web) |
 | **Docker / Dev Containers** | Lancement de l'application sans installer Python (Docker, GitHub Codespaces) |
 | **Git / GitHub, Dependabot** | Versionnage, branches de travail, mise à jour automatique des dépendances |
 
@@ -263,14 +266,45 @@ Les graphiques sont produits en PNG à 150 DPI, avec une palette et un style com
 
 ### 8.7 Application web
 
-L'application [`app.py`](app.py) (Streamlit) appelle **exactement les mêmes modules** que la ligne de commande. Elle propose :
+L'interface est un frontend sur mesure, sans framework, servi avec son API par `st.App` (Streamlit 1.65). Elle appelle **exactement les mêmes modules** que la ligne de commande : rien n'est réimplémenté.
 
-- une **démo en un clic** sur 12 mois de données, avec des anomalies typiques d'un export ERP ajoutées volontairement ;
-- l'**envoi de ses propres fichiers CSV**, avec un fichier modèle téléchargeable et des messages d'erreur clairs ;
-- un **tableau de bord** (indicateurs et graphiques), un **diagnostic qualité** des données brutes, les **données nettoyées** en CSV et le **journal** d'exécution ;
-- le **téléchargement du rapport PDF**.
+| Accueil | Tableau de bord |
+|---|---|
+| ![Page d'accueil](docs/images/app-accueil.png) | ![Tableau de bord du rapport](docs/images/app-rapport.png) |
+| **Graphiques interactifs** | **Diagnostic qualité** |
+| ![Graphiques du rapport](docs/images/app-graphiques.png) | ![Qualité des données](docs/images/app-qualite.png) |
 
-Chaque exécution travaille dans un dossier temporaire qui lui est propre, pour que plusieurs visiteurs puissent utiliser l'application en même temps.
+| Mobile | Thème sombre |
+|---|---|
+| ![Version mobile](docs/images/app-mobile.png) | ![Thème sombre](docs/images/app-sombre.png) |
+
+**Parcours**
+- **Démo en un clic** : 12 mois de données, avec des anomalies typiques d'un export ERP ajoutées volontairement.
+- **Vos propres fichiers** : glisser-déposer de CSV, fichier modèle, format attendu dans une fenêtre dédiée, erreurs affichées sous le champ concerné.
+- **Progression en direct** : le serveur envoie l'avancement réel de chaque étape (flux NDJSON), la vue rapport s'ouvre aussitôt avec un squelette de chargement.
+- **Tableau de bord** : 8 indicateurs (avec leur mode de calcul en infobulle), 6 graphiques SVG natifs explorables au survol et au clavier, chacun avec sa vue tableau, diagnostic qualité, données nettoyées en CSV et journal d'exécution.
+- **Téléchargement du rapport PDF** de 6 pages.
+
+**Design system** ([`tokens.css`](webapp/static/assets/css/tokens.css))
+- Une seule source de vérité pour les couleurs (thème clair et thème sombre choisis, pas inversés), la typographie fluide (`clamp()`), les espacements (4 à 128 px), les rayons, les ombres, les plans et les breakpoints.
+- Des composants réutilisables : bouton (états survol, actif, focus, désactivé, chargement, succès), carte, champ, interrupteur, onglets, accordéon, infobulle, toast, fenêtre de dialogue, squelette, étapes.
+- Les couleurs des graphiques ont été validées (contraste et daltonisme) avant d'être retenues.
+
+**Système d'animation** ([`motion.js`](webapp/static/assets/js/motion.js))
+- Durées et courbes partagées (micro-interaction 140 ms, survol 180 ms, composant 260 ms, transition 380 ms, animation complexe 640 ms), amplitudes plafonnées à 24 px, `transform` et `opacity` uniquement.
+- Apparitions au défilement avec une hiérarchie temporelle (titre, texte, bouton, visuel), narration au défilement pour les 5 étapes du pipeline, transitions de vue (View Transitions API, avec repli).
+- Effets liés au curseur (parallaxe du visuel, lueur des cartes, boutons légèrement magnétiques) réservés à la souris ; parallaxe au défilement réservée aux grands écrans.
+- Avec `prefers-reduced-motion`, plus rien ne bouge : le contenu s'affiche directement.
+
+**Accessibilité et responsive**
+- Navigation complète au clavier (lien d'évitement, onglets aux flèches, focus visible partout, piège de focus dans le menu et la fenêtre de dialogue), annonces `aria-live` de la progression et des erreurs, contrastes AA vérifiés.
+- Conception mobile d'abord, sans débordement horizontal, de 320 px aux grands écrans ; zones tactiles de 44 px minimum.
+- Page d'accueil légère : environ 190 Ko transférés, aucun framework, une seule police variable allégée à 68 Ko, images WebP chargées à la demande, aucun décalage de mise en page.
+
+**Robustesse côté serveur**
+- Chaque génération travaille dans ses propres dossiers temporaires ; les générations sont sérialisées (matplotlib n'est pas prévu pour le multi-thread).
+- Les envois sont contrôlés avant tout traitement : 30 fichiers et 20 Mo au maximum, en-têtes vérifiés sans pandas, nombre de vendeurs, régions et catégories plafonné pour qu'un fichier piégé ne bloque pas les autres visiteurs.
+- Les rapports restent téléchargeables une heure, en mémoire, via un identifiant aléatoire.
 
 ### 8.8 Contrôle qualité
 
@@ -278,7 +312,10 @@ Chaque exécution travaille dans un dossier temporaire qui lui est propre, pour 
 |---|---|
 | [`tests/test_cleaner.py`](tests/test_cleaner.py) | Doublons, valeurs manquantes, types, remises, valeurs négatives, statuts, colonnes temporelles, nettoyage complet |
 | [`tests/test_transformer.py`](tests/test_transformer.py) | CA brut, net et comptabilisé, cohérence des KPIs, tri des classements, heatmap, transformation complète |
-| [`tests/test_app.py`](tests/test_app.py) | Génération des données de démo, ajout et détection des anomalies, libellé de période, pipeline complet, affichage de l'application |
+| [`tests/test_service.py`](tests/test_service.py) | Données de démo, anomalies et diagnostic, libellé de période, noms de fichiers sûrs, contrôle des en-têtes et des limites, cache des rapports, pipeline complet |
+| [`tests/test_webapp.py`](tests/test_webapp.py) | Routes de l'API, flux de progression (non mis en tampon, y compris compressé), validations 422, téléchargements PDF et CSV, en-têtes de sécurité |
+
+L'interface a en plus été auditée dans un navigateur réel (accessibilité automatique avec axe-core, clavier seul, 11 tailles d'écran, mouvement réduit, réseau lent), chaque problème trouvé étant vérifié puis corrigé.
 
 ## 9. Le rapport généré
 
@@ -304,6 +341,8 @@ Chaque exécution travaille dans un dossier temporaire qui lui est propre, pour 
 | Volume traité | 12 fichiers, 1 163 lignes |
 | Livrables produits | 5 graphiques PNG et 1 rapport PDF de 6 pages |
 | Interventions humaines nécessaires | aucune en mode planifié |
+| Génération depuis l'application web | moins de 2 secondes, progression affichée étape par étape |
+| Poids de la page d'accueil | environ 190 Ko transférés, 18 requêtes, aucun décalage de mise en page |
 
 ### Robustesse face aux données mal saisies
 
@@ -397,10 +436,17 @@ EXCLUDED_STATUTS           = ["Annulé", "Retourné"]                # statuts e
 - **Ne pas dépendre de la langue du système** : les noms de mois sont tirés d'un dictionnaire français, sinon le rapport afficherait « January » sur un serveur configuré en anglais.
 
 **Sur le code**
-- **Séparer le cœur des interfaces** paie : l'application web a été ajoutée sans réécrire le pipeline, avec un seul paramètre supplémentaire (le dossier de sortie).
+- **Séparer le cœur des interfaces** paie : l'application web, puis sa refonte complète, ont été ajoutées sans réécrire le pipeline, avec un seul paramètre supplémentaire (le dossier de sortie).
 - **Les tests protègent aussi des mises à jour** : ils ont signalé le changement de comportement de pandas 3 sur les colonnes de texte.
 - **Une application web sert plusieurs visiteurs à la fois** : matplotlib n'étant pas prévu pour cela, les exécutions sont sérialisées et chacune écrit dans son propre dossier temporaire.
 - **Un PDF doit embarquer ses polices** pour afficher correctement les accents et le symbole € sur toutes les machines.
+- **Un fichier minuscule peut coûter très cher** : 12 Ko de CSV avec 300 vendeurs et 300 régions bloquaient le serveur 73 secondes. Des limites vérifiées avant le calcul ramènent ce cas à 0,1 seconde.
+
+**Sur l'interface**
+- **Une animation doit expliquer quelque chose** : la progression réelle du pipeline, l'apparition d'un graphique ou le passage d'une vue à l'autre. Les animations décoratives ont été écartées, et toutes disparaissent si l'utilisateur préfère réduire les animations.
+- **Un design system évite les valeurs au hasard** : une couleur, une durée ou un espacement se modifient à un seul endroit.
+- **Le responsive se vérifie sur de vrais écrans** : une simple grille sans `minmax(0, 1fr)` laissait un tableau élargir toute la page sur mobile, sans que rien ne déborde visiblement.
+- **Une progression honnête rassure** : afficher l'étape réellement en cours vaut mieux qu'une barre de chargement simulée.
 
 ## 13. Structure du projet
 
@@ -409,7 +455,7 @@ sales-report-automation/
 ├── README.md
 ├── LICENSE
 ├── main.py                      Point d'entrée en ligne de commande
-├── app.py                       Application web de démonstration (Streamlit)
+├── app.py                       Point d'entrée web : st.App sert l'interface et l'API
 ├── config.py                    Chemins, règles métier, titre et couleurs du rapport
 ├── generate_data.py             Génération des données de démonstration
 ├── demo_colab.ipynb             Démonstration pas à pas dans Google Colab
@@ -417,6 +463,17 @@ sales-report-automation/
 ├── pyproject.toml               Métadonnées du projet et configuration des outils
 ├── Dockerfile                   Image de l'application web
 ├── DejaVuSans*.ttf              Polices Unicode embarquées dans le PDF
+├── webapp/
+│   ├── api.py                   Routes web : page, fichiers statiques, API de génération en flux
+│   ├── service.py               Préparation des données, contrôles, exécution du pipeline, cache
+│   ├── fallback.py              Page « introuvable » (Streamlit) pour les adresses inconnues
+│   └── static/
+│       ├── index.html           Page unique : accueil et vue rapport
+│       └── assets/
+│           ├── css/             tokens, base, composants, sections, tableau de bord
+│           ├── js/              motion, composants, démo, tableau de bord, graphiques
+│           ├── fonts/           Police Inter variable (allégée)
+│           └── img/             Aperçus WebP du rapport
 ├── src/
 │   ├── extractor.py             1. Lecture et fusion des CSV
 │   ├── cleaner.py               2. Nettoyage et standardisation
@@ -427,7 +484,7 @@ sales-report-automation/
 ├── tests/                       Tests automatisés (pytest)
 ├── examples/                    Exemple de CSV source et de rapport PDF
 ├── docs/images/                 Captures du rapport et de l'application
-├── .streamlit/                  Thème et réglages de l'application web
+├── .streamlit/                  Réglages du serveur Streamlit
 ├── .devcontainer/               Environnement GitHub Codespaces
 ├── .github/dependabot.yml       Mise à jour automatique des dépendances
 ├── data/raw/                    Fichiers CSV d'entrée (non versionnés)
@@ -439,7 +496,7 @@ sales-report-automation/
 **Option 1 : tester en ligne (recommandé, aucune installation)**
 
 1. Ouvrir la [démo en ligne](https://sales-report-automation.streamlit.app). Si personne ne l'a utilisée récemment, elle peut mettre une trentaine de secondes à démarrer.
-2. Cliquer sur **Lancer la démo**, ou déposer ses propres fichiers CSV depuis le panneau de gauche.
+2. Cliquer sur **Générer un rapport de démo**, ou déposer ses propres fichiers CSV dans la section **Démo**.
 3. Télécharger le rapport PDF.
 
 **Option 2 : installer le projet sur son poste**
@@ -458,6 +515,7 @@ python main.py --periode "Janvier - Décembre 2024"
 # Le rapport se trouve dans output/rapports/
 
 streamlit run app.py                 # Application web sur http://localhost:8501
+# ou : uvicorn app:app               # n'importe quel serveur ASGI, sur http://localhost:8000
 ```
 
 **Option 3 : sans installer Python**
@@ -502,6 +560,8 @@ L'image Docker peut aussi être déployée sur Hugging Face Spaces, Render ou Ra
 - **Format d'entrée strict** : CSV séparé par des virgules, noms de colonnes exacts. Les fichiers Excel ou séparés par des points-virgules ne sont pas acceptés.
 - **Planificateur simple** : il fonctionne tant que le processus reste lancé ; il ne remplace pas un ordonnanceur système.
 - **Hébergement gratuit** : la démo en ligne se met en veille quand elle n'est pas utilisée.
+- **Une génération à la fois** : les demandes simultanées attendent leur tour. Les envois sont limités à 30 fichiers, 20 Mo, 200 vendeurs, 50 régions et 50 catégories.
+- **Rapports en mémoire** : un rapport généré en ligne reste téléchargeable une heure, puis il est effacé.
 
 **Pistes d'amélioration**
 - Accepter les fichiers **Excel** et détecter automatiquement le **séparateur** et l'**encodage**.
@@ -513,8 +573,8 @@ L'image Docker peut aussi être déployée sur Hugging Face Spaces, Render ou Ra
 
 ## 16. Crédits
 
-- Polices : [DejaVu Fonts](https://dejavu-fonts.github.io/) (licence libre).
-- Bibliothèques : pandas, matplotlib, seaborn, fpdf2, Streamlit, pytest.
+- Polices : [DejaVu Fonts](https://dejavu-fonts.github.io/) pour le PDF (licence libre), [Inter](https://rsms.me/inter/) pour l'interface (SIL Open Font License).
+- Bibliothèques : pandas, matplotlib, seaborn, fpdf2, Streamlit, Starlette, pytest.
 - Licence du projet : [MIT](LICENSE).
 
 **Auteur :** Dibie Elisee Jules Cedric KOUADIO ([@GomuGomuNo01](https://github.com/GomuGomuNo01))

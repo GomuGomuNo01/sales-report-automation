@@ -12,12 +12,22 @@
      xl  80em  (1280px)  desktop
    ========================================================================== */
 
+/* Repli calibré sur les métriques d'Inter : le changement de police ne décale pas le texte */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
+  size-adjust: 107.1%;
+  ascent-override: 90.4%;
+  descent-override: 22.5%;
+  line-gap-override: 0%;
+}
+
 @font-face {
   font-family: "Inter";
   src: url("../fonts/InterVariable-latin.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;  /* préchargée : affichée d'emblée, sinon le repli calibré reste, sans saut */
 }
 
 :root {
@@ -62,7 +72,7 @@
   --viz-surface:     #ffffff;
 
   /* ---------- Typographie ---------- */
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
 
   --text-display: clamp(2.375rem, 1.6rem + 3vw, 3.875rem);  /* H1 du hero */
@@ -143,7 +153,12 @@
   --move-md: 12px;
   --move-lg: 24px;
   --scale-in: 0.96;
+  --scale-subtle: 0.985;
   --stagger: 80ms;
+  --stagger-tight: 40ms;
+  --dur-draw: 760ms;          /* tracé d'une courbe */
+  --dur-loop-spin: 700ms;     /* indicateur de chargement (fonctionnel) */
+  --dur-loop-shimmer: 1400ms; /* squelette de chargement (fonctionnel) */
 
   /* ---------- Plans ---------- */
   --z-base:    1;
@@ -214,6 +229,9 @@
     --move-md: 0px;
     --move-lg: 0px;
     --scale-in: 1;
+    --scale-subtle: 1;
     --stagger: 0ms;
+    --stagger-tight: 0ms;
+    --dur-draw: 1ms;
   }
 }

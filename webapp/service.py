@@ -283,9 +283,14 @@ def formater_nombre(n: int) -> str:
     return f"{int(n):,}".replace(",", " ")
 
 
+def accorder(n: int, singulier: str, pluriel: str) -> str:
+    """Nombre + nom accordé selon la règle française : singulier pour 0 et 1 (« 0 retirée », « 1 ligne »)."""
+    return f"{formater_nombre(n)} {singulier if abs(n) < 2 else pluriel}"
+
+
 def nombre_fichiers(k: int) -> str:
-    """« 1 fichier », sinon « k fichiers » (seule exception au pluriel prévue par le contrat d'API)."""
-    return "1 fichier" if k == 1 else f"{formater_nombre(k)} fichiers"
+    """« 0 fichier », « 1 fichier », « 12 fichiers »."""
+    return accorder(k, "fichier", "fichiers")
 
 
 def valeur_json(valeur, decimales: int = 2):
@@ -520,7 +525,7 @@ def executer_pipeline(dossier_csv: str, periode: str, on_event: Emetteur,
         diagnostic = diagnostic_qualite(df_brut)
         nb_fichiers = int(df_brut["source_fichier"].nunique())
         _etape(on_event, "extraction", "termine",
-               f"{formater_nombre(len(df_brut))} lignes · {nombre_fichiers(nb_fichiers)}")
+               f"{accorder(len(df_brut), 'ligne', 'lignes')} · {nombre_fichiers(nb_fichiers)}")
 
         _etape(on_event, "nettoyage", "en_cours")
         df_propre = clean(df_brut.copy())
@@ -529,7 +534,7 @@ def executer_pipeline(dossier_csv: str, periode: str, on_event: Emetteur,
         verifier_modalites(df_propre)  # avant transform() : coût quadratique de la heatmap
         nb_retirees = len(df_brut) - len(df_propre)
         _etape(on_event, "nettoyage", "termine",
-               f"{formater_nombre(len(df_propre))} lignes valides · {formater_nombre(nb_retirees)} retirées")
+               f"{accorder(len(df_propre), 'ligne valide', 'lignes valides')} · {accorder(nb_retirees, 'retirée', 'retirées')}")
 
         _etape(on_event, "transformation", "en_cours")
         resultats = transform(df_propre)
@@ -555,7 +560,7 @@ def executer_pipeline(dossier_csv: str, periode: str, on_event: Emetteur,
             plt.close("all")
         duree = time.perf_counter() - debut
         _etape(on_event, "rapport", "termine",
-               f"PDF de {compter_pages_pdf(pdf)} pages · {formater_nombre(max(1, round(len(pdf) / 1024)))} Ko")
+               f"PDF de {compter_pages_pdf(pdf)}\u00a0pages · {formater_nombre(max(1, round(len(pdf) / 1024)))} Ko")
 
     df = resultats["df"]
     identifiant = uuid.uuid4().hex

@@ -57,7 +57,7 @@
 .bar-row:hover .bar-row__bar { filter: brightness(1.12) saturate(1.05); }
 .bar-row:hover .bar-row__label { color: var(--color-ink); }
 .has-motion .bars:not(.is-animating) .bar-row__bar { transform: scaleX(0); }
-.has-motion .bars.is-animating .bar-row__bar { animation: bar-grow var(--dur-complex) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 40ms); }
+.has-motion .bars.is-animating .bar-row__bar { animation: bar-grow var(--dur-complex) var(--ease-out) both; animation-delay: calc(var(--i, 0) * var(--stagger-tight)); }
 @keyframes bar-grow { from { transform: scaleX(0); } }
 
 /* Courbe */
@@ -77,8 +77,8 @@
 .line-chart.is-hover .lc-cross, .line-chart.is-hover .lc-hover-dot { opacity: 1; }
 .has-motion .line-chart:not(.is-animating):not(.is-drawn) .lc-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .has-motion .line-chart:not(.is-animating):not(.is-drawn) .lc-area { opacity: 0; }
-.has-motion .line-chart.is-animating .lc-line { stroke-dasharray: 1; animation: draw 900ms var(--ease-in-out) both; }
-.has-motion .line-chart.is-animating .lc-area { animation: fade-in var(--dur-complex) var(--ease-out) 300ms both; }
+.has-motion .line-chart.is-animating .lc-line { stroke-dasharray: 1; animation: draw var(--dur-draw) var(--ease-in-out) both; }
+.has-motion .line-chart.is-animating .lc-area { animation: fade-in var(--dur-complex) var(--ease-out) calc(4 * var(--stagger)) both; }
 @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 
 .chart-tip {
@@ -105,7 +105,9 @@
 
 /* Heatmap (tableau HTML coloré) */
 .heatmap-wrap { max-width: 100%; overflow-x: auto; border-radius: var(--radius-md); }
-.heatmap { width: 100%; min-width: 34rem; font-size: var(--text-xs); border-collapse: separate; border-spacing: 2px; }
+.heatmap { width: 100%; min-width: 40rem; table-layout: fixed; font-size: var(--text-xs); border-collapse: separate; border-spacing: 2px; }
+.heatmap thead th:first-child { width: 9.5rem; }
+.heatmap thead th { white-space: normal; vertical-align: bottom; line-height: 1.3; }
 .heatmap th { padding: var(--space-2); font-weight: var(--weight-medium); color: var(--color-ink-3); text-align: center; white-space: nowrap; }
 .heatmap th[scope="row"] { text-align: left; color: var(--color-ink-2); position: sticky; left: 0; background: var(--color-surface); z-index: 1; }
 .heatmap td { height: 36px; padding: 0 var(--space-2); border-radius: var(--radius-xs); text-align: center; font-variant-numeric: tabular-nums; font-weight: var(--weight-medium); transition: box-shadow var(--dur-micro) var(--ease-out); }
@@ -166,3 +168,24 @@
 .report-error { display: grid; gap: var(--space-4); justify-items: start; max-width: 40rem; }
 .report-error__icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--color-danger-soft); color: var(--color-danger); }
 .report-body[aria-busy="true"] { pointer-events: none; }
+
+/* ---------- Petits écrans ---------- */
+@media (max-width: 29.99em) {
+  .bar-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .bar-row__label { white-space: normal; }
+}
+@media (max-width: 22.49em) {
+  .kpis:not(.kpis--secondary) { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 47.99em) {
+  /* Le titre passe de « Génération… » à « Rapport « … » » : on réserve deux lignes pour éviter un saut */
+  .report-head__title { min-height: 2.2em; }
+}
+.report-head__meta:empty::before { content: ""; display: block; height: 30px; }
+.btn.is-pending { opacity: 0.5; pointer-events: none; box-shadow: none; }
+.report-progress__slow { margin-top: var(--space-4); }
+
+/* Écrans tactiles : ces liens sont redéfinis dans sections.css et ici, la règle doit donc venir en dernier */
+@media (pointer: coarse) {
+  .link-btn, .back-link, .site-footer__links a { min-height: 44px; }
+}

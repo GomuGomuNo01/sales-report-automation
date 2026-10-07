@@ -174,14 +174,23 @@ export function renderLine(container, points, { format, formatAxis, label }) {
   playWhenVisible(container);
 }
 
-/* ---------- Heatmap (tableau HTML, échelle séquentielle bleue) ---------- */
-const RAMP_LIGHT = ['#f1f6fd', '#cde2fb', '#b7d3f6', '#9ec5f4', '#86b6ef', '#6da7ec', '#5598e7', '#3987e5', '#2a78d6', '#256abf', '#1c5cab', '#184f95', '#104281'];
-const RAMP_DARK = ['#141c2a', '#13284a', '#15335f', '#184f95', '#1c5cab', '#256abf', '#2a78d6', '#3987e5', '#5598e7', '#6da7ec', '#86b6ef', '#9ec5f4', '#b7d3f6'];
+/* ---------- Heatmap (tableau HTML, échelle séquentielle bleue) ----------
+   #2a78d6 est exclu des rampes : ni le blanc ni l'encre n'y atteignent 4,5:1. */
+const RAMP_LIGHT = ['#f1f6fd', '#cde2fb', '#b7d3f6', '#9ec5f4', '#86b6ef', '#6da7ec', '#5598e7', '#3987e5', '#256abf', '#1c5cab', '#184f95', '#104281'];
+const RAMP_DARK = ['#141c2a', '#13284a', '#15335f', '#184f95', '#1c5cab', '#256abf', '#3987e5', '#5598e7', '#6da7ec', '#86b6ef', '#9ec5f4', '#b7d3f6'];
 
 function luminance(hex) {
   const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
     .map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** Encre (sombre ou blanche) qui offre le meilleur contraste sur un fond donné. */
+function inkFor(bg) {
+  const l = luminance(bg);
+  const onWhite = 1.05 / (l + 0.05);
+  const onInk = (l + 0.05) / (luminance('#0b1220') + 0.05);
+  return onInk >= onWhite ? '#0b1220' : '#ffffff';
 }
 
 export function renderHeatmap(container, data, { format, formatCompact, label }) {
@@ -216,7 +225,7 @@ export function renderHeatmap(container, data, { format, formatCompact, label })
       const bg = colorFor(value);
       const td = h('td', '', value ? formatCompact(value) : '–');
       td.style.background = bg;
-      td.style.color = luminance(bg) > 0.4 ? '#0b1220' : '#ffffff';
+      td.style.color = inkFor(bg);
       td.title = `${v} · ${region} : ${format(value)}`;
       tr.append(td);
     });

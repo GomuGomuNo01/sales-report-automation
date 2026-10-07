@@ -174,7 +174,7 @@ class TestFormatage:
         assert slug_periode(periode) == attendu
 
     def test_nombre_de_fichiers(self):
-        assert [nombre_fichiers(k) for k in (0, 1, 2, 1180)] == ["0 fichiers", "1 fichier", "2 fichiers",
+        assert [nombre_fichiers(k) for k in (0, 1, 2, 1180)] == ["0 fichier", "1 fichier", "2 fichiers",
                                                                   "1\u202f180 fichiers"]
 
     def test_separateur_de_milliers_espace_fine(self):
@@ -386,13 +386,13 @@ class TestExecuterPipeline:
 
 
     def test_details_des_etapes_libelles_du_contrat(self, tmp_path, df_propre):
-        """Pluriel fixe partout (« 0 retirées », « 1 lignes »), sauf « 1 fichier »."""
+        """Accord français : singulier pour 0 et 1 (« 1 ligne », « 0 retirée »)."""
         df_propre.head(1).to_csv(tmp_path / "x.csv", index=False)
         evenements = []
         executer_pipeline(str(tmp_path), "", evenements.append, cache=CacheRapports())
         details = {e["etape"]: e["detail"] for e in evenements if e["statut"] == "termine"}
-        assert details["extraction"] == "1 lignes · 1 fichier"
-        assert details["nettoyage"] == "1 lignes valides · 0 retirées"
+        assert details["extraction"] == "1 ligne · 1 fichier"
+        assert details["nettoyage"] == "1 ligne valide · 0 retirée"
         assert details["transformation"] == "8 indicateurs · 6 agrégations"
         assert details["visualisation"] == "5 graphiques"
         assert details["rapport"].startswith("PDF de 6 pages · ")

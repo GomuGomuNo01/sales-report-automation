@@ -476,7 +476,7 @@ def generate_report(resultats: dict, chemins_charts: dict,
     Returns:
         str : chemin vers le fichier PDF genere
     """
-    logger.info("=== ETAPE 5 : GENERATION DU RAPPORT PDF ===")
+    logger.info("=== ÉTAPE 5 : GÉNÉRATION DU RAPPORT PDF ===")
 
     if periode is None:
         periode = datetime.now().strftime("%B %Y").capitalize()
@@ -495,5 +495,5 @@ def generate_report(resultats: dict, chemins_charts: dict,
     chemin_pdf  = os.path.join(output_dir, nom_fichier)
     pdf.output(chemin_pdf)
 
-    logger.info(f"Rapport PDF genere : {chemin_pdf}")
+    logger.info(f"Rapport PDF généré : {os.path.basename(chemin_pdf)}")
     return chemin_pdf

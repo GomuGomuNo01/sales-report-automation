@@ -48,7 +48,11 @@ GZIP_TAILLE_MIN    = 1000
 # En plus des exclusions par défaut de Starlette (images, polices woff, archives…) :
 # le flux NDJSON (doit partir ligne par ligne) et les binaires déjà compressés.
 EXCLUSIONS_GZIP    = (MEDIA_NDJSON, "application/pdf", "application/octet-stream", "font/*")
-CACHE_ASSETS       = "public, max-age=604800"  # 7 jours
+CACHE_ASSETS       = "public, max-age=604800"  # 7 jours : polices et images
+# CSS et modules JS : revalidés à chaque visite (ETag, réponse 304 légère), pour qu'un
+# déploiement ne mélange jamais d'anciens et de nouveaux modules sans versionner les URL
+CACHE_CODE         = "no-cache"
+EXTENSIONS_CODE    = (".css", ".js")
 ENTETES_SECURITE   = {
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy":        "strict-origin-when-cross-origin",
@@ -379,7 +383,7 @@ class EntetesStatiques:
                 for nom, valeur in ENTETES_SECURITE.items():
                     entetes.setdefault(nom, valeur)
                 if chemin.startswith("/assets/") and message["status"] in (200, 304):
-                    entetes.setdefault("Cache-Control", CACHE_ASSETS)
+                    entetes.setdefault("Cache-Control", CACHE_CODE if chemin.endswith(EXTENSIONS_CODE) else CACHE_ASSETS)
             await send(message)
 
         await self.app(scope, receive, envoyer)

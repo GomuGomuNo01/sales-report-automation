@@ -46,6 +46,16 @@ function reveal(el) {
   afterMotion(el, '--dur-complex').then(() => el.classList.add('is-settled'));
 }
 
+/* Un élément atteint au clavier (ou contenant le focus) apparaît sans attendre */
+function revealOnFocus(event) {
+  for (let el = event.target.closest?.('[data-reveal]'); el; el = el.parentElement?.closest('[data-reveal]')) {
+    if (el.classList.contains('is-revealed')) continue;
+    el.style.setProperty('--reveal-delay', '0ms');
+    reveal(el);
+    revealObserver?.unobserve(el);
+  }
+}
+
 export function initReveal(scope = document) {
   // Hiérarchie temporelle : chaque enfant d'un groupe décale son entrée d'un pas de --stagger
   scope.querySelectorAll('[data-reveal-group]').forEach((group) => {
@@ -135,6 +145,7 @@ function initPointerParallax() {
     }, { passive: true });
 
     host.addEventListener('pointerleave', () => {
+      if (!host.classList.contains('is-pointer')) return;
       target = { x: 0, y: 0 };
       host.classList.remove('is-pointer');
       frame ??= requestAnimationFrame(tick);
@@ -172,7 +183,8 @@ function initMagnetic() {
   });
 }
 
-/* ---------- Parallaxe au défilement (grands écrans uniquement) ---------- */
+/* ---------- Parallaxe au défilement (grands écrans avec souris uniquement) ----------
+   Réservée aux calques de fond : décalage plafonné à 2 × --move-lg (48px). */
 
 function initScrollParallax() {
   const items = [...document.querySelectorAll('[data-parallax]')];
@@ -180,10 +192,10 @@ function initScrollParallax() {
   let frame = null;
   const update = () => {
     frame = null;
-    const active = largeScreen.matches && motionAllowed();
+    const active = largeScreen.matches && finePointer.matches && motionAllowed();
     for (const el of items) {
       const factor = active ? parseFloat(el.dataset.parallax) || 0 : 0;
-      const offset = Math.min(window.scrollY, window.innerHeight) * factor;
+      const offset = Math.min(48, Math.min(window.scrollY, window.innerHeight) * factor);
       el.style.transform = offset ? `translate3d(0, ${offset.toFixed(1)}px, 0)` : '';
     }
   };
@@ -201,6 +213,7 @@ export function initMotion() {
     document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-revealed'));
   });
   initReveal();
+  document.addEventListener('focusin', revealOnFocus);
   initPointerParallax();
   initGlow();
   initMagnetic();

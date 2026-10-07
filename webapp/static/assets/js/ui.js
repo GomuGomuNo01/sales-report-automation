@@ -36,6 +36,8 @@ export function initMobileMenu() {
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
     document.body.classList.toggle('is-locked', open);
+    // Le reste de la page devient inerte : ni focus ni lecteur d'écran derrière le menu
+    document.querySelectorAll('main, .site-footer, .brand, .site-header__actions > a').forEach((el) => { el.inert = open; });
     if (open) {
       menu.hidden = false;
       backdrop.hidden = false;
@@ -197,7 +199,10 @@ export function initTooltips() {
     else hide();
   });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hide(); });
-  window.addEventListener('scroll', hide, { passive: true });
+  window.addEventListener('scroll', () => {
+    if (owner && owner === document.activeElement) position(owner);
+    else hide();
+  }, { passive: true });
 }
 
 /* ---------- Toast ---------- */
