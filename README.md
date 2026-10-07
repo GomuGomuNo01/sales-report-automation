@@ -14,8 +14,6 @@ Projet d'automatisation de bout en bout : à partir d'exports de ventes bruts is
 [![Tester la démo en ligne](https://img.shields.io/badge/Tester%20la%20d%C3%A9mo-en%20ligne%2C%20sans%20installation-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://sales-report-automation-cedric.streamlit.app)
 [![Télécharger un exemple de rapport](https://img.shields.io/badge/T%C3%A9l%C3%A9charger-un%20exemple%20de%20rapport%20PDF-2E86AB?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](examples/rapport_exemple_2024.pdf)
 
-*Application web : aucun compte, aucune installation, un clic suffit pour générer et télécharger un rapport. D'autres façons de tester le projet sont décrites dans [Reproduire le projet](#14-reproduire-le-projet).*
-
 ![L'application de démonstration en action](docs/images/demo-app.gif)
 
 *L'application en action : un clic sur « Générer un rapport de démo » exécute le vrai pipeline sur 12 fichiers de ventes volontairement mal saisis. Chaque étape s'affiche en direct, puis le tableau de bord présente les indicateurs, les graphiques interactifs et les anomalies corrigées, avec le rapport PDF à télécharger.*
@@ -177,7 +175,7 @@ Les variantes d'accents, de majuscules et d'espaces sont harmonisées. Une valeu
 | **Streamlit (`st.App`) / Starlette** | Serveur web : sert l'interface et l'API de génération (progression en direct) |
 | **pytest** | 204 tests automatisés (nettoyage, calculs, service et API web) |
 | **Streamlit Community Cloud** | Hébergement gratuit de la démo en ligne, redéployée à chaque push sur `main` |
-| **Docker / Dev Containers** | Image prête pour l'hébergement (Google Cloud Run, Render) et lancement sans installer Python (Docker, GitHub Codespaces) |
+| **Docker** | Image prête pour l'hébergement (Google Cloud Run, Render) et lancement sans installer Python |
 | **Git / GitHub, Dependabot** | Versionnage, branches de travail, mise à jour automatique des dépendances |
 
 ## 7. Méthodologie
@@ -492,7 +490,6 @@ sales-report-automation/
 ├── docs/                        Guide de déploiement, captures du rapport et de l'application
 ├── deploy/                      Règle de nettoyage des images (Cloud Run)
 ├── .streamlit/                  Réglages du serveur Streamlit
-├── .devcontainer/               Environnement GitHub Codespaces
 ├── .github/                     Dependabot et maintien en éveil de la démo (visite automatique toutes les 6 h)
 ├── data/raw/                    Fichiers CSV d'entrée (non versionnés)
 └── output/                      Rapports, graphiques et journaux générés (non versionnés)
@@ -528,7 +525,6 @@ streamlit run app.py                 # Application web sur http://localhost:8501
 **Option 3 : sans installer Python**
 
 - **Docker** : `docker build -t sales-report .` puis `docker run -p 8501:8501 sales-report`, et ouvrir http://localhost:8501.
-- **GitHub Codespaces** (compte GitHub) : [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/GomuGomuNo01/sales-report-automation?quickstart=1) ouvre le projet dans un VS Code en ligne, avec l'application lancée automatiquement.
 - **Google Colab** (compte Google) : [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb) exécute le pipeline cellule par cellule (menu *Exécution > Tout exécuter*).
 
 **Lancer les tests :**
