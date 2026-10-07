@@ -153,14 +153,17 @@ export function renderLine(container, points, { format, formatAxis, label }) {
   }
   const hide = () => { container.classList.remove('is-hover'); };
 
-  hit.addEventListener('pointermove', (event) => {
+  const pick = (event) => {
     const rect = svg.getBoundingClientRect();
     const px = ((event.clientX - rect.left) / rect.width) * width;
-    const i = Math.round(((px - m.left) / innerW) * last);
-    show(i);
+    show(Math.round(((px - m.left) / innerW) * last));
+  };
+  hit.addEventListener('pointermove', pick);
+  hit.addEventListener('pointerdown', pick);   // un simple toucher choisit le mois touché
+  hit.addEventListener('pointerleave', (event) => { if (event.pointerType === 'mouse') hide(); });
+  container.addEventListener('focus', () => {
+    if (container.matches(':focus-visible')) show(active < 0 ? last : active);
   });
-  hit.addEventListener('pointerleave', hide);
-  container.addEventListener('focus', () => show(active < 0 ? last : active));
   container.addEventListener('blur', hide);
   container.addEventListener('keydown', (event) => {
     const moves = { ArrowLeft: -1, ArrowRight: 1, Home: -Infinity, End: Infinity };

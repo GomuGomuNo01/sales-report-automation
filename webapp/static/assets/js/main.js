@@ -89,9 +89,11 @@ function scrollToSection(id, { instant = false } = {}) {
   target.scrollIntoView({ behavior: instant ? 'instant' : 'smooth', block: 'start' });
 }
 
-function onNavigate(target) {
+function onNavigate(target, { restore = false } = {}) {
   if (target === 'rapport') {
-    if (!isShowingReport()) restoreLastReport();
+    // Seul un clic explicite sur « Revoir le rapport » restaure le dernier rapport réussi ;
+    // une nouvelle génération ouvre la vue rapport sur son propre état de progression.
+    if (restore && !isShowingReport()) restoreLastReport();
     go('rapport');
   }
   else if (target === 'demo') go('accueil', { section: 'demo' });
@@ -111,7 +113,7 @@ function initNavigation() {
         return;
       }
       if (target === 'rapport' && !hasReport()) return;
-      onNavigate(target);
+      onNavigate(target, { restore: target === 'rapport' });
       return;
     }
     // Ancres de l'accueil cliquées depuis la vue rapport

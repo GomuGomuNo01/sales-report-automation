@@ -60,7 +60,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 | **Calculer les indicateurs** | CA brut, net et comptabilisé, panier moyen, taux d'annulation, remises, puis classements par vendeur, mois, catégorie, région et produit |
 | **Produire le livrable** | 5 graphiques et un rapport PDF A4 de 6 pages, mis en page et horodaté |
 | **Automatiser** | Une seule commande, et une planification qui génère le rapport seule le 1er de chaque mois |
-| **Rendre le projet testable par tous** | Une application web soignée (design system, animations, accessibilité, mobile) qui exécute le vrai pipeline dans le navigateur, sans installation |
+| **Rendre le projet testable par tous** | Une application web soignée (design system, animations, accessibilité, mobile) qui lance le vrai pipeline sur le serveur depuis le navigateur, sans installation |
 | **Vérifier chaque résultat** | 199 tests automatisés sur le nettoyage, les calculs, le service et l'API web |
 
 ### Ce que ce projet démontre
@@ -86,7 +86,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 **Ce que l'outil apporte**
 
 1. **Un gain de temps immédiat** : une commande remplace une demi-journée de manipulations, et la planification supprime même cette commande.
-2. **Des chiffres fiables** : sur des données volontairement dégradées (doublons, remises mal saisies, statuts incohérents, valeurs manquantes), le pipeline retrouve le chiffre d'affaires réel **à 1,1 % près**. Sans nettoyage, le même calcul donnerait un chiffre d'affaires **négatif** (−1,48 M€).
+2. **Des chiffres fiables** : sur des données volontairement dégradées (doublons, remises mal saisies, statuts incohérents, valeurs manquantes), le pipeline retrouve le chiffre d'affaires réel **à 1,1 % près**. Sans la correction des remises, le même calcul donnerait un chiffre d'affaires **négatif** (−1,48 M€).
 3. **Un livrable homogène** : le même rapport de 6 pages chaque mois, avec la même mise en page et les mêmes définitions d'indicateurs.
 
 **Les livrables**
@@ -129,7 +129,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 | Source | Données fictives mais réalistes produites par [`generate_data.py`](generate_data.py), avec une graine fixe pour des résultats reproductibles |
 | Période | janvier à décembre 2024 |
 | Volume | 12 fichiers mensuels, 1 163 lignes de vente, 10 vendeurs, 6 régions, 15 produits, 4 catégories |
-| Saisonnalité | pic en novembre et décembre (Black Friday, fêtes), creux estival de juin à août |
+| Saisonnalité | plus de commandes en novembre et décembre (Black Friday, fêtes), moins de juin à août |
 | Devise | euros (EUR), prix hors taxes |
 | Anomalies | ajoutées à la demande dans l'application web pour simuler un export ERP réel |
 
@@ -172,7 +172,7 @@ Les variantes d'accents, de majuscules et d'espaces sont harmonisées. Une valeu
 | **fpdf2** | Construction du rapport PDF A4, avec polices Unicode embarquées (DejaVu) pour les accents et le symbole € |
 | **schedule** | Exécution automatique le 1er de chaque mois |
 | **argparse** | Interface en ligne de commande |
-| **HTML, CSS, JavaScript** | Interface web sans framework : design system à base de tokens, système d'animation centralisé, graphiques SVG natifs |
+| **HTML, CSS, JavaScript** | Interface web sans framework : design system à base de tokens, système d'animation centralisé, graphiques natifs (SVG et HTML/CSS) |
 | **Streamlit (`st.App`) / Starlette** | Serveur web : sert l'interface et l'API de génération (progression en direct) ; hébergeable gratuitement sur Streamlit Community Cloud |
 | **pytest** | 199 tests automatisés (nettoyage, calculs, service et API web) |
 | **Docker / Dev Containers** | Lancement de l'application sans installer Python (Docker, GitHub Codespaces) |
@@ -282,7 +282,7 @@ L'interface est un frontend sur mesure, sans framework, servi avec son API par `
 - **Démo en un clic** : 12 mois de données, avec des anomalies typiques d'un export ERP ajoutées volontairement.
 - **Vos propres fichiers** : glisser-déposer de CSV, fichier modèle, format attendu dans une fenêtre dédiée, erreurs affichées sous le champ concerné.
 - **Progression en direct** : le serveur envoie l'avancement réel de chaque étape (flux NDJSON), la vue rapport s'ouvre aussitôt avec un squelette de chargement.
-- **Tableau de bord** : 8 indicateurs (avec leur mode de calcul en infobulle), 6 graphiques SVG natifs explorables au survol et au clavier, chacun avec sa vue tableau, diagnostic qualité, données nettoyées en CSV et journal d'exécution.
+- **Tableau de bord** : 8 indicateurs (dont 3 avec leur mode de calcul en infobulle), 6 graphiques natifs sans bibliothèque : une courbe SVG explorable au survol, au toucher et au clavier, avec sa vue tableau, des barres en HTML/CSS qui affichent leurs valeurs, et une heatmap en tableau HTML. S'y ajoutent le diagnostic qualité, les données nettoyées en CSV et le journal d'exécution.
 - **Téléchargement du rapport PDF** de 6 pages.
 
 **Design system** ([`tokens.css`](webapp/static/assets/css/tokens.css))
@@ -290,21 +290,21 @@ L'interface est un frontend sur mesure, sans framework, servi avec son API par `
 - Des composants réutilisables : bouton (états survol, actif, focus, désactivé, chargement, succès), carte, champ, interrupteur, onglets, accordéon, infobulle, toast, fenêtre de dialogue, squelette, étapes.
 - Les couleurs des graphiques ont été validées (contraste et daltonisme) avant d'être retenues.
 
-**Système d'animation** ([`motion.js`](webapp/static/assets/js/motion.js))
-- Durées et courbes partagées (micro-interaction 140 ms, survol 180 ms, composant 260 ms, transition 380 ms, animation complexe 640 ms), amplitudes plafonnées à 24 px, `transform` et `opacity` uniquement.
+**Système d'animation** ([`motion.js`](webapp/static/assets/js/motion.js) et tokens `--dur-*` de [`tokens.css`](webapp/static/assets/css/tokens.css))
+- Durées et courbes partagées (micro-interaction 140 ms, survol 180 ms, composant 260 ms, transition 380 ms, animation complexe 640 ms), amplitudes plafonnées à 24 px, déplacements uniquement en `transform` et `opacity`.
 - Apparitions au défilement avec une hiérarchie temporelle (titre, texte, bouton, visuel), narration au défilement pour les 5 étapes du pipeline, transitions de vue (View Transitions API, avec repli).
 - Effets liés au curseur (parallaxe du visuel, lueur des cartes, boutons légèrement magnétiques) réservés à la souris ; parallaxe au défilement réservée aux grands écrans.
 - Avec `prefers-reduced-motion`, plus rien ne bouge : le contenu s'affiche directement.
 
 **Accessibilité et responsive**
 - Navigation complète au clavier (lien d'évitement, onglets aux flèches, focus visible partout, piège de focus dans le menu et la fenêtre de dialogue), annonces `aria-live` de la progression et des erreurs, contrastes AA vérifiés.
-- Conception mobile d'abord, sans débordement horizontal, de 320 px aux grands écrans ; zones tactiles de 44 px minimum.
-- Page d'accueil légère : environ 190 Ko transférés, aucun framework, une seule police variable allégée à 68 Ko, images WebP chargées à la demande, aucun décalage de mise en page.
+- Conception mobile d'abord, sans débordement horizontal, de 320 px aux grands écrans ; sur écran tactile, boutons, onglets et liens de navigation offrent une zone de 44 px minimum.
+- Page d'accueil légère : moins de 200 Ko transférés, aucun framework, une seule police variable allégée à 68 Ko, images WebP chargées à la demande, aucun décalage de mise en page.
 
 **Robustesse côté serveur**
 - Chaque génération travaille dans ses propres dossiers temporaires ; les générations sont sérialisées (matplotlib n'est pas prévu pour le multi-thread).
-- Les envois sont contrôlés avant tout traitement : 30 fichiers et 20 Mo au maximum, en-têtes vérifiés sans pandas, nombre de vendeurs, régions et catégories plafonné pour qu'un fichier piégé ne bloque pas les autres visiteurs.
-- Les rapports restent téléchargeables une heure, en mémoire, via un identifiant aléatoire.
+- Les envois sont contrôlés avant tout traitement (30 fichiers et 20 Mo au maximum, en-têtes vérifiés sans pandas), puis le nombre de vendeurs, de régions et de catégories est plafonné avant les calculs, pour qu'un fichier piégé ne bloque pas les autres visiteurs.
+- Les rapports restent téléchargeables jusqu'à une heure (32 au plus), en mémoire, via un identifiant aléatoire.
 
 ### 8.8 Contrôle qualité
 
@@ -342,7 +342,7 @@ L'interface a en plus été auditée dans un navigateur réel (accessibilité au
 | Livrables produits | 5 graphiques PNG et 1 rapport PDF de 6 pages |
 | Interventions humaines nécessaires | aucune en mode planifié |
 | Génération depuis l'application web | moins de 2 secondes, progression affichée étape par étape |
-| Poids de la page d'accueil | environ 190 Ko transférés, 18 requêtes, aucun décalage de mise en page |
+| Poids de la page d'accueil | moins de 200 Ko transférés, 18 requêtes, aucun décalage de mise en page |
 
 ### Robustesse face aux données mal saisies
 
@@ -362,19 +362,19 @@ Comparaison des indicateurs calculés sur les données propres et sur les mêmes
 
 | Indicateur | Données propres | Données dégradées puis nettoyées | Écart |
 |---|---|---|---|
-| Lignes exploitables | 1 163 | 1 151 (sur 1 180 brutes) | -1,0 % |
-| CA comptabilisé | 2 023 784 € | 2 001 050 € | -1,1 % |
-| Commandes actives | 731 | 723 | -1,1 % |
+| Lignes exploitables | 1 163 | 1 151 (sur 1 180 brutes) | −1,0 % |
+| CA comptabilisé | 2 023 784 € | 2 001 050 € | −1,1 % |
+| Commandes actives | 731 | 723 | −1,1 % |
 | Panier moyen | 2 769 € | 2 768 € | 0,0 % |
-| Taux d'annulation | 37,2 % | 37,2 % | 0,0 % |
+| Taux d'annulation | 37,1 % | 37,2 % | +0,1 pt |
 
-Sans la correction des remises, les 217 remises saisies en pourcentage suffisent à rendre le chiffre d'affaires négatif (−1 479 229 €). Après nettoyage, l'écart restant de 1,1 % vient surtout des 12 lignes sans date, qui ne peuvent être rattachées à aucun mois et sont écartées, et à la marge des montants manquants estimés par la médiane.
+Sans la correction des remises, les 217 remises saisies en pourcentage suffisent à rendre le chiffre d'affaires négatif (−1 479 229 €). Après nettoyage, l'écart restant de 1,1 % vient pour moitié des 12 lignes sans date, qui ne peuvent être rattachées à aucun mois et sont écartées, et pour moitié des 12 quantités négatives ramenées à 0 ; les montants manquants estimés par la médiane n'y jouent qu'à la marge.
 
 ### Exemple de résultats produits (données de démonstration 2024)
 
 | CA comptabilisé | Commandes actives | Panier moyen | Remises accordées | Taux d'annulation | Vendeurs | Produits |
 |---|---|---|---|---|---|---|
-| 2 023 784 € | 731 | 2 769 € | 171 612 € | 37,2 % | 10 | 15 |
+| 2 023 784 € | 731 | 2 769 € | 171 612 € | 37,1 % | 10 | 15 |
 
 - **Saisonnalité** : novembre est le meilleur mois (381 777 €), plus du double d'un mois moyen, et septembre le plus faible (91 216 €).
 - **Catégories** : les Logiciels représentent 51 % du CA (1 028 403 €), devant l'Informatique (27 %).
@@ -432,7 +432,7 @@ EXCLUDED_STATUTS           = ["Annulé", "Retourné"]                # statuts e
 
 **Sur les données**
 - **Les erreurs les plus graves sont silencieuses** : une remise saisie `10` au lieu de `0.10` ne provoque aucune erreur, mais rend le CA négatif. Seul un contrôle explicite la détecte.
-- **Toute valeur manquante n'a pas la même gravité** : un prix manquant peut être estimé, une date manquante rend la ligne inutilisable.
+- **Toutes les valeurs manquantes n'ont pas la même gravité** : un prix manquant peut être estimé, une date manquante rend la ligne inutilisable.
 - **Ne pas dépendre de la langue du système** : les noms de mois sont tirés d'un dictionnaire français, sinon le rapport afficherait « January » sur un serveur configuré en anglais.
 
 **Sur le code**
@@ -471,7 +471,7 @@ sales-report-automation/
 │       ├── index.html           Page unique : accueil et vue rapport
 │       └── assets/
 │           ├── css/             tokens, base, composants, sections, tableau de bord
-│           ├── js/              motion, composants, démo, tableau de bord, graphiques
+│           ├── js/              point d'entrée, motion, composants, formats, démo, tableau de bord, graphiques
 │           ├── fonts/           Police Inter variable (allégée)
 │           └── img/             Aperçus WebP du rapport
 ├── src/
@@ -554,14 +554,14 @@ L'image Docker peut aussi être déployée sur Hugging Face Spaces, Render ou Ra
 ## 15. Limites et pistes d'amélioration
 
 **Limites**
-- **Données fictives** : les ventes sont tirées au hasard de façon uniforme. Les constats chiffrés (par exemple un taux d'annulation de 37 %) illustrent le fonctionnement de l'outil, pas une situation réelle.
+- **Données fictives** : les ventes sont tirées au hasard (avec une graine fixe et quelques pondérations simples). Les constats chiffrés (par exemple un taux d'annulation de 37 %) illustrent le fonctionnement de l'outil, pas une situation réelle.
 - **Statuts inconnus** : une ligne dont le statut n'est pas reconnu est classée `Inconnu` et reste comptée dans le CA, car seuls les statuts annulé et retourné sont exclus.
 - **Période par défaut** : sans `--periode`, le libellé du mois courant dépend de la langue du système.
 - **Format d'entrée strict** : CSV séparé par des virgules, noms de colonnes exacts. Les fichiers Excel ou séparés par des points-virgules ne sont pas acceptés.
 - **Planificateur simple** : il fonctionne tant que le processus reste lancé ; il ne remplace pas un ordonnanceur système.
 - **Hébergement gratuit** : la démo en ligne se met en veille quand elle n'est pas utilisée.
 - **Une génération à la fois** : les demandes simultanées attendent leur tour. Les envois sont limités à 30 fichiers, 20 Mo, 200 vendeurs, 50 régions et 50 catégories.
-- **Rapports en mémoire** : un rapport généré en ligne reste téléchargeable une heure, puis il est effacé.
+- **Rapports en mémoire** : un rapport généré en ligne reste téléchargeable jusqu'à une heure (dans la limite des 32 derniers), puis il est effacé.
 
 **Pistes d'amélioration**
 - Accepter les fichiers **Excel** et détecter automatiquement le **séparateur** et l'**encodage**.

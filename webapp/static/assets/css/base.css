@@ -144,7 +144,7 @@ a:hover { color: var(--color-ink); }
 .stack { display: grid; gap: var(--space-4); }
 /* Une grille à une colonne ne doit jamais s'élargir au contenu (tableaux, onglets défilants) */
 .stack, .hero__inner, .hero__copy, .showcase, .showcase__stage, .final-cta, .story, .demo, .demo-form, .demo-form__group,
-.tabs, .charts, .chart-card, .report-head, .report-loading, .report-body, .quality-list, .outcomes, .kpi { grid-template-columns: minmax(0, 1fr); }
+.field, .file-list, .tabs, .charts, .chart-card, .report-head, .report-loading, .report-body, .quality-list, .outcomes, .kpi { grid-template-columns: minmax(0, 1fr); }
 .cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
 
 /* ---------- Utilitaires ---------- */

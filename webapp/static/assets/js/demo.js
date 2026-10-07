@@ -240,7 +240,7 @@ async function generate(request, { origin } = {}) {
         finished = true;
         showError(event.message);
         if (source === 'fichiers') setFieldError('fichiers', event.message);
-        toast('Échec de la génération', { type: 'error', text: event.message });
+        toast('Échec de la génération', { type: 'error', text: 'Le détail est affiché dans la page.' });
       }
     }, () => watchdog.kick());
     if (!finished) throw new Error('La génération s\'est interrompue avant la fin. Réessayez.');

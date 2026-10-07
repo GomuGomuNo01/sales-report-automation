@@ -157,7 +157,7 @@
 .mobile-menu.is-open .mobile-menu__list li:nth-child(4) { animation-delay: calc(3 * var(--stagger-tight)); }
 .mobile-menu-backdrop {
   position: fixed;
-  inset: 0;
+  inset: var(--header-h) 0 0;
   z-index: calc(var(--z-menu) - 1);
   background: rgba(6, 10, 18, 0.32);
   opacity: 0;
@@ -519,7 +519,7 @@ legend { padding: 0; }
   animation: rise-in var(--dur-component) var(--ease-out) both;
 }
 .file-item__icon { color: var(--color-brand-ink); }
-.file-item__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--text-small); font-weight: var(--weight-medium); }
+.file-item__name { flex: 1 1 0; width: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--text-small); font-weight: var(--weight-medium); }
 .file-item__size { color: var(--color-ink-3); font-size: var(--text-xs); }
 
 /* ---------- Tabs ---------- */

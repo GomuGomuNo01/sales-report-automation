@@ -26,6 +26,7 @@ const $ = (id) => document.getElementById(id);
 let tabs = null;
 let current = null;
 let lastGood = null;   // dernier rapport réussi, conservé même si une génération suivante échoue
+let runSteps = {};     // détails des étapes de l'exécution en cours
 let resizeFrame = null;
 
 function h(tag, className, text) {
@@ -43,6 +44,7 @@ function icon(name, extra = '') {
 
 export function resetReport() {
   current = null;
+  runSteps = {};
   $('rapport-titre').textContent = 'Génération du rapport…';
   $('rapport-meta').replaceChildren();
   const pdf = $('pdf-link');
@@ -73,6 +75,7 @@ export function setStep(name, status, detail) {
     step.querySelector('.step__detail').textContent = 'En cours…';
     $('progress-live').textContent = `${STEP_LABELS[name]} en cours.`;
   } else if (status === 'termine') {
+    if (detail) runSteps[name] = detail;
     step.dataset.state = 'done';
     step.querySelector('.step__icon').innerHTML = icon('i-check', 'icon--sm');
     step.querySelector('.step__detail').textContent = detail || 'Terminé';
@@ -84,9 +87,18 @@ export function setStep(name, status, detail) {
 }
 
 export function showError(message, { source = 'demo' } = {}) {
+  current = null;
   const back = document.querySelector('#rapport-erreur [data-nav="demo"]');
   if (back) back.textContent = source === 'fichiers' ? 'Modifier mes fichiers' : 'Modifier les paramètres';
-  const active = document.querySelector('#steps .step[data-state="active"]');
+  // Aucun reste d'un rapport précédent sous le message d'erreur
+  $('rapport-onglets').hidden = true;
+  const pdf = $('pdf-link');
+  pdf.removeAttribute('href');
+  pdf.classList.add('is-pending');
+  pdf.setAttribute('aria-disabled', 'true');
+  // Refus avant toute étape (fichier rejeté d'emblée) : la première étape porte l'échec
+  const active = document.querySelector('#steps .step[data-state="active"]')
+    ?? document.querySelector('#steps .step[data-state="pending"]');
   if (active) {
     active.dataset.state = 'error';
     active.querySelector('.step__icon').innerHTML = icon('i-x', 'icon--sm');
@@ -98,6 +110,10 @@ export function showError(message, { source = 'demo' } = {}) {
   $('rapport-erreur').hidden = false;
   $('rapport-corps').setAttribute('aria-busy', 'false');
   $('progress-live').textContent = `Échec : ${message}`;
+  const errorCard = $('rapport-erreur');
+  if (errorCard.getBoundingClientRect().top > window.innerHeight * 0.6) {
+    errorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
 
 /* ---------- Rendu du rapport ---------- */
@@ -294,7 +310,7 @@ function renderJournal(panel, r) {
 
 export function renderReport(r, { source = 'demo' } = {}) {
   current = { report: r, source };
-  lastGood = { report: r, source };
+  lastGood = { report: r, source, steps: { ...(lastGood?.report === r ? lastGood.steps : runSteps) } };
   // Tiret demi-cadratin collé au premier mois et espaces insécables : pas de tiret orphelin en fin de ligne
   const periode = r.periode.replace(/ - /g, '\u00a0– ');
   $('rapport-titre').textContent = `Rapport «\u00a0${periode}\u00a0»`;
@@ -356,8 +372,9 @@ export const isShowingReport = () => Boolean(current?.report);
 export function restoreLastReport() {
   if (!lastGood) return false;
   $('rapport-progression').hidden = false;
-  STEP_ORDER.forEach((name) => setStep(name, 'termine'));
-  renderReport(lastGood.report, { source: lastGood.source });
+  const saved = lastGood;
+  STEP_ORDER.forEach((name) => setStep(name, 'termine', saved.steps?.[name]));
+  renderReport(saved.report, { source: saved.source });
   return true;
 }
 export const redrawWhenVisible = () => requestAnimationFrame(() => { redrawLine(); tabs?.refresh(); });
