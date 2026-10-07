@@ -200,6 +200,12 @@ function initStory() {
 }
 
 /* ---------- Démarrage ---------- */
+// Streamlit Community Cloud affiche l'appli dans une iframe (/~/+/), masquée tant
+// qu'elle n'a pas signalé être prête : on envoie le message qu'attend la page hôte.
+if (window.parent !== window) {
+  window.parent.postMessage({ stCommVersion: 1, type: 'GUEST_READY' }, '*');
+}
+
 initMotion();
 initHeader();
 initMobileMenu();
