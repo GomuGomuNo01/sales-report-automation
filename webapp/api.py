@@ -51,7 +51,7 @@ GZIP_TAILLE_MIN    = 1000
 # En plus des exclusions par défaut de Starlette (images, polices woff, archives…) :
 # le flux NDJSON (doit partir ligne par ligne) et les binaires déjà compressés.
 EXCLUSIONS_GZIP    = (MEDIA_NDJSON, "application/pdf", "application/octet-stream", "font/*")
-CACHE_ASSETS       = "public, max-age=604800"  # 7 jours : polices et images
+CACHE_ASSETS       = "public, max-age=604800"  # 7 jours : polices, images et vidéo
 # CSS et modules JS : revalidés à chaque visite (ETag, réponse 304 légère), pour qu'un
 # déploiement ne mélange jamais d'anciens et de nouveaux modules sans versionner les URL
 CACHE_CODE         = "no-cache"
@@ -70,7 +70,7 @@ MESSAGE_TROP_DE_FICHIERS = f"{MAX_FICHIERS} fichiers maximum par rapport."
 MESSAGE_ILLISIBLE       = "Le formulaire envoyé est illisible."
 
 # Préfixes servis par nos routes (le reste appartient à Streamlit)
-PREFIXES_APPLI = ("/api/", "/assets/", "/exemples/")
+PREFIXES_APPLI = ("/api/", "/assets/", "/exemples/", "/video/")
 
 
 def _est_route_appli(chemin: str) -> bool:
@@ -340,6 +340,21 @@ async def ventes_exemple_csv(request: Request) -> Response:
                         media_type="text/csv; charset=utf-8", filename=nom)
 
 
+def _fichier_video(chemin: str, media: str) -> Response:
+    if not os.path.isfile(chemin):
+        return JSONResponse({"erreur": "Vidéo de présentation indisponible."}, status_code=404)
+    # FileResponse gère les requêtes partielles (Range) : le lecteur peut sauter à un chapitre
+    return FileResponse(chemin, media_type=media, headers={"Cache-Control": CACHE_ASSETS})
+
+
+async def video_presentation(request: Request) -> Response:
+    return _fichier_video(service.VIDEO_PRESENTATION, "video/mp4")
+
+
+async def affiche_presentation(request: Request) -> Response:
+    return _fichier_video(service.AFFICHE_PRESENTATION, "image/jpeg")
+
+
 async def api_introuvable(request: Request) -> Response:
     return JSONResponse({"erreur": "Ressource introuvable."}, status_code=404)
 
@@ -439,6 +454,8 @@ def creer_routes() -> list:
         Route("/exemples/rapport_exemple_2024.pdf", exemple_pdf, methods=["GET"]),
         Route("/exemples/ventes_2024.zip", ventes_exemple_zip, methods=["GET"]),
         Route("/exemples/ventes_2024/{nom}", ventes_exemple_csv, methods=["GET"]),
+        Route("/video/presentation.mp4", video_presentation, methods=["GET"]),
+        Route("/video/presentation-poster.jpg", affiche_presentation, methods=["GET"]),
         Mount("/assets", app=StaticFiles(directory=DOSSIER_ASSETS, check_dir=False), name="assets"),
         # Toute autre URL /api/... : 404 JSON plutôt que la page Streamlit de repli
         Route("/api/{chemin:path}", api_introuvable,

@@ -146,6 +146,24 @@ class TestPagesStatiques:
     def test_ventes_exemple_hors_liste_404(self, client, nom):
         assert client.get(f"/exemples/ventes_2024/{nom}").status_code == 404
 
+    def test_video_presentation(self, client):
+        r = client.get("/video/presentation.mp4", headers={"Accept-Encoding": "gzip"})
+        assert r.status_code == 200
+        assert r.headers["content-type"] == "video/mp4"
+        assert "content-encoding" not in r.headers  # déjà compressée : jamais de GZip
+        assert r.headers["cache-control"] == api.CACHE_ASSETS
+
+    def test_video_presentation_requete_partielle(self, client):
+        # Le lecteur demande des morceaux de la vidéo pour sauter à un chapitre
+        r = client.get("/video/presentation.mp4", headers={"Range": "bytes=0-99"})
+        assert r.status_code == 206
+        assert len(r.content) == 100
+
+    def test_affiche_presentation(self, client):
+        r = client.get("/video/presentation-poster.jpg")
+        assert r.status_code == 200
+        assert r.headers["content-type"] == "image/jpeg"
+
     def test_api_inconnue_404_json(self, client):
         r = client.get("/api/inexistant")
         assert r.status_code == 404

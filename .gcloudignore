@@ -21,4 +21,7 @@ tests/
 conftest.py
 demo_colab.ipynb
 protect_branches.sh
-assets/
+assets/video/source/
+assets/video/musique.mp3
+assets/video/index.html
+assets/video/README.md

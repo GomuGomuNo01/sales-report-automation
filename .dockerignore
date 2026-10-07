@@ -24,4 +24,7 @@ render.yaml
 .gcloudignore
 deploy/
 requirements-dev.txt
-assets/
+assets/video/source/
+assets/video/musique.mp3
+assets/video/index.html
+assets/video/README.md

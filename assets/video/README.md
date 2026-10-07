@@ -4,7 +4,7 @@ Une vidéo de 40 secondes en motion design qui présente l'application : le prob
 
 [![Présentation vidéo de Sales Report Automation, 40 secondes](presentation-poster.jpg)](https://gomugomuno01.github.io/sales-report-automation/presentation/)
 
-Elle se regarde dans la page « Présentation » publiée sur GitHub Pages : [gomugomuno01.github.io/sales-report-automation/presentation/](https://gomugomuno01.github.io/sales-report-automation/presentation/).
+Elle se regarde dans l'onglet « Présentation » de l'application (servie par les routes `/video/presentation.mp4` et `/video/presentation-poster.jpg`), ou dans la page « Présentation » publiée sur GitHub Pages : [gomugomuno01.github.io/sales-report-automation/presentation/](https://gomugomuno01.github.io/sales-report-automation/presentation/).
 
 | Fichier | Contenu |
 |---|---|

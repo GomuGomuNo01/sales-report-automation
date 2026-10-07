@@ -1,11 +1,12 @@
 /* ==========================================================================
    POINT D'ENTRÉE : initialisation et navigation entre les vues
-   Deux vues dans la même page : « accueil » et « rapport ». La navigation
+   Trois vues dans la même page : « accueil », « rapport » et « presentation »
+   (la vidéo de 40 s, ouverte depuis l'onglet « Présentation »). La navigation
    passe par l'historique du navigateur (bouton Retour compris) et par une
    transition de vue courte qui ne bloque jamais l'interaction.
    ========================================================================== */
 
-import { initMotion, transitionView, afterMotion } from './motion.js';
+import { initMotion, transitionView, afterMotion, motionAllowed } from './motion.js';
 import { initTheme, initHeader, initMobileMenu, initScrollSpy, initTabs, initTooltips, initDialogs } from './ui.js';
 import { initDashboard, hasReport, isShowingReport, restoreLastReport, redrawWhenVisible } from './dashboard.js';
 import { initDemo, runDemo, retry, cancelGeneration } from './demo.js';
@@ -13,7 +14,11 @@ import { initDemo, runDemo, retry, cancelGeneration } from './demo.js';
 const views = {
   accueil: document.getElementById('vue-accueil'),
   rapport: document.getElementById('vue-rapport'),
+  presentation: document.getElementById('vue-presentation'),
 };
+// Vues ouvertes par une adresse propre (#rapport, #presentation)
+const HASH_VIEWS = ['rapport', 'presentation'];
+const video = document.getElementById('presentation-video');
 const header = document.getElementById('site-header');
 let currentView = 'accueil';
 let landingScroll = 0;
@@ -42,15 +47,20 @@ function go(view, { push = true, section = null } = {}) {
     const active = document.activeElement;
     returnFocus = active && active !== document.body && views.accueil.contains(active) ? active : null;
   }
-  if (view === 'accueil' && from === 'rapport') cancelGeneration();
+  if (view !== 'rapport' && from === 'rapport') cancelGeneration();
+  if (from === 'presentation') video?.pause();
 
   const update = () => {
     Object.entries(views).forEach(([name, el]) => { el.hidden = name !== view; });
     currentView = view;
     if (pendingView === view) pendingView = null;
-    header.dataset.solid = String(view === 'rapport');
+    header.dataset.solid = String(view !== 'accueil');
+    document.querySelectorAll('[data-nav="presentation"]').forEach((link) => {
+      if (view === 'presentation') link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    });
     // Défilement instantané : la vue entrante doit apparaître en place, sans glisser
-    if (view === 'rapport') {
+    if (view !== 'accueil') {
       window.scrollTo({ top: 0, behavior: 'instant' });
     } else if (section) {
       scrollToSection(section, { instant: true });
@@ -68,6 +78,9 @@ function go(view, { push = true, section = null } = {}) {
     if (view === 'rapport') {
       focusWithoutScroll(document.getElementById('rapport-titre'));
       redrawWhenVisible();
+    } else if (view === 'presentation') {
+      focusWithoutScroll(document.getElementById('presentation-titre'));
+      playPresentation();
     } else if (section) {
       focusWithoutScroll(document.getElementById(`${section}-titre`) ?? document.getElementById(section));
     } else if (returnFocus?.isConnected && returnFocus.offsetParent !== null) {
@@ -78,9 +91,31 @@ function go(view, { push = true, section = null } = {}) {
   });
 
   if (push) {
-    const url = view === 'rapport' ? '#rapport' : (section ? `#${section}` : window.location.pathname);
+    const url = HASH_VIEWS.includes(view) ? `#${view}` : (section ? `#${section}` : window.location.pathname);
     history.pushState({ view, section }, '', url);
   }
+}
+
+/* ---------- Vidéo de présentation ---------- */
+// Lecture automatique sans le son (condition des navigateurs), sauf si le système
+// demande de limiter les animations : la vidéo attend alors un clic sur « lecture ».
+function playPresentation() {
+  if (!video || !motionAllowed()) return;
+  video.muted = true;
+  video.play().catch(() => {});
+}
+
+function initChapters() {
+  document.querySelectorAll('[data-chapitre]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!video) return;
+      video.currentTime = Number(button.dataset.chapitre);
+      video.muted = false;  // un clic autorise le son
+      video.play().catch(() => {
+        // Lecture refusée par le navigateur : la vidéo reste positionnée sur le chapitre
+      });
+    });
+  });
 }
 
 function scrollToSection(id, { instant = false } = {}) {
@@ -96,6 +131,7 @@ function onNavigate(target, { restore = false } = {}) {
     if (restore && !isShowingReport()) restoreLastReport();
     go('rapport');
   }
+  else if (target === 'presentation') go('presentation');
   else if (target === 'demo') go('accueil', { section: 'demo' });
   else go('accueil');
 }
@@ -116,11 +152,11 @@ function initNavigation() {
       onNavigate(target, { restore: target === 'rapport' });
       return;
     }
-    // Ancres de l'accueil cliquées depuis la vue rapport
+    // Ancres de l'accueil cliquées depuis la vue rapport ou la vue présentation
     const anchor = event.target.closest('a[href^="#"]');
-    if (anchor && currentView === 'rapport') {
+    if (anchor && currentView !== 'accueil') {
       const id = anchor.getAttribute('href').slice(1);
-      if (id && id !== 'rapport' && id !== 'contenu') {
+      if (id && !HASH_VIEWS.includes(id) && id !== 'contenu') {
         event.preventDefault();
         go('accueil', { section: id });
       }
@@ -131,13 +167,19 @@ function initNavigation() {
   });
 
   window.addEventListener('popstate', (event) => {
-    const view = event.state?.view ?? (window.location.hash === '#rapport' ? 'rapport' : 'accueil');
+    const fromHash = window.location.hash.slice(1);
+    const view = event.state?.view ?? (HASH_VIEWS.includes(fromHash) ? fromHash : 'accueil');
     if (view === 'rapport' && !hasReport()) { history.replaceState({ view: 'accueil' }, '', window.location.pathname); go('accueil', { push: false }); return; }
     go(view, { push: false, section: event.state?.section ?? null });
   });
 
-  // Un lien direct vers #rapport sans rapport en mémoire revient à l'accueil
+  // Un lien direct vers #rapport sans rapport en mémoire revient à l'accueil ;
+  // un lien direct vers #presentation ouvre la vidéo
   if (window.location.hash === '#rapport') history.replaceState({ view: 'accueil' }, '', window.location.pathname);
+  else if (window.location.hash === '#presentation') {
+    history.replaceState({ view: 'accueil' }, '', window.location.pathname);
+    go('presentation');
+  }
   else history.replaceState({ view: 'accueil' }, '', window.location.href);
 }
 
@@ -217,4 +259,5 @@ initShowcase();
 initStory();
 initDashboard();
 initDemo({ onNavigate });
+initChapters();
 initNavigation();
