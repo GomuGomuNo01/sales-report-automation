@@ -7,11 +7,14 @@ middlewares maison : compression GZip sélective et en-têtes HTTP.
 """
 
 import asyncio
+import io
 import json
 import logging
 import os
 import re
 import threading
+import zipfile
+from functools import lru_cache
 from typing import Callable, Optional
 
 from starlette.datastructures import MutableHeaders, UploadFile
@@ -60,6 +63,7 @@ ENTETES_SECURITE   = {
 ENTETES_FLUX = {"Cache-Control": "no-store", "X-Accel-Buffering": "no"}
 
 RE_IDENTIFIANT        = re.compile(r"^[0-9a-f]{32}$")
+RE_FICHIER_EXEMPLE    = re.compile(r"^ventes_[a-z]+_2024\.csv$")
 MESSAGE_INTROUVABLE   = "Rapport introuvable ou expiré. Générez-le à nouveau."
 MESSAGE_TROP_VOLUMINEUX = "Les fichiers dépassent 20 Mo au total."
 MESSAGE_TROP_DE_FICHIERS = f"{MAX_FICHIERS} fichiers maximum par rapport."
@@ -305,6 +309,37 @@ async def exemple_pdf(request: Request) -> Response:
                         filename="rapport_exemple_2024.pdf", content_disposition_type="inline")
 
 
+def _fichiers_ventes_exemple() -> list:
+    if not os.path.isdir(service.DOSSIER_VENTES_EXEMPLE):
+        return []
+    return sorted(n for n in os.listdir(service.DOSSIER_VENTES_EXEMPLE) if RE_FICHIER_EXEMPLE.match(n))
+
+
+@lru_cache(maxsize=1)
+def _archive_ventes_exemple() -> bytes:
+    """Les exports mensuels d'exemple réunis dans un .zip (construit une fois, en mémoire)."""
+    tampon = io.BytesIO()
+    with zipfile.ZipFile(tampon, "w", zipfile.ZIP_DEFLATED) as archive:
+        for nom in _fichiers_ventes_exemple():
+            archive.write(os.path.join(service.DOSSIER_VENTES_EXEMPLE, nom), arcname=nom)
+    return tampon.getvalue()
+
+
+async def ventes_exemple_zip(request: Request) -> Response:
+    if not _fichiers_ventes_exemple():
+        return JSONResponse({"erreur": "Fichiers d'exemple indisponibles."}, status_code=404)
+    return Response(_archive_ventes_exemple(), media_type="application/zip",
+                    headers={"Content-Disposition": 'attachment; filename="ventes_2024.zip"'})
+
+
+async def ventes_exemple_csv(request: Request) -> Response:
+    nom = request.path_params["nom"]
+    if nom not in _fichiers_ventes_exemple():  # liste blanche : aucun autre chemin n'est servi
+        return JSONResponse({"erreur": "Fichier d'exemple introuvable."}, status_code=404)
+    return FileResponse(os.path.join(service.DOSSIER_VENTES_EXEMPLE, nom),
+                        media_type="text/csv; charset=utf-8", filename=nom)
+
+
 async def api_introuvable(request: Request) -> Response:
     return JSONResponse({"erreur": "Ressource introuvable."}, status_code=404)
 
@@ -402,6 +437,8 @@ def creer_routes() -> list:
         Route("/api/rapports/{identifiant}/csv", telecharger_csv, methods=["GET"]),
         Route("/api/modele.csv", modele_csv, methods=["GET"]),
         Route("/exemples/rapport_exemple_2024.pdf", exemple_pdf, methods=["GET"]),
+        Route("/exemples/ventes_2024.zip", ventes_exemple_zip, methods=["GET"]),
+        Route("/exemples/ventes_2024/{nom}", ventes_exemple_csv, methods=["GET"]),
         Mount("/assets", app=StaticFiles(directory=DOSSIER_ASSETS, check_dir=False), name="assets"),
         # Toute autre URL /api/... : 404 JSON plutôt que la page Streamlit de repli
         Route("/api/{chemin:path}", api_introuvable,

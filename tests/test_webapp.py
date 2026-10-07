@@ -126,6 +126,26 @@ class TestPagesStatiques:
         assert r.headers["content-disposition"].startswith("inline")
         assert r.content.startswith(b"%PDF")
 
+    def test_ventes_exemple_zip(self, client):
+        import zipfile
+        r = client.get("/exemples/ventes_2024.zip")
+        assert r.status_code == 200
+        assert r.headers["content-type"] == "application/zip"
+        assert r.headers["content-disposition"] == 'attachment; filename="ventes_2024.zip"'
+        noms = zipfile.ZipFile(io.BytesIO(r.content)).namelist()
+        assert len(noms) == 12 and "ventes_janvier_2024.csv" in noms
+
+    def test_ventes_exemple_csv(self, client):
+        r = client.get("/exemples/ventes_2024/ventes_mars_2024.csv")
+        assert r.status_code == 200
+        assert r.headers["content-type"].startswith("text/csv")
+        assert 'filename="ventes_mars_2024.csv"' in r.headers["content-disposition"]
+        assert "prix_unitaire" in r.text.splitlines()[0]
+
+    @pytest.mark.parametrize("nom", ["ventes_inconnu_2024.csv", "..%2Fapi.py", "rapport_exemple_2024.pdf"])
+    def test_ventes_exemple_hors_liste_404(self, client, nom):
+        assert client.get(f"/exemples/ventes_2024/{nom}").status_code == 404
+
     def test_api_inconnue_404_json(self, client):
         r = client.get("/api/inexistant")
         assert r.status_code == 404

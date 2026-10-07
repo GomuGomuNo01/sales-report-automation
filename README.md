@@ -6,7 +6,7 @@
 ![fpdf2](https://img.shields.io/badge/fpdf2-PDF%206%20pages-B22222)
 ![Frontend](https://img.shields.io/badge/Frontend-HTML%20%C2%B7%20CSS%20%C2%B7%20JS-1F63B8)
 ![Streamlit](https://img.shields.io/badge/Streamlit-st.App-FF4B4B?logo=streamlit&logoColor=white)
-![pytest](https://img.shields.io/badge/pytest-199%20tests-0A9EDC?logo=pytest&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-204%20tests-0A9EDC?logo=pytest&logoColor=white)
 ![Licence](https://img.shields.io/badge/Licence-MIT-green)
 
 Projet d'automatisation de bout en bout : à partir d'exports de ventes bruts issus d'un ERP, production automatique d'un **rapport PDF de 6 pages** prêt pour la réunion de direction. Ce qui demandait **5 heures de travail manuel chaque mois** se fait désormais **en quelques secondes**, sans intervention.
@@ -61,7 +61,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 | **Produire le livrable** | 5 graphiques et un rapport PDF A4 de 6 pages, mis en page et horodaté |
 | **Automatiser** | Une seule commande, et une planification qui génère le rapport seule le 1er de chaque mois |
 | **Rendre le projet testable par tous** | Une application web soignée (design system, animations, accessibilité, mobile) qui lance le vrai pipeline sur le serveur depuis le navigateur, sans installation |
-| **Vérifier chaque résultat** | 199 tests automatisés sur le nettoyage, les calculs, le service et l'API web |
+| **Vérifier chaque résultat** | 204 tests automatisés sur le nettoyage, les calculs, le service et l'API web |
 
 ### Ce que ce projet démontre
 
@@ -96,6 +96,7 @@ Chaque mois, un responsable commercial exporte les ventes depuis le logiciel de 
 | Application web de démonstration | [Ouvrir la démo](https://sales-report-automation-cedric.streamlit.app) |
 | Exemple de rapport PDF généré (6 pages) | [rapport_exemple_2024.pdf](examples/rapport_exemple_2024.pdf) |
 | Exemple de fichier CSV source | [ventes_exemple_janvier_2024.csv](examples/ventes_exemple_janvier_2024.csv) |
+| Les 12 exports mensuels de 2024 (CSV), aussi téléchargeables depuis la démo | [examples/ventes_2024/](examples/ventes_2024/) |
 | Démonstration pas à pas dans un notebook | [Google Colab](https://colab.research.google.com/github/GomuGomuNo01/sales-report-automation/blob/main/demo_colab.ipynb) |
 
 ## 3. Contexte et objectifs
@@ -174,7 +175,7 @@ Les variantes d'accents, de majuscules et d'espaces sont harmonisées. Une valeu
 | **argparse** | Interface en ligne de commande |
 | **HTML, CSS, JavaScript** | Interface web sans framework : design system à base de tokens, système d'animation centralisé, graphiques natifs (SVG et HTML/CSS) |
 | **Streamlit (`st.App`) / Starlette** | Serveur web : sert l'interface et l'API de génération (progression en direct) |
-| **pytest** | 199 tests automatisés (nettoyage, calculs, service et API web) |
+| **pytest** | 204 tests automatisés (nettoyage, calculs, service et API web) |
 | **Streamlit Community Cloud** | Hébergement gratuit de la démo en ligne, redéployée à chaque push sur `main` |
 | **Docker / Dev Containers** | Image prête pour l'hébergement (Google Cloud Run, Render) et lancement sans installer Python (Docker, GitHub Codespaces) |
 | **Git / GitHub, Dependabot** | Versionnage, branches de travail, mise à jour automatique des dépendances |
@@ -281,7 +282,7 @@ L'interface est un frontend sur mesure, sans framework, servi avec son API par `
 
 **Parcours**
 - **Démo en un clic** : 12 mois de données, avec des anomalies typiques d'un export ERP ajoutées volontairement.
-- **Vos propres fichiers** : glisser-déposer de CSV, fichier modèle, format attendu dans une fenêtre dédiée, erreurs affichées sous le champ concerné.
+- **Vos propres fichiers** : glisser-déposer de CSV, fichier modèle, format attendu dans une fenêtre dédiée, erreurs affichées sous le champ concerné. Pour essayer sans données, les 12 exports mensuels de 2024 se téléchargent depuis la page, mois par mois ou en un seul .zip.
 - **Progression en direct** : le serveur envoie l'avancement réel de chaque étape (flux NDJSON), la vue rapport s'ouvre aussitôt avec un squelette de chargement.
 - **Tableau de bord** : 8 indicateurs (dont 3 avec leur mode de calcul en infobulle), 6 graphiques natifs sans bibliothèque : une courbe SVG explorable au survol, au toucher et au clavier, avec sa vue tableau, des barres en HTML/CSS qui affichent leurs valeurs, et une heatmap en tableau HTML. S'y ajoutent le diagnostic qualité, les données nettoyées en CSV et le journal d'exécution.
 - **Téléchargement du rapport PDF** de 6 pages.
@@ -487,7 +488,7 @@ sales-report-automation/
 │   ├── reporter.py              5. Le rapport PDF
 │   └── scheduler.py             Exécution automatique mensuelle
 ├── tests/                       Tests automatisés (pytest)
-├── examples/                    Exemple de CSV source et de rapport PDF
+├── examples/                    Exemple de rapport PDF, CSV modèle et 12 exports mensuels 2024 (ventes_2024/)
 ├── docs/                        Guide de déploiement, captures du rapport et de l'application
 ├── deploy/                      Règle de nettoyage des images (Cloud Run)
 ├── .streamlit/                  Réglages du serveur Streamlit

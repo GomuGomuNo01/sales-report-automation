@@ -820,6 +820,7 @@ legend { padding: 0; }
   .btn--sm, .site-nav__link, .tab, .link-btn, .back-link, .site-footer__links a, .brand, .mobile-menu__link { min-height: 44px; }
   .btn--icon, .btn--icon.btn--sm, .toast .btn--icon, .file-item .btn--icon { width: 44px; min-height: 44px; flex: none; }
   .toast .btn--icon { margin: -6px -6px -6px 0; }
+  .sample-files__list a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
   .tip-trigger { width: 44px; height: 44px; margin: -14px; flex: none; }
   .accordion__summary { min-height: 56px; }
 }

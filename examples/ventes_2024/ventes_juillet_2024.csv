@@ -1,0 +1,79 @@
+﻿date,vendeur,region,produit,categorie,quantite,prix_unitaire,remise,statut
+2024-07-13,Grace Simon,Auvergne-Rhône-Alpes,Souris sans fil,Périphériques,15,44.17,0.1,Livré
+2024-07-24,Julien Garcia,Île-de-France,Câble RJ45 (lot),Réseau,1,32.33,0.1,Retourné
+2024-07-10,Emma Petit,Occitanie,Laptop Pro 15,Informatique,5,1165.85,0.0,Livré
+2024-07-16,Claire Bernard,Occitanie,Antivirus Pro,Logiciels,43,58.58,0.0,Livré
+2024-07-21,Claire Bernard,Auvergne-Rhône-Alpes,Webcam HD,Périphériques,18,90.05,0.0,Retourné
+2024-07-04,Alice Martin,Île-de-France,Licence Office 365,Logiciels,36,121.28,0.0,Annulé
+2024-07-07,François Moreau,PACA,Câble RJ45 (lot),Réseau,1,35.33,0.0,En cours
+2024-07-09,David Leroy,Île-de-France,Clavier mécanique,Périphériques,20,112.42,0.15,Livré
+2024-07-22,Bob Dupont,Auvergne-Rhône-Alpes,Mac Mini,Informatique,1,1131.83,0.0,Livré
+2024-07-05,David Leroy,Île-de-France,Casque audio,Périphériques,11,149.62,0.0,Livré
+2024-07-20,Emma Petit,Hauts-de-France,Laptop Ultrabook,Informatique,4,915.38,0.0,Annulé
+2024-07-06,Alice Martin,Auvergne-Rhône-Alpes,Casque audio,Périphériques,11,152.01,0.05,Livré
+2024-07-22,François Moreau,Nouvelle-Aquitaine,Webcam HD,Périphériques,12,81.2,0.0,En cours
+2024-07-04,Claire Bernard,Hauts-de-France,Routeur WiFi 6,Réseau,4,189.89,0.05,Annulé
+2024-07-07,Emma Petit,Hauts-de-France,PC Fixe Bureau,Informatique,2,803.81,0.05,Retourné
+2024-07-01,Julien Garcia,Occitanie,Laptop Pro 15,Informatique,5,1294.11,0.1,En cours
+2024-07-16,Claire Bernard,Auvergne-Rhône-Alpes,"Écran 4K 27""",Périphériques,18,454.64,0.05,En cours
+2024-07-15,Inès Michel,Occitanie,Casque audio,Périphériques,10,157.0,0.0,Livré
+2024-07-26,Julien Garcia,Hauts-de-France,Routeur WiFi 6,Réseau,2,180.08,0.15,Livré
+2024-07-22,Claire Bernard,Hauts-de-France,Webcam HD,Périphériques,19,79.21,0.05,Retourné
+2024-07-03,Emma Petit,Auvergne-Rhône-Alpes,Routeur WiFi 6,Réseau,4,163.46,0.0,Livré
+2024-07-16,Hugo Laurent,Île-de-France,Laptop Ultrabook,Informatique,3,953.4,0.05,Livré
+2024-07-27,Emma Petit,Hauts-de-France,Licence Office 365,Logiciels,34,124.89,0.1,Livré
+2024-07-21,Bob Dupont,Occitanie,Webcam HD,Périphériques,12,87.61,0.05,Livré
+2024-07-28,François Moreau,Nouvelle-Aquitaine,Switch 24 ports,Réseau,3,321.05,0.15,En cours
+2024-07-17,Emma Petit,PACA,Laptop Ultrabook,Informatique,2,938.58,0.0,Livré
+2024-07-08,Grace Simon,Auvergne-Rhône-Alpes,Clavier mécanique,Périphériques,4,116.69,0.1,Retourné
+2024-07-19,Claire Bernard,Hauts-de-France,Mac Mini,Informatique,4,1138.55,0.0,En cours
+2024-07-06,Claire Bernard,Hauts-de-France,Laptop Ultrabook,Informatique,5,863.2,0.05,Annulé
+2024-07-17,Grace Simon,Occitanie,Laptop Ultrabook,Informatique,3,865.62,0.0,Annulé
+2024-07-20,Hugo Laurent,Nouvelle-Aquitaine,PC Fixe Bureau,Informatique,2,817.09,0.05,Livré
+2024-07-25,Claire Bernard,Occitanie,Webcam HD,Périphériques,19,86.71,0.15,Retourné
+2024-07-20,Julien Garcia,Île-de-France,Licence Office 365,Logiciels,22,125.38,0.05,Livré
+2024-07-17,Inès Michel,Hauts-de-France,Routeur WiFi 6,Réseau,1,166.76,0.0,En cours
+2024-07-20,Alice Martin,Occitanie,Casque audio,Périphériques,16,137.89,0.05,Annulé
+2024-07-18,Alice Martin,Hauts-de-France,Laptop Pro 15,Informatique,2,1195.74,0.05,Retourné
+2024-07-17,Grace Simon,PACA,Câble RJ45 (lot),Réseau,1,34.44,0.1,En cours
+2024-07-14,Claire Bernard,Auvergne-Rhône-Alpes,Routeur WiFi 6,Réseau,5,183.21,0.0,En cours
+2024-07-09,David Leroy,Île-de-France,"Écran 4K 27""",Périphériques,18,430.49,0.05,Retourné
+2024-07-07,François Moreau,Nouvelle-Aquitaine,Laptop Pro 15,Informatique,4,1204.74,0.1,Livré
+2024-07-09,Inès Michel,Nouvelle-Aquitaine,Laptop Ultrabook,Informatique,5,935.95,0.0,Annulé
+2024-07-25,David Leroy,Nouvelle-Aquitaine,Adobe Creative Cloud,Logiciels,44,573.07,0.05,Annulé
+2024-07-09,Emma Petit,Occitanie,Switch 24 ports,Réseau,5,311.69,0.05,Livré
+2024-07-08,Hugo Laurent,Hauts-de-France,Câble RJ45 (lot),Réseau,1,32.47,0.1,Livré
+2024-07-18,Julien Garcia,Hauts-de-France,Laptop Ultrabook,Informatique,3,951.59,0.15,Retourné
+2024-07-03,Claire Bernard,Nouvelle-Aquitaine,Laptop Ultrabook,Informatique,1,928.93,0.15,Annulé
+2024-07-03,Julien Garcia,Île-de-France,Switch 24 ports,Réseau,2,292.1,0.0,Retourné
+2024-07-23,Julien Garcia,Île-de-France,Routeur WiFi 6,Réseau,5,184.1,0.0,Livré
+2024-07-07,Alice Martin,Occitanie,Routeur WiFi 6,Réseau,5,162.39,0.0,Annulé
+2024-07-08,Alice Martin,PACA,Casque audio,Périphériques,2,140.08,0.0,Livré
+2024-07-19,David Leroy,Occitanie,Antivirus Pro,Logiciels,26,58.24,0.05,Livré
+2024-07-12,François Moreau,Auvergne-Rhône-Alpes,Laptop Pro 15,Informatique,5,1211.9,0.05,Livré
+2024-07-09,Claire Bernard,Nouvelle-Aquitaine,Webcam HD,Périphériques,19,92.31,0.0,Annulé
+2024-07-26,Inès Michel,Auvergne-Rhône-Alpes,Laptop Pro 15,Informatique,3,1200.76,0.0,Annulé
+2024-07-16,David Leroy,Auvergne-Rhône-Alpes,Adobe Creative Cloud,Logiciels,25,593.13,0.05,En cours
+2024-07-09,Bob Dupont,Nouvelle-Aquitaine,Câble RJ45 (lot),Réseau,4,37.53,0.0,Retourné
+2024-07-17,Inès Michel,Île-de-France,Clavier mécanique,Périphériques,14,127.2,0.0,Retourné
+2024-07-24,François Moreau,Île-de-France,Licence Office 365,Logiciels,26,114.89,0.1,Annulé
+2024-07-09,Claire Bernard,Hauts-de-France,Webcam HD,Périphériques,7,81.84,0.05,Retourné
+2024-07-08,Emma Petit,PACA,Webcam HD,Périphériques,8,89.03,0.1,Livré
+2024-07-25,Bob Dupont,Île-de-France,Clavier mécanique,Périphériques,12,128.07,0.0,Livré
+2024-07-28,Hugo Laurent,Auvergne-Rhône-Alpes,Câble RJ45 (lot),Réseau,5,31.55,0.0,Annulé
+2024-07-09,Hugo Laurent,PACA,Antivirus Pro,Logiciels,37,64.78,0.15,Annulé
+2024-07-02,Inès Michel,Nouvelle-Aquitaine,Antivirus Pro,Logiciels,37,56.67,0.0,En cours
+2024-07-04,Inès Michel,Nouvelle-Aquitaine,PC Fixe Bureau,Informatique,2,734.06,0.05,Livré
+2024-07-04,François Moreau,Auvergne-Rhône-Alpes,Laptop Pro 15,Informatique,4,1241.78,0.05,Annulé
+2024-07-16,Julien Garcia,Auvergne-Rhône-Alpes,Licence Office 365,Logiciels,16,121.17,0.0,Livré
+2024-07-25,François Moreau,Auvergne-Rhône-Alpes,Webcam HD,Périphériques,14,83.71,0.1,En cours
+2024-07-22,David Leroy,Île-de-France,Antivirus Pro,Logiciels,9,56.16,0.05,Retourné
+2024-07-05,Claire Bernard,Nouvelle-Aquitaine,Licence Office 365,Logiciels,25,121.33,0.0,Livré
+2024-07-24,François Moreau,Nouvelle-Aquitaine,Webcam HD,Périphériques,17,84.99,0.05,Livré
+2024-07-04,Claire Bernard,Île-de-France,Adobe Creative Cloud,Logiciels,4,643.02,0.05,Livré
+2024-07-24,François Moreau,Auvergne-Rhône-Alpes,Antivirus Pro,Logiciels,7,64.07,0.05,Livré
+2024-07-01,Grace Simon,Île-de-France,Adobe Creative Cloud,Logiciels,17,606.9,0.0,Livré
+2024-07-25,Emma Petit,Auvergne-Rhône-Alpes,Casque audio,Périphériques,18,152.28,0.0,Livré
+2024-07-20,Emma Petit,Nouvelle-Aquitaine,Câble RJ45 (lot),Réseau,1,34.63,0.05,Retourné
+2024-07-21,Julien Garcia,Occitanie,Clavier mécanique,Périphériques,11,123.37,0.05,En cours
+2024-07-11,Emma Petit,Hauts-de-France,Laptop Pro 15,Informatique,2,1118.88,0.0,Livré

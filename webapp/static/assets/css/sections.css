@@ -424,6 +424,20 @@
   text-underline-offset: 0.2em;
 }
 .link-btn:hover { color: var(--color-ink); }
+
+/* Fichiers d'exemple à télécharger (panneau « Vos fichiers ») */
+.sample-files {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+}
+.sample-files__title { color: var(--color-ink-2); }
+.sample-files__list { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); list-style: none; padding: 0; margin: 0; }
+.sample-files__list a { color: var(--color-ink-2); text-underline-offset: 0.2em; }
+.sample-files__list a:hover { color: var(--color-brand-ink); }
 .demo-form__submit { display: grid; gap: var(--space-3); }
 .demo-form__privacy { display: flex; align-items: center; gap: var(--space-2); color: var(--color-ink-3); font-size: var(--text-xs); }
 .demo-form .panel-in { animation: rise-in var(--dur-component) var(--ease-out) both; }

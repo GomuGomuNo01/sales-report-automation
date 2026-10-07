@@ -43,6 +43,8 @@ logger = logging.getLogger(__name__)
 
 EXEMPLE_CSV = os.path.join(BASE_DIR, "examples", "ventes_exemple_janvier_2024.csv")
 EXEMPLE_PDF = os.path.join(BASE_DIR, "examples", "rapport_exemple_2024.pdf")
+# Les 12 exports mensuels de 2024 (generate_data.py), proposés au téléchargement
+DOSSIER_VENTES_EXEMPLE = os.path.join(BASE_DIR, "examples", "ventes_2024")
 
 # Colonnes exposées dans l'aperçu JSON et dans le CSV téléchargeable
 COLONNES_DONNEES = EXPECTED_COLUMNS + ["ca_net", "ca_comptabilise"]
