@@ -7,3 +7,4 @@ faker==40.40.0
 schedule==1.2.2
 streamlit==1.65.0
 pytest==9.1.1
+httpx==0.28.1

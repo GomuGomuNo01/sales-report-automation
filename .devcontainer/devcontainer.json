@@ -2,7 +2,7 @@
   "name": "Sales Report Automation",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "postCreateCommand": "pip install --user -r requirements.txt",
-  "postAttachCommand": "streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false",
+  "postAttachCommand": "streamlit run app.py",
   "forwardPorts": [8501],
   "portsAttributes": {
     "8501": {

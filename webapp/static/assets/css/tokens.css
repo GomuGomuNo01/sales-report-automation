@@ -1,0 +1,219 @@
+/* ==========================================================================
+   DESIGN TOKENS
+   Source unique des valeurs visuelles. Aucun composant n'utilise de valeur
+   arbitraire : couleurs, typographie, espacements, rayons, ombres, motion,
+   z-index et breakpoints passent tous par ces variables.
+
+   Breakpoints (les media queries CSS ne lisent pas les variables, ces
+   valeurs sont donc reprises telles quelles, toujours les mêmes) :
+     sm  30em  (480px)   grands smartphones
+     md  48em  (768px)   tablettes
+     lg  64em  (1024px)  laptops
+     xl  80em  (1280px)  desktop
+   ========================================================================== */
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/InterVariable-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light dark;
+
+  /* ---------- Couleurs : thème clair ---------- */
+  --color-bg:            #f8fafc;
+  --color-surface:       #ffffff;
+  --color-surface-2:     #f3f6fa;
+  --color-surface-3:     #e9eef5;
+  --color-ink:           #0b1220;
+  --color-ink-2:         #3d4a5c;
+  --color-ink-3:         #5a6678;
+  --color-border:        rgba(11, 18, 32, 0.08);
+  --color-border-strong: rgba(11, 18, 32, 0.16);
+
+  --color-brand:         #1f63b8;
+  --color-brand-hover:   #1a56a3;
+  --color-brand-active:  #164a8d;
+  --color-brand-ink:     #1a56a3;
+  --color-brand-soft:    #eaf2fd;
+  --color-brand-line:    rgba(31, 99, 184, 0.28);
+  --color-on-brand:      #ffffff;
+
+  --color-success:       #13703f;
+  --color-success-soft:  #e6f5ec;
+  --color-danger:        #b4262c;
+  --color-danger-soft:   #fdecec;
+  --color-warning:       #8a5300;
+  --color-warning-soft:  #fff4dd;
+
+  /* Lueurs du hero et des fonds (toujours très diffuses) */
+  --glow-1: rgba(42, 120, 214, 0.20);
+  --glow-2: rgba(109, 91, 208, 0.14);
+  --glow-3: rgba(27, 175, 122, 0.10);
+
+  /* Données (validées : contraste ≥ 3:1, voir README) */
+  --viz-series:      #2a78d6;
+  --viz-series-soft: rgba(42, 120, 214, 0.10);
+  --viz-grid:        #e6e9ef;
+  --viz-axis:        #c9cfd9;
+  --viz-surface:     #ffffff;
+
+  /* ---------- Typographie ---------- */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
+
+  --text-display: clamp(2.375rem, 1.6rem + 3vw, 3.875rem);  /* H1 du hero */
+  --text-h1:      clamp(2rem, 1.55rem + 2vw, 3rem);         /* H1 des vues */
+  --text-h2:      clamp(1.875rem, 1.3rem + 2.4vw, 3.25rem);
+  --text-h3:      clamp(1.125rem, 1.06rem + 0.3vw, 1.3125rem);
+  --text-lead:    clamp(1.125rem, 1.04rem + 0.4vw, 1.375rem);
+  --text-body:    1.0625rem;
+  --text-small:   0.9375rem;
+  --text-xs:      0.8125rem;
+
+  --leading-tight: 1.05;
+  --leading-snug:  1.25;
+  --leading-body:  1.6;
+
+  --tracking-display: -0.04em;
+  --tracking-title:   -0.025em;
+  --tracking-eyebrow: 0.08em;
+
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     680;
+
+  /* ---------- Espacements (4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 / 128) ---------- */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.5rem;
+  --space-6:  2rem;
+  --space-7:  3rem;
+  --space-8:  4rem;
+  --space-9:  6rem;
+  --space-10: 8rem;
+
+  --section-pad: clamp(var(--space-8), 9vw, var(--space-10));
+  --gutter:      clamp(var(--space-4), 4vw, var(--space-6));
+  --container:   75rem;
+  --container-narrow: 46rem;
+  --header-h:    4.5rem;
+
+  /* ---------- Rayons ---------- */
+  --radius-xs:   6px;
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 999px;
+
+  /* ---------- Ombres (légères, en couches) ---------- */
+  --shadow-xs: 0 1px 2px rgba(11, 18, 32, 0.05);
+  --shadow-sm: 0 1px 2px rgba(11, 18, 32, 0.04), 0 2px 8px rgba(11, 18, 32, 0.05);
+  --shadow-md: 0 2px 4px rgba(11, 18, 32, 0.04), 0 10px 28px rgba(11, 18, 32, 0.08);
+  --shadow-lg: 0 4px 10px rgba(11, 18, 32, 0.04), 0 28px 56px -16px rgba(11, 18, 32, 0.18);
+  --shadow-xl: 0 40px 90px -30px rgba(16, 40, 90, 0.32);
+  --shadow-brand: 0 6px 18px -6px rgba(31, 99, 184, 0.55);
+  --focus-ring: 0 0 0 3px rgba(31, 99, 184, 0.35);
+
+  /* ---------- Motion ---------- */
+  /* Durées : micro-interaction / hover / composant / transition / complexe */
+  --dur-instant:    100ms;
+  --dur-micro:      140ms;
+  --dur-hover:      180ms;
+  --dur-component:  260ms;
+  --dur-transition: 380ms;
+  --dur-complex:    640ms;
+
+  /* Courbes : sortie naturelle (par défaut), entrée-sortie, ressort discret */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in:     cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-spring: cubic-bezier(0.34, 1.36, 0.64, 1);
+
+  /* Amplitudes : un mouvement ne dépasse jamais 24px */
+  --move-xs: 2px;
+  --move-sm: 4px;
+  --move-md: 12px;
+  --move-lg: 24px;
+  --scale-in: 0.96;
+  --stagger: 80ms;
+
+  /* ---------- Plans ---------- */
+  --z-base:    1;
+  --z-header:  50;
+  --z-menu:    60;
+  --z-toast:   80;
+  --z-dialog:  90;
+  --z-tooltip: 100;
+}
+
+/* ---------- Thème sombre : choisi, pas inversé ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg:            #090d16;
+    --color-surface:       #0f1521;
+    --color-surface-2:     #151d2b;
+    --color-surface-3:     #1c2636;
+    --color-ink:           #f2f5f9;
+    --color-ink-2:         #b4bfce;
+    --color-ink-3:         #8794a7;
+    --color-border:        rgba(255, 255, 255, 0.08);
+    --color-border-strong: rgba(255, 255, 255, 0.16);
+
+    --color-brand:         #2f74cf;
+    --color-brand-hover:   #2a69bd;
+    --color-brand-active:  #245ea9;
+    --color-brand-ink:     #8bbcf3;
+    --color-brand-soft:    rgba(74, 144, 232, 0.14);
+    --color-brand-line:    rgba(139, 188, 243, 0.32);
+
+    --color-success:       #3fcf86;
+    --color-success-soft:  rgba(63, 207, 134, 0.12);
+    --color-danger:        #ff7b7b;
+    --color-danger-soft:   rgba(255, 123, 123, 0.12);
+    --color-warning:       #f2b84b;
+    --color-warning-soft:  rgba(242, 184, 75, 0.12);
+
+    --glow-1: rgba(57, 135, 229, 0.22);
+    --glow-2: rgba(144, 133, 233, 0.14);
+    --glow-3: rgba(25, 158, 112, 0.10);
+
+    --viz-series:      #3987e5;
+    --viz-series-soft: rgba(57, 135, 229, 0.14);
+    --viz-grid:        #222c3b;
+    --viz-axis:        #334156;
+    --viz-surface:     #0f1521;
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.3), 0 28px 56px -16px rgba(0, 0, 0, 0.6);
+    --shadow-xl: 0 40px 90px -30px rgba(0, 0, 0, 0.75);
+    --shadow-brand: 0 6px 22px -6px rgba(57, 135, 229, 0.6);
+    --focus-ring: 0 0 0 3px rgba(139, 188, 243, 0.45);
+  }
+}
+
+/* ---------- Mouvement réduit : seules les animations fonctionnelles restent ---------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-micro:      1ms;
+    --dur-hover:      1ms;
+    --dur-component:  120ms;  /* fondus d'état conservés, sans déplacement */
+    --dur-transition: 120ms;
+    --dur-complex:    1ms;
+    --move-xs: 0px;
+    --move-sm: 0px;
+    --move-md: 0px;
+    --move-lg: 0px;
+    --scale-in: 1;
+    --stagger: 0ms;
+  }
+}

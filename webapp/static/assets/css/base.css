@@ -1,0 +1,223 @@
+/* ==========================================================================
+   BASE : reset, typographie, mise en page, utilitaires, règles de motion
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + var(--space-4));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+body.is-locked { overflow: hidden; }
+
+img, svg, video { display: block; max-width: 100%; }
+img { height: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+table { border-collapse: collapse; }
+[hidden] { display: none !important; }
+
+h1, h2, h3, h4, p, ol, ul, figure, blockquote, dl, dd { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+
+h1, h2, h3, h4 {
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-title);
+  line-height: var(--leading-snug);
+  text-wrap: balance;
+}
+
+p { text-wrap: pretty; }
+
+a {
+  color: var(--color-brand-ink);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--dur-hover) var(--ease-out);
+}
+a:hover { color: var(--color-ink); }
+
+::selection { background: var(--color-brand-soft); color: var(--color-ink); }
+
+/* Focus : toujours visible au clavier, jamais à la souris */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* ---------- Typographie ---------- */
+.display {
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--weight-bold);
+}
+.h1 { font-size: var(--text-h1); line-height: 1.1; letter-spacing: var(--tracking-display); }
+.h2 { font-size: var(--text-h2); line-height: 1.08; letter-spacing: -0.035em; }
+.h3 { font-size: var(--text-h3); line-height: var(--leading-snug); font-weight: var(--weight-semibold); letter-spacing: -0.01em; }
+.lead { font-size: var(--text-lead); line-height: 1.55; color: var(--color-ink-2); }
+.small { font-size: var(--text-small); }
+.xs { font-size: var(--text-xs); }
+.muted { color: var(--color-ink-3); }
+.ink-2 { color: var(--color-ink-2); }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-brand-ink);
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-ink) 10%, var(--color-brand) 55%, #6d5bd0 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@media (prefers-color-scheme: dark) {
+  .text-gradient { background-image: linear-gradient(100deg, var(--color-ink) 10%, #8bbcf3 55%, #b3a8f5 95%); }
+}
+@media (forced-colors: active) {
+  .text-gradient { background: none; color: CanvasText; }
+}
+
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Mise en page ---------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container--narrow { max-width: calc(var(--container-narrow) + 2 * var(--gutter)); }
+
+.section { padding-block: var(--section-pad); position: relative; }
+.section--tint { background: var(--color-surface-2); }
+.section--tint::before,
+.section--tint::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border-strong), transparent);
+}
+.section--tint::before { top: 0; }
+.section--tint::after { bottom: 0; }
+
+.section-head {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 44rem;
+  margin-bottom: clamp(var(--space-7), 6vw, var(--space-8));
+}
+.section-head--center { margin-inline: auto; text-align: center; justify-items: center; }
+
+.stack { display: grid; gap: var(--space-4); }
+/* Une grille à une colonne ne doit jamais s'élargir au contenu (tableaux, onglets défilants) */
+.stack, .hero__inner, .showcase, .story, .demo, .demo-form, .demo-form__group,
+.tabs, .charts, .chart-card, .report-head, .report-loading, .report-body, .quality-list, .outcomes, .kpi { grid-template-columns: minmax(0, 1fr); }
+.cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+
+/* ---------- Utilitaires ---------- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: calc(var(--z-tooltip) + 1);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transform: translateY(calc(-100% - var(--space-4)));
+  transition: transform var(--dur-component) var(--ease-out);
+}
+.skip-link:focus-visible { transform: none; color: var(--color-bg); }
+
+.icon { width: 1.25em; height: 1.25em; flex: none; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.icon--sm { width: 1em; height: 1em; }
+.icon--lg { width: 1.5rem; height: 1.5rem; }
+
+/* ==========================================================================
+   MOTION : règles partagées par tous les composants
+   Les éléments [data-reveal] ne sont masqués que si le JavaScript tourne
+   (classe .has-motion posée par motion.js) : sans JS, tout est visible.
+   ========================================================================== */
+
+.has-motion [data-reveal] {
+  opacity: 0;
+  transition:
+    opacity var(--dur-complex) var(--ease-out) var(--reveal-delay, 0ms),
+    transform var(--dur-complex) var(--ease-out) var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.has-motion [data-reveal="up"]    { transform: translate3d(0, var(--move-lg), 0); }
+.has-motion [data-reveal="scale"] { transform: scale(var(--scale-in)); }
+.has-motion [data-reveal="left"]  { transform: translate3d(calc(-1 * var(--move-lg)), 0, 0); }
+.has-motion [data-reveal="right"] { transform: translate3d(var(--move-lg), 0, 0); }
+.has-motion [data-reveal].is-revealed { opacity: 1; transform: none; }
+.has-motion [data-reveal].is-settled { will-change: auto; }
+
+/* Transitions de vue (View Transitions API) : fondu + légère translation */
+@view-transition { navigation: none; }
+::view-transition-old(root) { animation: vt-out var(--dur-component) var(--ease-in) both; }
+::view-transition-new(root) { animation: vt-in var(--dur-transition) var(--ease-out) both; }
+::view-transition-group(site-header) { animation-duration: var(--dur-transition); }
+@keyframes vt-out { to { opacity: 0; transform: translate3d(0, calc(-1 * var(--move-sm)), 0); } }
+@keyframes vt-in  { from { opacity: 0; transform: translate3d(0, var(--move-md), 0); } }
+
+/* Repli sans View Transitions : même mouvement, appliqué à la vue entrante */
+.view.is-entering { animation: vt-in var(--dur-transition) var(--ease-out) both; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes rise-in { from { opacity: 0; transform: translate3d(0, var(--move-md), 0); } }
+@keyframes pop-in { from { opacity: 0; transform: scale(0.6); } }
+@keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}

@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sales Report Automation · Le rapport de ventes mensuel, en 3 secondes</title>
+  <meta name="description" content="Fusionnez vos exports de ventes, corrigez automatiquement les erreurs de saisie et obtenez un rapport PDF de 6 pages prêt pour la direction. Démo en ligne, sans inscription.">
+  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="Sales Report Automation">
+  <meta property="og:description" content="Des exports de ventes bruts au rapport de direction, en 3 secondes au lieu de 5 heures.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/assets/img/favicon.svg?v=1" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/InterVariable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/tokens.css?v=1">
+  <link rel="stylesheet" href="/assets/css/base.css?v=1">
+  <link rel="stylesheet" href="/assets/css/components.css?v=1">
+  <link rel="stylesheet" href="/assets/css/sections.css?v=1">
+  <link rel="stylesheet" href="/assets/css/dashboard.css?v=1">
+  <script>
+    /* Masque les éléments animés avant le premier rendu (sauf mouvement réduit).
+       Filet de sécurité : si le JavaScript ne démarre pas, tout redevient visible. */
+    (function () {
+      var root = document.documentElement;
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('has-motion');
+      window.__motionGuard = setTimeout(function () { root.classList.remove('has-motion'); }, 3000);
+    })();
+  </script>
+  <script type="module" src="/assets/js/main.js?v=1"></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <!-- Icônes (sprite SVG, aucune requête supplémentaire) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+      <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+      <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V5M7 10l5-5 5 5M5 20h14"/></symbol>
+      <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+      <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 10"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+      <symbol id="i-report" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 17v-3M12 17v-6M16 17V8"/></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+      <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 17l.7 1.8 1.8.7-1.8.7L19 22l-.7-1.8-1.8-.7 1.8-.7z"/></symbol>
+      <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-5"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><path d="M8 16l3.5-4 3 2.5L20 8"/></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></symbol>
+      <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="M7.5 15h9"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7L20 8.5"/><path d="M20 4v4.5h-4.5"/></symbol>
+      <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+      <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- ============ En-tête ============ -->
+  <header class="site-header" id="site-header" data-scrolled="false">
+    <div class="container site-header__inner">
+      <a class="brand" href="/" data-nav="accueil" aria-label="Sales Report Automation, retour à l'accueil">
+        <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <defs><linearGradient id="g-brand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a78d6"/><stop offset="1" stop-color="#6d5bd0"/></linearGradient></defs>
+          <rect width="32" height="32" rx="9" fill="url(#g-brand)"/>
+          <path d="M9 22v-4M14 22v-8M19 22v-6M24 22V10" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+        <span>Sales Report <span class="brand__light">Automation</span></span>
+      </a>
+
+      <nav class="site-nav" aria-label="Navigation principale">
+        <ul class="site-nav__list">
+          <li><a class="site-nav__link" href="#fonctionnement" data-spy="fonctionnement">Fonctionnement</a></li>
+          <li><a class="site-nav__link" href="#fonctionnalites" data-spy="fonctionnalites">Fonctionnalités</a></li>
+          <li><a class="site-nav__link" href="#demo" data-spy="demo">Démo</a></li>
+          <li><a class="site-nav__link" href="#faq" data-spy="faq">FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-header__actions">
+        <a class="btn btn--ghost btn--icon btn--sm" href="https://github.com/GomuGomuNo01/sales-report-automation" target="_blank" rel="noopener" aria-label="Code source sur GitHub (nouvel onglet)">
+          <svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>
+        </a>
+        <button class="btn btn--primary btn--sm btn--cta" type="button" data-action="run-demo">
+          <span class="btn__label">Lancer la démo</span>
+          <span class="btn__state btn__state--loading"><span class="spinner" aria-hidden="true"></span>Génération…</span>
+        </button>
+        <button class="btn btn--ghost btn--icon menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
+          <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu-backdrop" hidden></div>
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Menu" hidden>
+    <ul class="mobile-menu__list">
+      <li><a class="mobile-menu__link" href="#fonctionnement">Fonctionnement <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></li>
+      <li><a class="mobile-menu__link" href="#fonctionnalites">Fonctionnalités <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></li>
+      <li><a class="mobile-menu__link" href="#demo">Démo <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></li>
+      <li><a class="mobile-menu__link" href="#faq">FAQ <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></li>
+    </ul>
+    <button class="btn btn--primary btn--lg btn--block" type="button" data-action="run-demo">
+      <span class="btn__label">Générer un rapport de démo <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+      <span class="btn__state btn__state--loading"><span class="spinner" aria-hidden="true"></span>Génération…</span>
+    </button>
+  </nav>
+
+  <main id="contenu" tabindex="-1">
+
+    <!-- =================================================================
+         VUE ACCUEIL
+         ================================================================= -->
+    <div class="view" id="vue-accueil" data-view="accueil">
+
+      <!-- Hero -->
+      <section class="hero" id="accueil" aria-labelledby="hero-titre">
+        <div class="hero__bg" aria-hidden="true" data-parallax="0.25"></div>
+        <div class="hero__grid" aria-hidden="true" data-parallax="0.12"></div>
+        <div class="hero__spot" aria-hidden="true"></div>
+        <div class="container hero__inner">
+          <div class="hero__copy">
+            <p class="badge" data-reveal="up"><span class="badge__dot" aria-hidden="true"></span>Démo en ligne · sans inscription</p>
+            <h1 class="display hero__title" id="hero-titre" data-reveal="up">
+              Votre rapport de ventes, <span class="text-gradient">en 3&nbsp;secondes</span> au lieu de 5&nbsp;heures.
+            </h1>
+            <p class="lead hero__lead" data-reveal="up" data-reveal-delay="1">
+              Déposez vos exports ERP : l'outil les fusionne, corrige les erreurs de saisie, calcule les indicateurs clés et produit un rapport PDF de 6&nbsp;pages prêt pour la réunion de direction.
+            </p>
+            <div class="hero__actions" data-reveal="up" data-reveal-delay="2">
+              <button class="btn btn--primary btn--lg" type="button" data-action="run-demo" data-magnetic>
+                <span class="btn__label">Générer un rapport de démo <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+                <span class="btn__state btn__state--loading"><span class="spinner" aria-hidden="true"></span>Génération…</span>
+              </button>
+              <a class="btn btn--secondary btn--lg" href="/exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener">
+                <svg class="icon" aria-hidden="true"><use href="#i-file"/></svg>
+                Voir un exemple de PDF
+                <span class="visually-hidden">(nouvel onglet)</span>
+              </a>
+            </div>
+            <ul class="hero__reassure" data-reveal="up" data-reveal-delay="3">
+              <li><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"/></svg>Sans inscription</li>
+              <li><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"/></svg>Sans installation</li>
+              <li><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"/></svg>Données de démonstration fournies</li>
+            </ul>
+          </div>
+
+          <!-- Visuel produit : exports CSV -> rapport. Décoratif, le texte ci-contre dit tout. -->
+          <div class="hero-visual" data-pointer-parallax aria-hidden="true">
+            <div class="hv-layer hv-files" data-depth="0.35">
+              <div data-reveal="left" data-reveal-delay="3">
+                <div class="hv-file"><span class="hv-file__icon">CSV</span><span class="hv-file__name">ventes_octobre_2024.csv</span><span class="hv-file__rows"><i></i><i></i><i></i></span></div>
+                <div class="hv-file"><span class="hv-file__icon">CSV</span><span class="hv-file__name">ventes_novembre_2024.csv</span><span class="hv-file__rows"><i></i><i></i><i></i></span></div>
+                <div class="hv-file"><span class="hv-file__icon">CSV</span><span class="hv-file__name">ventes_decembre_2024.csv</span><span class="hv-file__rows"><i></i><i></i><i></i></span></div>
+              </div>
+            </div>
+
+            <div class="hv-layer hv-report" data-depth="0.7">
+              <div class="hv-card" data-reveal="scale" data-reveal-delay="4">
+                <div class="hv-card__head">
+                  <span class="hv-card__logo"></span>
+                  <span class="hv-card__title">Rapport de performance</span>
+                  <span class="hv-card__pill">2024</span>
+                </div>
+                <div class="hv-kpis">
+                  <div class="hv-kpi"><span class="hv-kpi__label">CA comptabilisé</span><span class="hv-kpi__value">2,02&nbsp;M€</span></div>
+                  <div class="hv-kpi"><span class="hv-kpi__label">Commandes</span><span class="hv-kpi__value">731</span></div>
+                  <div class="hv-kpi"><span class="hv-kpi__label">Panier moyen</span><span class="hv-kpi__value">2&#8239;769&nbsp;€</span></div>
+                </div>
+                <svg class="hv-chart" viewBox="0 0 300 110" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="hv-area" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="var(--viz-series)" stop-opacity="0.22"/>
+                      <stop offset="1" stop-color="var(--viz-series)" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <line class="hv-chart__grid" x1="0" y1="35" x2="300" y2="35"/>
+                  <line class="hv-chart__grid" x1="0" y1="72" x2="300" y2="72"/>
+                  <line class="hv-chart__grid" x1="0" y1="109" x2="300" y2="109"/>
+                  <path class="hv-chart__area" d="M0.0,65.1 L27.3,63.2 L54.5,70.8 L81.8,70.8 L109.1,66.6 L136.4,79.1 L163.6,75.9 L190.9,67.1 L218.2,81.0 L245.5,58.9 L272.7,14.2 L300.0,45.9 L300,110 L0,110 Z"/>
+                  <path class="hv-chart__line" pathLength="1" vector-effect="non-scaling-stroke" d="M0.0,65.1 L27.3,63.2 L54.5,70.8 L81.8,70.8 L109.1,66.6 L136.4,79.1 L163.6,75.9 L190.9,67.1 L218.2,81.0 L245.5,58.9 L272.7,14.2 L300.0,45.9"/>
+                </svg>
+                <div class="hv-bars">
+                  <div class="hv-bar"><span class="hv-bar__name">Claire Bernard</span><span class="hv-bar__track"><span class="hv-bar__fill" style="--w:1;--i:0"></span></span><span class="hv-bar__value">252&nbsp;k€</span></div>
+                  <div class="hv-bar"><span class="hv-bar__name">Emma Petit</span><span class="hv-bar__track"><span class="hv-bar__fill" style="--w:0.92;--i:1"></span></span><span class="hv-bar__value">233&nbsp;k€</span></div>
+                  <div class="hv-bar"><span class="hv-bar__name">Hugo Laurent</span><span class="hv-bar__track"><span class="hv-bar__fill" style="--w:0.9;--i:2"></span></span><span class="hv-bar__value">228&nbsp;k€</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hv-layer hv-chip-wrap--a" data-depth="1.2">
+              <div class="hv-chip" data-reveal="up" data-reveal-delay="6"><span class="hv-chip__icon"><svg class="icon"><use href="#i-check"/></svg></span>17 doublons supprimés</div>
+            </div>
+            <div class="hv-layer hv-chip-wrap--b" data-depth="1.5">
+              <div class="hv-chip" data-reveal="up" data-reveal-delay="7"><span class="hv-chip__icon"><svg class="icon"><use href="#i-check"/></svg></span>217 remises corrigées</div>
+            </div>
+            <div class="hv-layer hv-chip-wrap--c" data-depth="1">
+              <div class="hv-chip" data-reveal="up" data-reveal-delay="8"><span class="hv-chip__icon hv-chip__icon--brand"><svg class="icon"><use href="#i-file"/></svg></span>PDF · 6 pages</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preuves : chiffres mesurés (pas de faux témoignages) -->
+      <section class="proof" aria-label="Résultats mesurés">
+        <div class="container">
+          <ul class="proof__list" data-reveal-group>
+            <li class="proof__item" data-reveal="up"><span class="proof__value">5&nbsp;h → 3&nbsp;s</span><span class="proof__label">de travail manuel remplacées chaque mois</span></li>
+            <li class="proof__item" data-reveal="up"><span class="proof__value">1,1&nbsp;%</span><span class="proof__label">d'écart sur le CA, même avec des données volontairement faussées</span></li>
+            <li class="proof__item" data-reveal="up"><span class="proof__value">88</span><span class="proof__label">tests automatisés vérifient chaque calcul</span></li>
+            <li class="proof__item" data-reveal="up"><span class="proof__value">6&nbsp;pages</span><span class="proof__label">de rapport PDF, prêtes à imprimer</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Bénéfices -->
+      <section class="section" id="benefices" aria-labelledby="benefices-titre">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow" data-reveal="up">Pourquoi</p>
+            <h2 class="h2" id="benefices-titre" data-reveal="up" data-reveal-delay="1">Moins de saisie, plus de décisions.</h2>
+            <p class="lead" data-reveal="up" data-reveal-delay="2">Chaque mois, le même rapport demandait une demi-journée de copier-coller. Ce temps revient désormais à l'analyse.</p>
+          </div>
+          <div class="grid-3" data-reveal-group>
+            <article class="card card--interactive benefit" data-reveal="up" data-glow>
+              <span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span>
+              <h3 class="h3 card__title">Une demi-journée gagnée</h3>
+              <p class="card__text">Fusion, nettoyage, calculs, graphiques et mise en page s'enchaînent sans intervention. Le rapport peut même se générer seul le 1<sup>er</sup> du mois.</p>
+              <p class="benefit__metric"><strong>5&nbsp;h</strong><span>économisées chaque mois</span></p>
+            </article>
+            <article class="card card--interactive benefit" data-reveal="up" data-glow>
+              <span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span>
+              <h3 class="h3 card__title">Des chiffres fiables</h3>
+              <p class="card__text">Doublons, remises saisies en %, statuts incohérents, valeurs manquantes : chaque anomalie est détectée, corrigée et signalée dans un journal.</p>
+              <p class="benefit__metric"><strong>7</strong><span>types d'anomalies corrigés</span></p>
+            </article>
+            <article class="card card--interactive benefit" data-reveal="up" data-glow>
+              <span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-report"/></svg></span>
+              <h3 class="h3 card__title">Prêt pour la direction</h3>
+              <p class="card__text">Indicateurs clés, classements, tendances et répartitions réunis dans un PDF toujours présenté de la même façon, lisible en quelques minutes.</p>
+              <p class="benefit__metric"><strong>8</strong><span>indicateurs, 5 graphiques</span></p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Aperçu du rapport -->
+      <section class="section section--tint" id="apercu" aria-labelledby="apercu-titre">
+        <div class="container showcase">
+          <div class="stack">
+            <div class="section-head" style="margin-bottom: var(--space-5)">
+              <p class="eyebrow" data-reveal="up">Le livrable</p>
+              <h2 class="h2" id="apercu-titre" data-reveal="up" data-reveal-delay="1">Un rapport clair, page après page.</h2>
+              <p class="lead" data-reveal="up" data-reveal-delay="2">Six pages A4 qui vont de la vue d'ensemble au détail. Choisissez une page pour la parcourir.</p>
+            </div>
+            <div class="page-tabs" role="tablist" aria-label="Pages du rapport" aria-orientation="vertical" data-tabs="pages" data-reveal="up" data-reveal-delay="3">
+              <button class="page-tab" role="tab" type="button" id="page-tab-1" aria-selected="true" aria-controls="page-preview" data-page="01" data-alt="Page 1 du rapport : tableau de bord avec les indicateurs clés"><span class="page-tab__num">1</span><span class="page-tab__title">Tableau de bord</span><span class="page-tab__desc">CA, commandes, panier moyen, taux d'annulation et indicateurs secondaires.</span></button>
+              <button class="page-tab" role="tab" type="button" id="page-tab-2" aria-selected="false" aria-controls="page-preview" tabindex="-1" data-page="02" data-alt="Page 2 du rapport : classement des vendeurs par chiffre d'affaires"><span class="page-tab__num">2</span><span class="page-tab__title">Vendeurs</span><span class="page-tab__desc">Classement par chiffre d'affaires, meilleur vendeur mis en évidence.</span></button>
+              <button class="page-tab" role="tab" type="button" id="page-tab-3" aria-selected="false" aria-controls="page-preview" tabindex="-1" data-page="03" data-alt="Page 3 du rapport : évolution mensuelle du chiffre d'affaires"><span class="page-tab__num">3</span><span class="page-tab__title">Évolution mensuelle</span><span class="page-tab__desc">Courbe du CA, variation d'un mois sur l'autre et cumul.</span></button>
+              <button class="page-tab" role="tab" type="button" id="page-tab-4" aria-selected="false" aria-controls="page-preview" tabindex="-1" data-page="04" data-alt="Page 4 du rapport : répartition du chiffre d'affaires par catégorie"><span class="page-tab__num">4</span><span class="page-tab__title">Catégories</span><span class="page-tab__desc">Part de chaque catégorie de produits dans le CA.</span></button>
+              <button class="page-tab" role="tab" type="button" id="page-tab-5" aria-selected="false" aria-controls="page-preview" tabindex="-1" data-page="05" data-alt="Page 5 du rapport : heatmap des ventes par vendeur et par région"><span class="page-tab__num">5</span><span class="page-tab__title">Vendeurs × régions</span><span class="page-tab__desc">Heatmap du CA de chaque vendeur dans chaque région.</span></button>
+              <button class="page-tab" role="tab" type="button" id="page-tab-6" aria-selected="false" aria-controls="page-preview" tabindex="-1" data-page="06" data-alt="Page 6 du rapport : classement des produits par chiffre d'affaires"><span class="page-tab__num">6</span><span class="page-tab__title">Top produits</span><span class="page-tab__desc">Les références qui portent le chiffre d'affaires.</span></button>
+            </div>
+          </div>
+          <div class="showcase__stage" data-reveal="scale" data-reveal-delay="2">
+            <figure class="paper" id="page-preview" role="tabpanel" aria-labelledby="page-tab-1" tabindex="0">
+              <img class="paper__img" src="/assets/img/rapport-p01-800.webp" srcset="/assets/img/rapport-p01-400.webp 400w, /assets/img/rapport-p01-800.webp 800w" sizes="(min-width: 64em) 30rem, 90vw" width="800" height="1131" alt="Page 1 du rapport : tableau de bord avec les indicateurs clés" loading="lazy" decoding="async">
+            </figure>
+            <a class="btn btn--ghost btn--sm" href="/exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener">
+              <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Ouvrir l'exemple complet (PDF)<span class="visually-hidden"> (nouvel onglet)</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fonctionnement : narration au défilement -->
+      <section class="section" id="fonctionnement" aria-labelledby="fonctionnement-titre">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow" data-reveal="up">Fonctionnement</p>
+            <h2 class="h2" id="fonctionnement-titre" data-reveal="up" data-reveal-delay="1">Cinq étapes, zéro manipulation.</h2>
+            <p class="lead" data-reveal="up" data-reveal-delay="2">Le même pipeline Python tourne en ligne de commande, chaque mois en automatique, ou ici dans votre navigateur.</p>
+          </div>
+
+          <div class="story" data-story>
+            <ol class="story__steps">
+              <li class="story-step is-active" data-step="0">
+                <span class="story-step__num" aria-hidden="true">1</span>
+                <h3 class="h3">Extraction</h3>
+                <p class="story-step__text">Tous les fichiers CSV du dossier sont chargés et fusionnés, quel que soit leur nombre. Une colonne manquante ? Le pipeline s'arrête avec un message clair plutôt que de produire un rapport faux.</p>
+                <p class="story-step__tags"><span class="tag">Multi-fichiers</span><span class="tag">Contrôle des colonnes</span></p>
+              </li>
+              <li class="story-step" data-step="1">
+                <span class="story-step__num" aria-hidden="true">2</span>
+                <h3 class="h3">Nettoyage</h3>
+                <p class="story-step__text">Doublons supprimés, valeurs manquantes complétées, remises saisies « 10 » au lieu de « 0,10 » corrigées, statuts harmonisés. Sans cette étape, le chiffre d'affaires deviendrait négatif.</p>
+                <p class="story-step__tags"><span class="tag">7 types d'anomalies</span><span class="tag">Journal des corrections</span></p>
+              </li>
+              <li class="story-step" data-step="2">
+                <span class="story-step__num" aria-hidden="true">3</span>
+                <h3 class="h3">Transformation</h3>
+                <p class="story-step__text">Le chiffre d'affaires net est calculé ligne par ligne, les commandes annulées ou retournées sont exclues, puis tout est agrégé par vendeur, mois, catégorie, région et produit.</p>
+                <p class="story-step__tags"><span class="tag">8 indicateurs</span><span class="tag">6 agrégations</span></p>
+              </li>
+              <li class="story-step" data-step="3">
+                <span class="story-step__num" aria-hidden="true">4</span>
+                <h3 class="h3">Visualisation</h3>
+                <p class="story-step__text">Cinq graphiques sont produits avec un style commun : classements, tendance mensuelle, répartition par catégorie et heatmap vendeurs × régions.</p>
+                <p class="story-step__tags"><span class="tag">matplotlib</span><span class="tag">seaborn</span></p>
+              </li>
+              <li class="story-step" data-step="4">
+                <span class="story-step__num" aria-hidden="true">5</span>
+                <h3 class="h3">Rapport PDF</h3>
+                <p class="story-step__text">Graphiques et tableaux sont assemblés dans un document A4 de 6 pages, horodaté, prêt à être envoyé ou imprimé.</p>
+                <p class="story-step__tags"><span class="tag">fpdf2</span><span class="tag">6 pages</span></p>
+              </li>
+            </ol>
+
+            <div class="story__stage" aria-hidden="true">
+              <div class="story-visual is-active" data-visual="0">
+                <div class="story-frame">
+                  <div class="ill">
+                    <div class="ill-files">
+                      <div class="ill-file"><b>janvier.csv</b><i></i><i></i></div>
+                      <div class="ill-file"><b>février.csv</b><i></i><i></i></div>
+                      <div class="ill-file"><b>mars.csv</b><i></i><i></i></div>
+                    </div>
+                    <svg class="icon icon--lg ill-arrow"><use href="#i-arrow-right" transform="rotate(90 12 12)"/></svg>
+                    <div class="ill-merged"><b>1 163 lignes fusionnées · 12 fichiers</b><i></i><i></i><i style="width:70%"></i></div>
+                  </div>
+                </div>
+              </div>
+              <div class="story-visual" data-visual="1">
+                <div class="story-frame">
+                  <div class="ill">
+                    <div class="ill-table">
+                      <div class="ill-row ill-row--head"><span>Vendeur</span><span>Remise</span><span>Statut</span></div>
+                      <div class="ill-row"><span>Alice Martin</span><span class="ill-fix"><s>10</s><ins>0,10</ins></span><span>Livré</span></div>
+                      <div class="ill-row"><span>Bob Dupont</span><span>0,05</span><span class="ill-fix"><s>LIVRÉ</s><ins>Livré</ins></span></div>
+                      <div class="ill-row ill-row--dup"><span>Bob Dupont</span><span>0,05</span><span>doublon</span></div>
+                      <div class="ill-row"><span class="ill-fix"><s>vide</s><ins>Inconnu</ins></span><span>0,00</span><span class="ill-fix"><s>encours</s><ins>En cours</ins></span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="story-visual" data-visual="2">
+                <div class="story-frame">
+                  <div class="ill">
+                    <div class="ill-formula">CA net = quantité × prix × (1 − remise)</div>
+                    <div class="ill-kpis">
+                      <div class="ill-kpi"><span>CA comptabilisé</span><strong>2,02&nbsp;M€</strong></div>
+                      <div class="ill-kpi"><span>Panier moyen</span><strong>2&#8239;769&nbsp;€</strong></div>
+                      <div class="ill-kpi"><span>Commandes actives</span><strong>731</strong></div>
+                      <div class="ill-kpi"><span>Remises accordées</span><strong>172&nbsp;k€</strong></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="story-visual" data-visual="3">
+                <div class="story-frame">
+                  <div class="ill ill-charts">
+                    <div class="ill-chart"><div class="ill-cols"><i style="height:100%"></i><i style="height:92%"></i><i style="height:90%"></i><i style="height:82%"></i><i style="height:74%"></i><i style="height:66%"></i></div></div>
+                    <div class="ill-chart"><svg viewBox="0 0 120 88"><path d="M0,58 L11,57 L22,62 L33,62 L44,59 L55,67 L66,65 L77,59 L88,68 L99,53 L110,14 L120,40" fill="none" stroke="var(--viz-series)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+                    <div class="ill-heat">
+                      <i style="background:#cde2fb"></i><i style="background:#6da7ec"></i><i style="background:#9ec5f4"></i><i style="background:#2a78d6"></i><i style="background:#b7d3f6"></i><i style="background:#86b6ef"></i>
+                      <i style="background:#5598e7"></i><i style="background:#cde2fb"></i><i style="background:#1c5cab"></i><i style="background:#9ec5f4"></i><i style="background:#6da7ec"></i><i style="background:#b7d3f6"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="story-visual" data-visual="4">
+                <div class="story-frame">
+                  <div class="ill-pages">
+                    <div class="ill-page"><img src="/assets/img/rapport-p02-400.webp" alt="" width="400" height="565" loading="lazy" decoding="async"></div>
+                    <div class="ill-page"><img src="/assets/img/rapport-p01-400.webp" alt="" width="400" height="565" loading="lazy" decoding="async"></div>
+                    <div class="ill-page"><img src="/assets/img/rapport-p03-400.webp" alt="" width="400" height="565" loading="lazy" decoding="async"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fonctionnalités -->
+      <section class="section section--tint" id="fonctionnalites" aria-labelledby="fonctionnalites-titre">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow" data-reveal="up">Fonctionnalités</p>
+            <h2 class="h2" id="fonctionnalites-titre" data-reveal="up" data-reveal-delay="1">Tout ce qu'il faut, rien de superflu.</h2>
+          </div>
+          <ul class="grid-4" data-reveal-group>
+            <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><h3 class="h3 card__title">Multi-fichiers</h3><p class="card__text">Charge et fusionne tous les CSV d'un dossier, quel que soit leur nombre.</p></li>
+            <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-sparkle"/></svg></span><h3 class="h3 card__title">Nettoyage automatique</h3><p class="card__text">Doublons, trous, types, remises et statuts corrigés, puis signalés.</p></li>
+            <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-gauge"/></svg></span><h3 class="h3 card__title">8 indicateurs clés</h3><p class="card__text">CA comptabilisé, panier moyen, taux d'annulation, remises accordées…</p></li>
+            <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-chart"/></svg></span><h3 class="h3 card__title">5 graphiques</h3><p class="card__text">Classements, tendance mensuelle, catégories, heatmap vendeurs × régions.</p></li>
+            <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-file"/></svg></span><h3 class="h3 card__title">PDF de 6 pages</h3><p class="card__text">Mise en page A4 soignée, horodatée, polices embarquées.</p></li>
+            <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-calendar"/></svg></span><h3 class="h3 card__title">Planification</h3><p class="card__text">Le rapport se génère seul le 1<sup>er</sup> de chaque mois à 8&nbsp;h.</p></li>
+            <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-list"/></svg></span><h3 class="h3 card__title">Journal d'exécution</h3><p class="card__text">Chaque étape et chaque anomalie détectée sont consignées.</p></li>
+            <li class="card card--interactive" data-reveal="up" data-glow><span class="card__icon" aria-hidden="true"><svg class="icon"><use href="#i-flask"/></svg></span><h3 class="h3 card__title">88 tests</h3><p class="card__text">Nettoyage, calculs et interface vérifiés à chaque modification.</p></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Démo interactive -->
+      <section class="section" id="demo" aria-labelledby="demo-titre">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow" data-reveal="up">Démo interactive</p>
+            <h2 class="h2" id="demo-titre" data-reveal="up" data-reveal-delay="1">Essayez avec vos données, ou les nôtres.</h2>
+            <p class="lead" data-reveal="up" data-reveal-delay="2">Un rapport complet en quelques secondes. Le pipeline réel s'exécute sur le serveur, étape par étape.</p>
+          </div>
+
+          <div class="demo">
+            <form class="card card--pad-lg demo-form" id="demo-form" novalidate data-reveal="up">
+              <fieldset class="demo-form__group">
+                <legend class="demo-form__legend">1. Choisissez les données</legend>
+                <div class="choices">
+                  <label class="choice">
+                    <input class="choice__input" type="radio" name="source" value="demo" checked>
+                    <span class="choice__box"><span class="choice__radio" aria-hidden="true"></span><span class="choice__title">Données de démonstration</span><span class="choice__desc">12 fichiers mensuels fictifs, environ 1 200 ventes.</span></span>
+                  </label>
+                  <label class="choice">
+                    <input class="choice__input" type="radio" name="source" value="fichiers">
+                    <span class="choice__box"><span class="choice__radio" aria-hidden="true"></span><span class="choice__title">Mes fichiers CSV</span><span class="choice__desc">Un ou plusieurs exports au format attendu.</span></span>
+                  </label>
+                </div>
+
+                <div data-panel="demo">
+                  <label class="switch">
+                    <input class="switch__input" type="checkbox" role="switch" name="anomalies" checked>
+                    <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+                    <span class="switch__text">
+                      <span class="switch__label">Ajouter des anomalies typiques d'un export ERP</span>
+                      <span class="switch__hint">Doublons, remises saisies en %, statuts mal orthographiés… pour voir le nettoyage à l'œuvre.</span>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="stack" data-panel="fichiers" hidden>
+                  <div class="field" id="field-fichiers">
+                    <div class="dropzone" id="dropzone">
+                      <input class="dropzone__input" id="fichiers" type="file" name="fichiers" accept=".csv,text/csv" multiple aria-describedby="fichiers-hint fichiers-error">
+                      <span class="dropzone__icon" aria-hidden="true"><svg class="icon"><use href="#i-upload"/></svg></span>
+                      <label class="dropzone__title" for="fichiers">Glissez vos fichiers CSV ici ou <u>parcourez</u></label>
+                      <span class="dropzone__hint" id="fichiers-hint">Jusqu'à 30 fichiers · 20 Mo au total · séparateur virgule, UTF-8</span>
+                    </div>
+                    <p class="field__error" id="fichiers-error" role="alert"></p>
+                    <ul class="file-list" id="file-list" aria-label="Fichiers sélectionnés"></ul>
+                  </div>
+                  <p class="demo-form__links">
+                    <button class="link-btn" type="button" data-dialog-open="dialog-format"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-table"/></svg>Voir le format attendu</button>
+                    <a class="link-btn" href="/api/modele.csv" download><svg class="icon icon--sm" aria-hidden="true"><use href="#i-download"/></svg>Télécharger un fichier modèle</a>
+                  </p>
+                </div>
+              </fieldset>
+
+              <div class="demo-form__group">
+                <p class="demo-form__legend" aria-hidden="true">2. Personnalisez le rapport</p>
+                <div class="field" id="field-periode">
+                  <label class="field__label" for="periode">Période affichée <span class="field__optional">(facultatif)</span></label>
+                  <div class="field__control">
+                    <input class="input" id="periode" name="periode" type="text" maxlength="80" autocomplete="off" placeholder="Ex. : Janvier - Juin 2024" aria-describedby="periode-hint periode-error">
+                    <span class="field__status field__status--valid" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                    <span class="field__status field__status--invalid" aria-hidden="true"><svg class="icon"><use href="#i-alert"/></svg></span>
+                  </div>
+                  <p class="field__hint" id="periode-hint">Laissez vide pour la déduire automatiquement des dates des ventes.</p>
+                  <p class="field__error" id="periode-error" role="alert"></p>
+                </div>
+              </div>
+
+              <div class="demo-form__submit">
+                <p class="field__error" id="form-error" role="alert"></p>
+                <button class="btn btn--primary btn--lg btn--block" type="submit" id="submit-btn" data-magnetic>
+                  <span class="btn__label">Générer le rapport <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+                  <span class="btn__state btn__state--loading"><span class="spinner" aria-hidden="true"></span>Génération en cours…</span>
+                </button>
+                <p class="demo-form__privacy"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-lock"/></svg>Vos fichiers sont traités en mémoire puis supprimés.</p>
+              </div>
+            </form>
+
+            <aside class="card card--pad-lg outcomes" aria-labelledby="outcomes-titre" data-reveal="up" data-reveal-delay="1">
+              <h3 class="h3" id="outcomes-titre">Ce que vous obtenez</h3>
+              <ul class="outcomes__list">
+                <li class="outcome"><span class="outcome__icon" aria-hidden="true"><svg class="icon"><use href="#i-gauge"/></svg></span><span class="outcome__title">Un tableau de bord interactif</span><span class="outcome__text">Indicateurs clés et graphiques explorables au survol ou au clavier.</span></li>
+                <li class="outcome"><span class="outcome__icon" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span><span class="outcome__title">Un diagnostic qualité</span><span class="outcome__text">Chaque anomalie trouvée dans les fichiers bruts et la correction appliquée.</span></li>
+                <li class="outcome"><span class="outcome__icon" aria-hidden="true"><svg class="icon"><use href="#i-table"/></svg></span><span class="outcome__title">Les données nettoyées</span><span class="outcome__text">Téléchargeables en CSV, prêtes pour Excel.</span></li>
+                <li class="outcome"><span class="outcome__icon" aria-hidden="true"><svg class="icon"><use href="#i-file"/></svg></span><span class="outcome__title">Le rapport PDF de 6 pages</span><span class="outcome__text">Le livrable final, à télécharger en un clic.</span></li>
+              </ul>
+              <div class="callout last-report" id="last-report" hidden>
+                <span>Un rapport est déjà prêt.</span>
+                <button class="btn btn--secondary btn--sm" type="button" data-nav="rapport">Le revoir <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ce que ce projet démontre (à la place de témoignages) -->
+      <section class="section section--tint" id="projet" aria-labelledby="projet-titre">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow" data-reveal="up">Le projet</p>
+            <h2 class="h2" id="projet-titre" data-reveal="up" data-reveal-delay="1">Ce que ce projet démontre.</h2>
+            <p class="lead" data-reveal="up" data-reveal-delay="2">Un projet mené seul, de l'identification du besoin à la mise en ligne. Les points clés pour un recruteur ou une équipe RH.</p>
+          </div>
+          <ul class="skills" data-reveal-group>
+            <li class="skill" data-reveal="up"><h3 class="skill__title">Sens du résultat</h3><p class="skill__text">Un temps perdu mesurable, 5 heures par mois, supprimé plutôt que du code écrit pour lui-même.</p></li>
+            <li class="skill" data-reveal="up"><h3 class="skill__title">Rigueur</h3><p class="skill__text">Corrections signalées dans un journal, calculs couverts par 88 tests automatisés.</p></li>
+            <li class="skill" data-reveal="up"><h3 class="skill__title">Esprit critique sur les données</h3><p class="skill__text">Repérer les pièges silencieux, comme une remise saisie 10 au lieu de 0,10 qui rendrait le CA négatif.</p></li>
+            <li class="skill" data-reveal="up"><h3 class="skill__title">Architecture</h3><p class="skill__text">Cinq modules indépendants, une configuration centralisée, trois interfaces branchées sur le même cœur.</p></li>
+            <li class="skill" data-reveal="up"><h3 class="skill__title">Pensée utilisateur</h3><p class="skill__text">Un livrable lisible par une direction, une démo utilisable sans aucune compétence technique.</p></li>
+            <li class="skill" data-reveal="up"><h3 class="skill__title">Autonomie</h3><p class="skill__text">Cadrage, développement, tests, documentation et déploiement réalisés de bout en bout.</p></li>
+          </ul>
+          <div class="section-actions">
+            <a class="btn btn--secondary" href="https://github.com/GomuGomuNo01/sales-report-automation" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>Voir le code sur GitHub<span class="visually-hidden"> (nouvel onglet)</span></a>
+            <a class="btn btn--ghost" href="https://github.com/GomuGomuNo01/sales-report-automation#readme" target="_blank" rel="noopener">Lire la documentation <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-external"/></svg><span class="visually-hidden"> (nouvel onglet)</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section" id="faq" aria-labelledby="faq-titre">
+        <div class="container container--narrow">
+          <div class="section-head section-head--center">
+            <p class="eyebrow" data-reveal="up">FAQ</p>
+            <h2 class="h2" id="faq-titre" data-reveal="up" data-reveal-delay="1">Questions fréquentes</h2>
+          </div>
+          <div class="accordion" data-reveal="up" data-reveal-delay="2">
+            <details class="accordion__item">
+              <summary class="accordion__summary">Mes fichiers sont-ils conservés&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
+              <div class="accordion__content"><p>Non. Ils sont écrits dans un dossier temporaire le temps du traitement, puis supprimés. Le rapport généré reste téléchargeable pendant une heure via son lien unique, puis il est effacé de la mémoire du serveur.</p></div>
+            </details>
+            <details class="accordion__item">
+              <summary class="accordion__summary">Quel format de fichier dois-je fournir&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
+              <div class="accordion__content">
+                <p>Un ou plusieurs fichiers CSV séparés par des virgules, encodés en UTF-8, avec ces 9 colonnes dans n'importe quel ordre : <code>date</code>, <code>vendeur</code>, <code>region</code>, <code>produit</code>, <code>categorie</code>, <code>quantite</code>, <code>prix_unitaire</code>, <code>remise</code>, <code>statut</code>.</p>
+                <p><a href="/api/modele.csv" download>Télécharger un fichier modèle</a></p>
+              </div>
+            </details>
+            <details class="accordion__item">
+              <summary class="accordion__summary">Que corrige exactement le nettoyage&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
+              <div class="accordion__content"><ul>
+                <li>Doublons exacts : supprimés.</li>
+                <li>Date manquante ou illisible : ligne écartée.</li>
+                <li>Texte manquant : remplacé par « Inconnu ». Montant manquant : remplacé par la médiane.</li>
+                <li>Remise saisie en pourcentage (10 au lieu de 0,10) : divisée par 100.</li>
+                <li>Quantité ou prix négatif : ramené à 0.</li>
+                <li>Statuts mal orthographiés (livre, LIVRÉ…) : harmonisés.</li>
+              </ul></div>
+            </details>
+            <details class="accordion__item">
+              <summary class="accordion__summary">Comment le chiffre d'affaires est-il calculé&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
+              <div class="accordion__content"><p>Pour chaque ligne : <code>quantité × prix unitaire × (1 − remise)</code>. Les commandes annulées ou retournées sont exclues du chiffre d'affaires comptabilisé et comptent dans le taux d'annulation.</p></div>
+            </details>
+            <details class="accordion__item">
+              <summary class="accordion__summary">Les données de démonstration sont-elles réelles&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
+              <div class="accordion__content"><p>Non. Elles sont générées par un script avec une graine fixe : 10 vendeurs fictifs, 6 régions, 15 produits sur l'année 2024. Les chiffres illustrent le fonctionnement de l'outil, pas une entreprise réelle.</p></div>
+            </details>
+            <details class="accordion__item">
+              <summary class="accordion__summary">Puis-je utiliser l'outil sur mon ordinateur&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
+              <div class="accordion__content"><p>Oui. Le code est open source (licence MIT) : il s'installe avec Python ou se lance avec Docker, et peut générer le rapport automatiquement chaque mois. Les étapes sont détaillées dans la <a href="https://github.com/GomuGomuNo01/sales-report-automation#readme" target="_blank" rel="noopener">documentation</a>.</p></div>
+            </details>
+            <details class="accordion__item">
+              <summary class="accordion__summary">Pourquoi la page met-elle parfois du temps à s'ouvrir&nbsp;?<span class="accordion__chevron" aria-hidden="true"><svg class="icon icon--sm"><use href="#i-plus"/></svg></span></summary>
+              <div class="accordion__content"><p>La démo est hébergée gratuitement : quand personne ne l'a utilisée depuis un moment, le serveur se met en veille et met une trentaine de secondes à redémarrer.</p></div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Appel final -->
+      <section class="section" style="padding-top: 0" aria-labelledby="final-titre">
+        <div class="container">
+          <div class="final-cta" data-reveal="scale">
+            <h2 class="h2" id="final-titre">Voyez le résultat par vous-même.</h2>
+            <p class="lead">Un clic suffit pour générer un rapport complet à partir de 12 mois de ventes.</p>
+            <div class="cluster" style="justify-content: center">
+              <button class="btn btn--primary btn--lg" type="button" data-action="run-demo" data-magnetic>
+                <span class="btn__label">Générer un rapport de démo <svg class="icon btn__icon btn__icon--forward" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+                <span class="btn__state btn__state--loading"><span class="spinner" aria-hidden="true"></span>Génération…</span>
+              </button>
+              <a class="btn btn--secondary btn--lg" href="https://github.com/GomuGomuNo01/sales-report-automation" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>Voir le code<span class="visually-hidden"> sur GitHub (nouvel onglet)</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- =================================================================
+         VUE RAPPORT
+         ================================================================= -->
+    <section class="view view-report" id="vue-rapport" data-view="rapport" aria-labelledby="rapport-titre" hidden>
+      <div class="container">
+        <div class="report-head">
+          <div class="report-head__copy">
+            <button class="back-link" type="button" data-nav="accueil"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Accueil</button>
+            <h1 class="report-head__title" id="rapport-titre" tabindex="-1">Génération du rapport…</h1>
+            <div class="report-head__meta" id="rapport-meta"></div>
+          </div>
+          <div class="report-head__actions" id="rapport-actions" hidden>
+            <a class="btn btn--primary btn--lg" id="pdf-link" href="#" download data-magnetic>
+              <svg class="icon btn__icon btn__icon--down" aria-hidden="true"><use href="#i-download"/></svg>Télécharger le PDF
+            </a>
+            <button class="btn btn--secondary btn--lg" type="button" data-nav="demo">
+              <svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Nouveau rapport
+            </button>
+          </div>
+        </div>
+
+        <div class="card report-progress" id="rapport-progression">
+          <div class="report-progress__bar" aria-hidden="true"><span class="report-progress__fill" id="progress-fill"></span></div>
+          <ol class="steps" id="steps" aria-label="Progression du pipeline">
+            <li class="step" data-step="extraction" data-state="pending"><span class="step__icon" aria-hidden="true">1</span><span class="step__title">Extraction</span><span class="step__detail">En attente</span></li>
+            <li class="step" data-step="nettoyage" data-state="pending"><span class="step__icon" aria-hidden="true">2</span><span class="step__title">Nettoyage</span><span class="step__detail">En attente</span></li>
+            <li class="step" data-step="transformation" data-state="pending"><span class="step__icon" aria-hidden="true">3</span><span class="step__title">Transformation</span><span class="step__detail">En attente</span></li>
+            <li class="step" data-step="visualisation" data-state="pending"><span class="step__icon" aria-hidden="true">4</span><span class="step__title">Visualisation</span><span class="step__detail">En attente</span></li>
+            <li class="step" data-step="rapport" data-state="pending"><span class="step__icon" aria-hidden="true">5</span><span class="step__title">Rapport PDF</span><span class="step__detail">En attente</span></li>
+          </ol>
+          <p class="visually-hidden" id="progress-live" aria-live="polite"></p>
+        </div>
+
+        <div class="report-body" id="rapport-corps" aria-busy="true">
+          <div class="report-loading" id="rapport-chargement">
+            <div class="kpis"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+            <div class="charts"><div class="skeleton"></div><div class="skeleton"></div></div>
+          </div>
+
+          <div class="report-error card card--pad-lg" id="rapport-erreur" hidden>
+            <span class="report-error__icon" aria-hidden="true"><svg class="icon icon--lg"><use href="#i-alert"/></svg></span>
+            <h2 class="h3">Le rapport n'a pas pu être généré</h2>
+            <p class="ink-2" id="rapport-erreur-message"></p>
+            <div class="cluster">
+              <button class="btn btn--primary" type="button" data-nav="demo">Modifier mes fichiers</button>
+              <button class="btn btn--secondary" type="button" data-action="retry"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Réessayer</button>
+            </div>
+          </div>
+
+          <div class="tabs" id="rapport-onglets" hidden>
+            <div class="tablist" role="tablist" aria-label="Sections du rapport" data-tabs="rapport">
+              <span class="tablist__indicator" aria-hidden="true"></span>
+              <button class="tab" role="tab" type="button" id="tab-synthese" aria-selected="true" aria-controls="panel-synthese">Vue d'ensemble</button>
+              <button class="tab" role="tab" type="button" id="tab-qualite" aria-selected="false" aria-controls="panel-qualite" tabindex="-1">Qualité des données <span class="tab__count" id="qualite-count">0</span></button>
+              <button class="tab" role="tab" type="button" id="tab-donnees" aria-selected="false" aria-controls="panel-donnees" tabindex="-1">Données</button>
+              <button class="tab" role="tab" type="button" id="tab-journal" aria-selected="false" aria-controls="panel-journal" tabindex="-1">Journal</button>
+            </div>
+            <div class="tabpanel is-active" role="tabpanel" id="panel-synthese" aria-labelledby="tab-synthese" tabindex="0"></div>
+            <div class="tabpanel" role="tabpanel" id="panel-qualite" aria-labelledby="tab-qualite" tabindex="0" hidden></div>
+            <div class="tabpanel" role="tabpanel" id="panel-donnees" aria-labelledby="tab-donnees" tabindex="0" hidden></div>
+            <div class="tabpanel" role="tabpanel" id="panel-journal" aria-labelledby="tab-journal" tabindex="0" hidden></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__grid">
+        <div class="site-footer__about">
+          <a class="brand" href="/" data-nav="accueil">
+            <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="url(#g-brand)"/><path d="M9 22v-4M14 22v-8M19 22v-6M24 22V10" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
+            <span>Sales Report <span class="brand__light">Automation</span></span>
+          </a>
+          <p>Des exports de ventes bruts au rapport de direction, automatiquement. Conçu et développé par Dibie Elisee Jules Cedric KOUADIO.</p>
+        </div>
+        <div>
+          <h2 class="site-footer__title">Explorer</h2>
+          <ul class="site-footer__links">
+            <li><a href="#fonctionnement">Fonctionnement</a></li>
+            <li><a href="#fonctionnalites">Fonctionnalités</a></li>
+            <li><a href="#demo">Démo interactive</a></li>
+            <li><a href="#faq">Questions fréquentes</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="site-footer__title">Ressources</h2>
+          <ul class="site-footer__links">
+            <li><a href="https://github.com/GomuGomuNo01/sales-report-automation" target="_blank" rel="noopener"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-github"/></svg>Code source<span class="visually-hidden"> (nouvel onglet)</span></a></li>
+            <li><a href="https://github.com/GomuGomuNo01/sales-report-automation#readme" target="_blank" rel="noopener">Documentation<span class="visually-hidden"> (nouvel onglet)</span></a></li>
+            <li><a href="/exemples/rapport_exemple_2024.pdf" target="_blank" rel="noopener">Exemple de rapport PDF<span class="visually-hidden"> (nouvel onglet)</span></a></li>
+            <li><a href="/api/modele.csv" download>Fichier CSV modèle</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 · Licence MIT · <a href="https://github.com/GomuGomuNo01" target="_blank" rel="noopener">@GomuGomuNo01</a></p>
+        <p>Données de démonstration fictives.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Dialogue : format attendu -->
+  <dialog class="dialog" id="dialog-format" aria-labelledby="dialog-format-titre">
+    <div class="dialog__head">
+      <h2 class="h3" id="dialog-format-titre">Format attendu des fichiers</h2>
+      <button class="btn btn--ghost btn--icon btn--sm" type="button" data-dialog-close aria-label="Fermer"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="dialog__body">
+      <p>Fichiers CSV séparés par des virgules, en UTF-8. Les 9 colonnes suivantes sont obligatoires, dans n'importe quel ordre.</p>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th scope="col">Colonne</th><th scope="col">Exemple</th><th scope="col">Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>date</code></td><td>2024-01-15</td><td>Date de la commande</td></tr>
+            <tr><td><code>vendeur</code></td><td>Alice Martin</td><td>Nom du commercial</td></tr>
+            <tr><td><code>region</code></td><td>Île-de-France</td><td>Région de vente</td></tr>
+            <tr><td><code>produit</code></td><td>Laptop Pro 15</td><td>Nom du produit</td></tr>
+            <tr><td><code>categorie</code></td><td>Informatique</td><td>Catégorie du produit</td></tr>
+            <tr><td><code>quantite</code></td><td>3</td><td>Unités commandées</td></tr>
+            <tr><td><code>prix_unitaire</code></td><td>1257.97</td><td>Prix HT en euros</td></tr>
+            <tr><td><code>remise</code></td><td>0.10 ou 10</td><td>Remise (les deux formats)</td></tr>
+            <tr><td><code>statut</code></td><td>Livré</td><td>Livré, En cours, Annulé, Retourné</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="dialog__foot">
+      <a class="btn btn--secondary" href="/api/modele.csv" download><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Télécharger le modèle</a>
+      <button class="btn btn--primary" type="button" data-dialog-close>J'ai compris</button>
+    </div>
+  </dialog>
+
+  <div class="toast-region" id="toasts" aria-live="polite" aria-atomic="false"></div>
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+  <noscript><p class="callout" style="position:fixed;inset:auto 16px 16px;z-index:100">La démo interactive nécessite JavaScript. Le reste de la page reste consultable.</p></noscript>
+</body>
+</html>
