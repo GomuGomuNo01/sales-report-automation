@@ -18,7 +18,6 @@ import sys
 from playwright.sync_api import TimeoutError as DelaiDepasse
 from playwright.sync_api import sync_playwright
 
-URL_PAR_DEFAUT = "https://sales-report-automation-cedric.streamlit.app"
 CAPTURE_ECHEC  = "reveil-echec.png"
 
 DELAI_PAGE      = 120_000  # ms : chargement de la page hôte de Streamlit
@@ -55,4 +54,7 @@ def visiter(url: str) -> None:
 
 
 if __name__ == "__main__":
-    visiter(sys.argv[1] if len(sys.argv) > 1 else os.environ.get("STREAMLIT_URL") or URL_PAR_DEFAUT)
+    adresse = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("STREAMLIT_URL")
+    if not adresse:
+        sys.exit("Indiquez l'adresse de la démo (argument ou variable STREAMLIT_URL).")
+    visiter(adresse)

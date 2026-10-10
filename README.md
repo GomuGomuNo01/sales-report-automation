@@ -581,6 +581,8 @@ Le guide complet, avec les autres hébergeurs, les commandes et les réglages, e
 
 Sur Cloud Run et Render, l'hébergeur construit l'image à partir du [`Dockerfile`](Dockerfile) et redéploie à chaque push sur `main`. Hugging Face Spaces est écarté : l'hébergement d'une image Docker y est devenu payant.
 
+**Maintien en éveil** : Streamlit met la démo en veille après 12 heures sans visite. Le workflow [`reveil-streamlit.yml`](.github/workflows/reveil-streamlit.yml) l'ouvre dans un vrai navigateur toutes les 6 heures, clique sur le bouton de réveil si besoin et génère un rapport de démo ; en cas d'échec, GitHub envoie un e-mail avec une capture de la page. Il ne tourne que si la **variable de dépôt `STREAMLIT_URL`** contient l'adresse de la démo (*Settings > Secrets and variables > Actions > Variables*) : c'est le cas ici. Pour l'essayer : **Actions > Réveiller la démo Streamlit > Run workflow**.
+
 À savoir sur Streamlit Community Cloud : après un push qui ajoute une route au serveur ([`webapp/api.py`](webapp/api.py)), il faut redémarrer l'application (**Manage app > Reboot app**), car les routes ne sont créées qu'au démarrage.
 
 **Régénérer la vidéo de présentation** : `python assets/video/source/rendu.py` (voir [`assets/video/`](assets/video/)). La page qui la publie est déployée sur GitHub Pages par [`deploy-pages.yml`](.github/workflows/deploy-pages.yml) à chaque modification de la vidéo.
@@ -603,7 +605,7 @@ Sur Cloud Run et Render, l'hébergeur construit l'image à partir du [`Dockerfil
 - **Période par défaut** : sans `--periode`, le libellé du mois courant dépend de la langue du système.
 - **Format d'entrée strict** : CSV séparé par des virgules, noms de colonnes exacts. Les fichiers Excel ou séparés par des points-virgules ne sont pas acceptés.
 - **Planificateur simple** : il fonctionne tant que le processus reste lancé ; il ne remplace pas un ordonnanceur système.
-- **Hébergement gratuit** : après 12 heures sans visite, la démo en ligne se met en veille ; le visiteur suivant doit cliquer sur un bouton pour la réveiller, puis attendre environ une minute. Une tâche GitHub Actions visite la démo toutes les 6 heures pour l'éviter.
+- **Hébergement gratuit** : après 12 heures sans visite, la démo en ligne se met en veille ; le visiteur suivant doit cliquer sur un bouton pour la réveiller, puis attendre environ une minute. Une tâche GitHub Actions visite la démo toutes les 6 heures pour l'éviter (variable de dépôt `STREAMLIT_URL`) ; GitHub suspend ces tâches après 60 jours sans activité sur le dépôt.
 - **Une génération à la fois** : les demandes simultanées attendent leur tour. Les envois sont limités à 30 fichiers, 20 Mo, 200 vendeurs, 50 régions et 50 catégories.
 - **Rapports en mémoire** : un rapport généré en ligne reste téléchargeable jusqu'à une heure (dans la limite des 32 derniers), puis il est effacé.
 - **Vidéo figée** : la présentation est un rendu daté ; si l'application change (nombre de tests, écrans), il faut la régénérer avec `rendu.py`.

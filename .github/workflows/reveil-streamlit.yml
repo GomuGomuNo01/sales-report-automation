@@ -1,7 +1,9 @@
 # Empêche la démo de s'endormir sur Streamlit Community Cloud (veille après 12 h sans visite).
 # Un ping HTTP ne suffit pas : un vrai navigateur ouvre la page et génère un rapport de démo
 # (.github/scripts/reveil_streamlit.py). En cas d'échec, une capture est jointe à l'exécution.
-# Adresse : variable de dépôt STREAMLIT_URL si elle existe, sinon l'adresse par défaut du script.
+# Inactif tant que la variable de dépôt STREAMLIT_URL n'est pas définie :
+#   Settings > Secrets and variables > Actions > Variables > New repository variable
+#   STREAMLIT_URL = https://sales-report-automation-cedric.streamlit.app
 # À savoir : GitHub suspend les tâches planifiées après 60 jours sans activité sur le dépôt.
 name: Réveiller la démo Streamlit
 
@@ -15,6 +17,7 @@ permissions:
 
 jobs:
   visite:
+    if: ${{ vars.STREAMLIT_URL != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
