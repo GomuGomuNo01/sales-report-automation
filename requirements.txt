@@ -3,6 +3,6 @@ matplotlib==3.10.9
 seaborn==0.13.2
 fpdf2==2.8.9
 openpyxl==3.1.5
-faker==40.40.0
+faker==40.43.0
 schedule==1.2.2
 streamlit==1.65.0
